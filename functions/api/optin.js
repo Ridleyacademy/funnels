@@ -21,9 +21,9 @@
 //                         gate, so a booking only gets texts if consent is stored.
 
 const TAGS = {
-  optin: ['VSL Opt-in'],
+  optin: ['VSL Opt-in', 'VSL LEAD-Front-Gate'],
   application: ['VSL Application'],
-  application_dq: ['VSL Application', 'VSL Tripwire Routed'],
+  application_dq: ['VSL Application', 'VSL Tripwire Routed', 'VSL LEAD-Downsell'],
 };
 
 const tagIdCache = {};
