@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Lock In Your Breakthrough Session | Ridley Academy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E81420'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' fill='%23FFFBF4' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- NOTE for Ange: self-host these three fonts at deploy (font-display: swap). -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<!-- GTM CONTAINER HERE -->
+<style>
+  .book-hero{padding:clamp(28px,5vw,52px) 0 clamp(10px,2vw,18px);text-align:center}
+  .calendly-card{max-width:760px;margin:0 auto;border-color:var(--gold);border-width:2px}
+  .calendly-slot{min-height:660px;background:var(--cream);border:1.5px dashed var(--line);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-size:14px;text-align:center;padding:24px}
+  .fallback{ text-align:center;font-size:15px;color:rgba(252,244,234,.7);margin-top:18px}
+  .fallback a{color:var(--gold-acc)}
+  .note-card{max-width:720px;margin:0 auto}
+  .note-card .sig{font-family:var(--hand);font-size:26px;margin-top:14px;color:var(--gold-acc)}
+  /* the calendar card stays LIGHT on the dark page (paper popping on black, like the apply form card) */
+  .theme-dark .calendly-card{background:var(--paper);color:var(--ink)}
+</style>
+</head>
+<body class="theme-dark">
+<!--
+  RIDLEY BOOKING PAGE B: THE SOFT-DQ TWIN (replicates WarriorBabe /schedule-booking-dq)
+
+  HOW THIS WORKS (for Ange):
+  Every word visible on this page is IDENTICAL to booking.html. The ONLY difference is the
+  Calendly event underneath: this page mounts CAL.dq instead of CAL.qualified, both of
+  which live in shared.js. Applicants who trip the soft-DQ rules in apply.html
+  (lowest money bracket + 5/10 commitment, or "No" on the attendance gate) are routed here
+  instead of booking.html. They still get a real call, but the DQ event type can be given
+  its own availability, its own closer assignment, and its own priority, and the applicant
+  never sees any difference. That is the whole mechanic: re-route, don't reject.
+  Keep the two pages copy-synced. If booking.html copy changes, change it here too.
+  Query params (el, utm_*) arrive from apply.html; pass them into the Calendly embed URL.
+-->
+<a class="skiplink" href="#main">Skip to content</a>
+
+<div class="topbar">Step 2 of 2: pick your time below.</div>
+<div class="sitehead"><a class="logotype" href="index.html">Ridley <b>Academy</b></a></div>
+<main id="main">
+
+<section class="book-hero">
+  <div class="wrap-narrow">
+    <span class="eyebrow rv">Step 2 of 2</span>
+    <h1 class="h-lg rv" style="--d:.06s">Congratulations. Final step: lock in your <span class="hl">Breakthrough Session</span></h1>
+    <p class="sub rv" style="margin:12px auto 0;max-width:640px;--d:.08s">Your application is in. Pick a time below for your free 30-minute call. It's a conversation, not a checkout, and you never have to play a note.</p>
+    <!-- [CAPACITY-PLACEHOLDER] Chris to confirm the real weekly session capacity before this
+         line ships. Keep it honest: state the limit only if it exists, no counters, no timers. -->
+    <p class="sub rv" style="margin:8px auto 0;font-size:15px;--d:.14s">We hold a limited number of Breakthrough Sessions each week, so grab a time that works while the calendar is open.</p>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <!--
+      CALENDLY, wired 7/31. data-cal="dq" is the ONLY functional difference from
+      booking.html, exactly as before, but the event URL now lives in shared.js CAL.dq
+      rather than in this page.
+
+      CAL.dq is deliberately empty because the soft-DQ event type has not been created
+      yet. While it is empty this page keeps the request-a-time fallback below instead
+      of embedding the qualified calendar, so soft-DQ applicants are never quietly
+      booked into the qualified calendar. Create the second Calendly event, paste its
+      URL into CAL.dq, and this page goes live with no other change.
+    -->
+    <div class="card calendly-card rv" data-cal="dq">
+      <div class="calendly-slot">Pick a time with us directly &mdash; <a class="ct-link" href="custom-time.html">request your time here</a> and a real person replies within one business day.</div>
+    </div>
+    <p class="fallback">Can't find a time that works? <a class="ct-link" href="custom-time.html">Request a time here</a> and we'll find one together.</p>
+    <!-- Custom-time fallback lives at custom-time.html (WB /custom-time-request pattern):
+         never let a lead die on calendar friction. Params carry via the .ct-link script below. -->
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="wrap">
+    <p class="center" style="font-size:14px;color:rgba(252,244,234,.55);margin-bottom:16px">As featured &amp; trusted across</p>
+    <div class="press rv">
+      <img src="images/press/gq.svg" alt="GQ" loading="lazy">
+      <img src="images/press/vogue.svg" alt="Vogue" loading="lazy">
+      <img src="images/press/lofficiel.svg" alt="L'Officiel" loading="lazy">
+      <img src="images/press/omega.svg" alt="Omega" loading="lazy">
+      <img src="images/press/google.svg" alt="Google" loading="lazy">
+      <img src="images/press/youtube.svg" alt="YouTube" loading="lazy">
+      <img src="images/press/instagram.svg" alt="Instagram" loading="lazy">
+      <img src="images/press/trustpilot.svg" alt="Trustpilot" loading="lazy">
+      <img src="images/press/sitejabber.png" alt="Sitejabber" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <div class="card note-card rv">
+      <p class="hand" style="margin-bottom:6px">Come open. That's the whole ask.</p>
+      <p class="h-md" style="margin-bottom:10px">A quick note before you book</p>
+      <p style="color:rgba(252,244,234,.75);font-size:16px">This call is a real conversation about you and the piano. We'll look at what's held you back, and I'll show you the path I'd put you on. I'll be honest with you, and I'd ask the same in return. One thing matters: come open. If you already know you're not willing to change how you learn, this call isn't for you, and that's completely fine. If you are open, I think you'll leave with more clarity about your playing than you've had in years.</p>
+      <p class="sig">Stephen</p>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="foot">
+  <p>Ridley Academy</p>
+  <p class="compliance">Your Breakthrough Session is free and carries no obligation. We'll only use your contact details to schedule and confirm your call.</p>
+</footer>
+
+<script>
+(function(){
+  window.dataLayer=window.dataLayer||[];
+  dataLayer.push({event:'rdly_booking_view',page_variant:'dq'});
+  if(window.location.search){
+    document.querySelectorAll('a.ct-link').forEach(function(a){a.href+=window.location.search;});
+  }
+})();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

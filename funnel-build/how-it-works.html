@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>How the Ridley Method Works | Ridley Academy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E81420'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' fill='%23FFFBF4' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- NOTE for Ange: self-host these three fonts at deploy (font-display: swap). -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<!-- GTM CONTAINER HERE -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  dataLayer.push({ event: "rdly_site_view", page: "how-it-works" });
+  // All Apply CTAs on this page carry ?el=hiw so apply.html can attribute the source.
+</script>
+<style>
+  /* page-specific: layout mirrors warriorbabe.com/how-it-works (captures in scratchpad/wb/hiw-a.png + hiw-b.png) */
+  .hero{padding:clamp(28px,4vw,52px) 0 clamp(36px,5vw,64px);text-align:center}
+  .hero h1{font-size:clamp(32px,5.4vw,58px);max-width:980px;margin:14px auto 0}
+  .hero .sub{margin:16px auto 0;max-width:60ch}
+  .statcards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:960px){.statcards{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.statcards{grid-template-columns:1fr}}
+  .statcard{background:#221014;border:1.5px solid rgba(252,244,234,.1);border-radius:var(--radius);padding:22px;text-align:left}
+  .statcard b{display:block;font-family:var(--display);font-weight:600;font-size:clamp(28px,3.6vw,40px);color:var(--paper);line-height:1.05}
+  .statcard span{display:block;margin-top:6px;font-size:13.5px;color:rgba(252,244,234,.6)}
+  /* proof inside each method phase card */
+  .cat-card blockquote{margin:2px 0 0;padding-top:12px;border-top:1px solid rgba(252,244,234,.12);font-size:14px;line-height:1.5;color:rgba(252,244,234,.7);font-style:italic}
+  .cat-card blockquote footer{margin-top:6px;font-style:normal;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:12px;color:var(--gold-acc)}
+  /* what happens after you apply */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,3vw,32px)}
+  .step .n{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:var(--cherry);color:#fff;font-family:var(--display);font-weight:600;font-size:17px;margin-bottom:12px}
+  .step h3{font-size:17px;margin-bottom:6px}
+  .step p{font-size:14.5px;color:rgba(252,244,234,.7)}
+  @media(max-width:860px){.steps{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.steps{grid-template-columns:1fr}}
+  .quiz-alt{font-size:14px;color:rgba(252,244,234,.6);margin-top:12px;text-align:center}
+  .quiz-alt a{color:var(--gold-acc)}
+  .cta-dark{position:relative;overflow:hidden}
+  .cta-dark .bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;opacity:.22}
+  .cta-dark .wrap-narrow{position:relative;z-index:2}
+</style>
+</head>
+<body class="theme-dark">
+<a class="skiplink" href="#main">Skip to content</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logotype" href="index.html">Ridley <b>Academy</b></a>
+    <button class="nav-burger" aria-expanded="false" aria-controls="navlinks" onclick="this.setAttribute('aria-expanded',document.getElementById('navlinks').classList.toggle('open'));">Menu</button>
+    <div class="nav-links" id="navlinks">
+      <a class="on" href="how-it-works.html">How It Works</a>
+      <a href="success.html">Success Stories</a>
+      <a href="about.html">About</a>
+      <a href="mentors.html">Mentors</a>
+      <a class="btn" href="apply.html?el=site-nav">Book a Free Call</a>
+    </div>
+  </div>
+</nav>
+<main id="main">
+
+<!-- ============ HERO: proofline, centered accent H1, VSL, CTA (mirrors WB hiw hero) ============ -->
+<section class="hero">
+  <div class="wrap">
+    <p class="proofline rv"><span class="stars">★★★★★</span> 1,300+ five-star reviews · 40,000+ students</p>
+    <h1 class="rv" style="--d:.06s">Play the songs you love. <span class="hl">Skip the years of scales.</span></h1>
+    <p class="sub lede rv" style="--d:.12s">The Ridley Method: four phases from your first real song to a piano that's yours. Here's how it works.</p>
+
+    <div class="vframe rv" data-vsl data-src="videos/vsl-main.mp4" data-poster="images/masterclass-poster.jpg" data-vsl-cta="apply.html?el=vsl-how" style="max-width:860px;margin:28px auto 0;--d:.18s">
+      <!-- SELF-HOSTED VSL until a dedicated method cut exists. See index.html note. -->
+      <img src="images/masterclass-poster.jpg" alt="Play: Stephen on how the method works">
+      <div class="playbtn"></div>
+      <div class="vpill">Stephen, on how the method works</div>
+    </div>
+
+    <div class="rv" style="margin-top:26px">
+      <a class="btn" href="apply.html?el=hiw">Book my free Breakthrough Session</a>
+      <p class="btn-note">A conversation, not a checkout. You never have to play a note.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STAT CARDS (mirrors WB stat-card row) ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="statcards">
+      <div class="statcard rv"><b>40,000+</b><span>Students</span></div>
+      <div class="statcard rv" style="--d:.07s"><b>60+</b><span>Countries</span></div>
+      <div class="statcard rv" style="--d:.14s"><b>5 to 96</b><span>Ages of students</span></div>
+      <div class="statcard rv" style="--d:.21s"><b>1,300+</b><span>Five-star reviews</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY NOTHING STUCK: icon-card grid (mirrors WB should-know grid) ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:26px">
+      <h2 class="h-xl rv">Why nothing <span class="hl">stuck before</span></h2>
+      <p class="sub rv" style="margin:12px auto 0">Most adults have tried piano at least once. It wasn't you. It was the method.</p>
+    </div>
+    <div class="icon-grid">
+      <div class="card rv">
+        <span class="ic">🎓</span>
+        <h3>Childhood lessons</h3>
+        <p>Built for kids working toward exams: years of scales and method books before any music you'd choose to play. Most adults quit long before the music arrives.</p>
+      </div>
+      <div class="card rv" style="--d:.08s">
+        <span class="ic">📱</span>
+        <h3>The apps</h3>
+        <p>Falling-note games train you to track a screen, not to play. Close the app and the music closes with it.</p>
+      </div>
+      <div class="card rv" style="--d:.16s">
+        <span class="ic">📺</span>
+        <h3>YouTube on your own</h3>
+        <p>Great teaching exists there, but with no sequence and no feedback, adults binge tutorials and still can't play a full song.</p>
+      </div>
+    </div>
+    <p class="hand rv center" style="margin-top:24px">You don't need years of scales. You need a path that starts with the music.</p>
+  </div>
+</section>
+
+<!-- ============ METHOD DEEP DIVE: sticky head + phase card stack (mirrors WB difference stack) ============ -->
+<section class="section--tight" style="padding-bottom:clamp(56px,8vw,100px)">
+  <div class="wrap">
+    <div class="sticky-split">
+      <div class="sticky-head">
+        <h2 class="h-xl rv">Four phases. <span class="hl-gold">Music from day one.</span></h2>
+        <p class="sub rv" style="margin-top:14px">Stephen Ridley built the method around one reversal: the music comes first, and the theory arrives through it. Each phase builds on the last.</p>
+        <div class="photo rv" style="margin-top:22px"><img src="images/perf-stance.jpg" srcset="images/perf-stance-640.jpg 640w, images/perf-stance.jpg 1200w" sizes="(max-width: 860px) 92vw, 38vw" alt="Stephen Ridley playing piano standing, mid-performance" loading="lazy"></div>
+      </div>
+      <div>
+        <div class="cat-card rv">
+          <h3>Phase 1 · First Song</h3>
+          <p>You play a real song from the very beginning. Not a warm-up, not an exercise: a piece of music you'd choose to hear. That first win changes what practice feels like.</p>
+          <blockquote>"I've had eight piano teachers, and I learned more from the Ridley Academy than all the others combined."<footer>David Clarke, verified review</footer></blockquote>
+        </div>
+        <div class="cat-card rv">
+          <h3>Phase 2 · Real Repertoire</h3>
+          <p>One song becomes a set. You build a growing list of pieces you can sit down and play, and the patterns inside them start connecting from song to song.</p>
+          <blockquote>"Worth it." Carlos reached his goal to play piano in less than six months.<footer>Carlos Rodriguez, verified review</footer></blockquote>
+        </div>
+        <div class="cat-card rv">
+          <h3>Phase 3 · Musical Fluency</h3>
+          <p>Reading, theory, and technique come together through the music itself. You understand what your hands are doing and why, so new pieces come faster and one slip no longer derails the whole piece.</p>
+          <blockquote>At 68, Glenwood learned to play with both hands and read music in one year.<footer>Glenwood Clark, 68</footer></blockquote>
+        </div>
+        <div class="cat-card rv">
+          <h3>Phase 4 · Your Sound</h3>
+          <p>You stop reproducing and start expressing. Your taste, your interpretation, your sound. The piano becomes yours.</p>
+          <blockquote>"Streamlined, effective and exciting." From a professional musician with a music education degree.<footer>Alice Saddler</footer></blockquote>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT COACHING INCLUDES ============ -->
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <h2 class="h-lg rv center">What coaching includes</h2>
+    <p class="sub rv center" style="margin:14px auto 24px">The method is the map. Coaching is what keeps you moving through it.</p>
+    <div class="card rv" style="padding:clamp(24px,4vw,40px)">
+      <ul class="check-list">
+        <li>A structured path through the full method, so you always know what to work on next.</li>
+        <li>Personal feedback and mentorship on your actual playing.</li>
+        <li>A community of adult learners walking the same path.</li>
+        <li>Lifetime access to the course material.</li>
+      </ul>
+      <p style="margin-top:18px;font-size:15px;color:rgba(252,244,234,.7)">Coached programs are matched to your goals on a free Breakthrough Session, so you only hear about the one that fits.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEW WALL ============ -->
+<section class="section--tight">
+  <div class="wrap center">
+    <h2 class="h-lg rv">1,300+ five-star reviews. Here's a sample.</h2>
+  </div>
+  <div class="marquee" style="margin-top:26px" aria-hidden="true">
+    <div class="marquee-track">
+      <img src="images/reviews/tp-david-clarke.png" alt="" loading="lazy"><img src="images/reviews/tp-andrea-kenney.png" alt="" loading="lazy"><img src="images/reviews/tp-glenwood-clark.png" alt="" loading="lazy"><img src="images/reviews/tp-julie-springer.png" alt="" loading="lazy"><img src="images/reviews/tp-carlos-rodriguez.png" alt="" loading="lazy"><img src="images/reviews/tp-leonie-eitjes.png" alt="" loading="lazy"><img src="images/reviews/tp-alice-saddler.png" alt="" loading="lazy"><img src="images/reviews/tp-patric.png" alt="" loading="lazy">
+      <img src="images/reviews/tp-david-clarke.png" alt="" loading="lazy"><img src="images/reviews/tp-andrea-kenney.png" alt="" loading="lazy"><img src="images/reviews/tp-glenwood-clark.png" alt="" loading="lazy"><img src="images/reviews/tp-julie-springer.png" alt="" loading="lazy"><img src="images/reviews/tp-carlos-rodriguez.png" alt="" loading="lazy"><img src="images/reviews/tp-leonie-eitjes.png" alt="" loading="lazy"><img src="images/reviews/tp-alice-saddler.png" alt="" loading="lazy"><img src="images/reviews/tp-patric.png" alt="" loading="lazy">
+    </div>
+  </div>
+  <div class="wrap center" style="margin-top:20px">
+    <a class="btn btn--gold" href="success.html">See the success stories</a>
+  </div>
+</section>
+
+<!-- ============ 12-MONTH JOURNEY: vertical timeline (mirrors WB month-by-month rail) ============ -->
+<section class="section">
+  <div class="wrap-narrow">
+    <div class="center" style="margin-bottom:28px">
+      <span class="eyebrow">Commitment is the feature</span>
+      <h2 class="h-lg rv">Your first 12 months, mapped</h2>
+      <p class="sub rv" style="margin:10px auto 0">We'll be straight with you: becoming a pianist takes months, not minutes. Here's what those months look like when they're pointed in the right direction.</p>
+    </div>
+    <div class="tl">
+      <div class="tl-item rv">
+        <span class="when">Months 1 to 3</span>
+        <h4>First Song, real momentum</h4>
+        <p>Your first real songs, played hands-on at the piano. Someday gets replaced by a playing habit.</p>
+      </div>
+      <div class="tl-item rv">
+        <span class="when">Months 3 to 6</span>
+        <h4>Real Repertoire</h4>
+        <p>A growing set of pieces you can sit down and play. Reading and theory build through the music itself.</p>
+      </div>
+      <div class="tl-item rv">
+        <span class="when">Months 6 to 9</span>
+        <h4>Musical Fluency</h4>
+        <p>The mechanics become understanding. You know why the music works, so you can recover, adapt, and learn new pieces faster.</p>
+      </div>
+      <div class="tl-item win rv">
+        <span class="when">Months 9 to 12</span>
+        <h4>Your Sound</h4>
+        <p>You're not following anything anymore. You're playing music you love, your way, and choosing what comes next.</p>
+      </div>
+    </div>
+    <p class="hand rv center" style="margin-top:18px">And month 12 isn't an ending. New genres, harder pieces, your own arrangements: the method doesn't expire.</p>
+  </div>
+</section>
+
+<!-- ============ COMPARISON TABLE (dark, mirrors WB table) ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:28px">
+      <h2 class="h-lg rv">Three ways to learn piano. Only one makes you a player.</h2>
+    </div>
+    <div class="table-scroll rv">
+      <table class="compare">
+        <thead>
+          <tr><th></th><th>Apps</th><th>Traditional lessons</th><th>The Ridley Method</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Time to your first real song</b></td>
+            <td class="no">Often never. Simplified arrangements on a screen, not the real thing.</td>
+            <td class="no">Months to years. Scales and method books come first.</td>
+            <td class="yes">Week one. Real songs are the starting point, not the reward.</td>
+          </tr>
+          <tr>
+            <td><b>Reading music</b></td>
+            <td class="no">No. Falling notes replace notation.</td>
+            <td class="yes">Yes, but drilled before you can play anything you care about.</td>
+            <td class="yes">Yes, learned through the songs you're already playing.</td>
+          </tr>
+          <tr>
+            <td><b>Playing without the screen</b></td>
+            <td class="no">No. Close the app, lose the music.</td>
+            <td class="yes">Eventually.</td>
+            <td class="yes">From the start. The piano is the whole interface.</td>
+          </tr>
+          <tr>
+            <td><b>Songs you actually love</b></td>
+            <td class="no">Whatever's licensed, simplified.</td>
+            <td class="no">Whatever's in the grade book.</td>
+            <td class="yes">The music you came to the piano for.</td>
+          </tr>
+          <tr>
+            <td><b>Personal feedback</b></td>
+            <td class="no">An algorithm scoring key presses.</td>
+            <td class="yes">Yes, 30 to 60 minutes a week.</td>
+            <td class="yes">A mentor who knows your playing and your goals.</td>
+          </tr>
+          <tr>
+            <td><b>Cost over two years</b></td>
+            <td class="no">A subscription that keeps billing whether you progress or not.</td>
+            <td class="no">Two years of weekly private lessons runs $5,200 to $10,400.</td>
+            <td class="yes">Walked through openly on your free Breakthrough Session.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICE HANDLING: gold card ============ -->
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <div class="card center rv" style="padding:clamp(28px,4.5vw,44px);border-color:var(--gold);border-width:2px">
+      <h2 class="h-md">What does it cost?</h2>
+      <p style="margin-top:12px;font-size:16.5px">For context: two years of weekly private lessons runs $5,200 to $10,400, and most people who start them quit long before the two years are up.</p>
+      <p style="margin-top:10px;font-size:16.5px">We'll walk through exactly what's included and what it costs on your Breakthrough Session, openly and with zero pressure. No surprise checkout pages, no "act now" pricing.</p>
+      <a class="btn" style="margin-top:22px" href="apply.html?el=hiw">Book my free Breakthrough Session</a>
+      <p class="quiz-alt">Not ready for a call? <a href="../quiz-funnel/index.html?el=hiw">Take the 60-second quiz</a> instead.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT HAPPENS AFTER YOU APPLY ============ -->
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <h2 class="h-lg rv center" style="margin-bottom:26px">What happens after you apply</h2>
+    <div class="steps">
+      <div class="step rv">
+        <span class="n">1</span>
+        <h3 class="h-md">Apply</h3>
+        <p>A short application, about 3 minutes. It helps us make your call actually useful.</p>
+      </div>
+      <div class="step rv" style="--d:.06s">
+        <span class="n">2</span>
+        <h3 class="h-md">Pick your time</h3>
+        <p>The calendar comes right after. We'll confirm by text before the call.</p>
+      </div>
+      <div class="step rv" style="--d:.12s">
+        <span class="n">3</span>
+        <h3 class="h-md">Have the conversation</h3>
+        <p>30 minutes. We map where you are to the songs you want to play. You never have to play a note.</p>
+      </div>
+      <div class="step rv" style="--d:.18s">
+        <span class="n">4</span>
+        <h3 class="h-md">See your path</h3>
+        <p>If we're a match, you'll see exactly what's included and what it costs. If not, we'll tell you that too.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <div class="center" style="margin-bottom:24px">
+      <h2 class="h-lg rv">Questions adults ask before starting</h2>
+    </div>
+    <div class="faq rv">
+      <details>
+        <summary>Am I too old to learn?</summary>
+        <p class="faq-body">Most of our students are over 50, and our students range from 5 to 96. Adults often progress faster than kids: more patience, more discipline, and a lifetime of songs they already love.</p>
+      </details>
+      <details>
+        <summary>Do I need to read music first?</summary>
+        <p class="faq-body">No. You'll play real songs first and learn reading and theory through the music, where it actually makes sense. That order is the whole method.</p>
+      </details>
+      <details>
+        <summary>Is the call really free? What's the catch?</summary>
+        <p class="faq-body">It's free, and it's a conversation, not a checkout. You never have to play a note. We'll talk about where you are and what a real path forward looks like for you specifically. If we think we can help, we'll show you exactly what that looks like and what it costs. If not, we'll tell you that too.</p>
+      </details>
+      <details>
+        <summary>What does coaching cost?</summary>
+        <p class="faq-body">Coached programs are matched to your goals on a free Breakthrough Session, where we walk through exactly what's included and what it costs. For context, two years of weekly private lessons runs $5,200 to $10,400.</p>
+      </details>
+      <details>
+        <summary>Do I need a piano at home?</summary>
+        <p class="faq-body">A piano or a keyboard works. If you're not sure whether yours is suitable, ask us on your Breakthrough Session and we'll tell you straight.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA (bordeaux band with photo bleed) ============ -->
+<section class="section cta-dark" style="background:var(--bordeaux)">
+  <img class="bgimg" src="images/perf-streetpiano.jpg" srcset="images/perf-streetpiano-640.jpg 640w, images/perf-streetpiano.jpg 1200w" sizes="100vw" alt="" loading="lazy">
+  <div class="wrap-narrow center">
+    <h2 class="h-xl rv">You've seen how it works. <span class="gold">Now hear how it fits you.</span></h2>
+    <p class="sub rv" style="margin:14px auto 26px">Apply in 3 minutes. Book your free Breakthrough Session. We'll map your path from first song to your sound.</p>
+    <a class="btn btn--gold rv" style="--d:.1s" href="apply.html?el=hiw">Book my free Breakthrough Session</a>
+    <p class="btn-note">A conversation, not a checkout. You never have to play a note.</p>
+    <p class="quiz-alt">Not ready for a call? <a href="../quiz-funnel/index.html?el=hiw">Take the 60-second quiz</a> instead.</p>
+  </div>
+</section>
+
+</main>
+<!-- ============ FOOTER ============ -->
+<footer class="sitefoot">
+  <div class="cols">
+    <div>
+      <a class="logotype" href="index.html" style="color:var(--paper)">Ridley <b>Academy</b></a>
+      <p style="margin-top:12px;max-width:34ch">Piano for adults. Real songs first, theory through the music, and a path that ends with the piano being yours.</p>
+    </div>
+    <div>
+      <h5>Learn</h5>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="../quiz-funnel/index.html">The 60-Second Quiz</a>
+      <a href="tripwire.html">4 Magic Chords ($27)</a>
+      <a href="apply.html?el=site-footer">Book a Free Call</a>
+    </div>
+    <div>
+      <h5>Academy</h5>
+      <a href="about.html">About</a>
+      <a href="mentors.html">Mentors</a>
+      <a href="success.html">Success Stories</a>
+      <h5 style="margin-top:18px">Guides</h5>
+      <a href="learn-piano-after-50.html">Piano After 50</a>
+      <a href="online-piano-lessons-adults.html">Lessons for Adults</a>
+      <a href="online-piano-course.html">Online Piano Course</a>
+      <a href="piano-teacher-cost.html">Piano Lesson Costs</a>
+      <a href="learn-piano-without-sheet-music.html">Play Without Sheet Music</a>
+      <a href="how-much-does-ridley-academy-cost.html">Ridley Academy Cost</a>
+      <a href="best-ways-to-learn-piano.html">Best Ways to Learn</a>
+      <a href="ridley-academy-review.html">Ridley Academy Review</a>
+    </div>
+    <div>
+      <h5>Support</h5>
+      <a href="support.html">Contact Us</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+  </div>
+  <div class="legal">
+    <p>&copy; 2026 Ridley Academy. All rights reserved. Results vary by student and depend on practice and participation. Testimonials reflect individual experiences.</p>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

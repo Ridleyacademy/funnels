@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Request a Time for Your Breakthrough Session | Ridley Academy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E81420'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' fill='%23FFFBF4' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- NOTE for Ange: self-host these three fonts at deploy (font-display: swap). -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<!-- GTM CONTAINER HERE -->
+<style>
+  .book-hero{padding:clamp(28px,5vw,52px) 0 clamp(10px,2vw,18px);text-align:center}
+  .form-card{max-width:640px;margin:0 auto;border-color:var(--gold);border-width:2px}
+  /* the form card stays LIGHT on the dark page (paper popping on black, like the apply form card) */
+  .theme-dark .form-card{background:var(--paper);color:var(--ink)}
+  .form-card label{display:block;font-weight:600;font-size:15px;margin:18px 0 6px;color:var(--ink)}
+  .form-card label:first-of-type{margin-top:0}
+  .form-card input[type=text],.form-card input[type=email],.form-card input[type=tel],.form-card select,.form-card textarea{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:var(--radius-sm);font:inherit;font-size:16px;background:#fff;color:var(--ink)}
+  .form-card textarea{min-height:96px;resize:vertical}
+  .checkrow{display:flex;flex-wrap:wrap;gap:10px}
+  .checkrow label{display:flex;align-items:center;gap:7px;font-weight:400;margin:0;font-size:15px;background:var(--cream);border:1.5px solid var(--line);border-radius:999px;padding:9px 16px;cursor:pointer}
+  .checkrow input{accent-color:var(--cherry)}
+  .form-note{font-size:13.5px;color:var(--ink-soft);margin-top:10px}
+  .thanks{display:none;text-align:center;padding:24px 8px}
+  .thanks .hand{font-size:28px;color:var(--cherry)}
+</style>
+</head>
+<body class="theme-dark">
+<!--
+  RIDLEY CUSTOM-TIME REQUEST PAGE (replicates WarriorBabe /custom-time-request)
+  The calendar-friction fallback: booking.html and booking-b.html link here when none of the
+  Calendly slots work. Never let a lead die on calendar friction.
+  Wired 7/31: the submit handler POSTs to /api/optin with source "custom-time", the same
+  contract apply.html and the vsl-b front door use (see shared.js). Still needs a human:
+  someone has to own this inbox and reply within one business day. Route to whoever owns
+  Breakthrough Session scheduling.
+-->
+<a class="skiplink" href="#main">Skip to content</a>
+
+<div class="topbar">Almost there: tell us when works and we'll find a time together.</div>
+<div class="sitehead"><a class="logotype" href="index.html">Ridley <b>Academy</b></a></div>
+<main id="main">
+
+<section class="book-hero">
+  <div class="wrap-narrow">
+    <span class="eyebrow rv">Request a time</span>
+    <h1 class="h-lg rv" style="--d:.06s">None of the times fit? <span class="hl">We'll find one together.</span></h1>
+    <p class="sub rv" style="margin:12px auto 0;max-width:600px;--d:.08s">Tell us roughly when works for you and a real person will reply with times that match. No calendar wrestling required.</p>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <div class="card form-card rv">
+      <form id="ctForm" novalidate>
+        <label for="ctName">Your name</label>
+        <input type="text" id="ctName" name="name" autocomplete="name" required>
+
+        <label for="ctEmail">Email</label>
+        <input type="email" id="ctEmail" name="email" autocomplete="email" required>
+
+        <label for="ctPhone">Phone (optional, for faster scheduling)</label>
+        <input type="tel" id="ctPhone" name="phone" autocomplete="tel">
+
+        <label for="ctTz">Your time zone</label>
+        <select id="ctTz" name="timezone">
+          <option value="">Select your time zone</option>
+          <option>US &amp; Canada: Eastern</option>
+          <option>US &amp; Canada: Central</option>
+          <option>US &amp; Canada: Mountain</option>
+          <option>US &amp; Canada: Pacific</option>
+          <option>UK &amp; Ireland</option>
+          <option>Europe (Central)</option>
+          <option>Australia (East)</option>
+          <option>Australia (West)</option>
+          <option>New Zealand</option>
+          <option>Other (tell us below)</option>
+        </select>
+
+        <label>Which days usually work?</label>
+        <div class="checkrow">
+          <label><input type="checkbox" name="days" value="mon-fri-day">Weekdays, daytime</label>
+          <label><input type="checkbox" name="days" value="mon-fri-eve">Weekday evenings</label>
+          <label><input type="checkbox" name="days" value="weekend">Weekends</label>
+        </div>
+
+        <label for="ctNotes">Anything else about your schedule?</label>
+        <textarea id="ctNotes" name="notes" placeholder="Example: I'm free after 6pm most days, but never Tuesdays."></textarea>
+
+        <button class="btn btn--block" type="submit" style="margin-top:22px">Request my time</button>
+        <p class="form-note">A real person replies within one business day with times that fit. Your Breakthrough Session stays free, and we'll only use these details to schedule your call.</p>
+      </form>
+      <div class="thanks" id="ctThanks">
+        <p class="hand">Got it.</p>
+        <p class="h-md" style="margin:8px 0 10px">Your request is in.</p>
+        <p style="color:var(--ink-soft);font-size:16px">Watch your inbox: we'll reply within one business day with times that match your schedule. If a slot opens sooner, we'll offer it to you first.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="wrap">
+    <p class="center" style="font-size:14px;color:rgba(252,244,234,.55);margin-bottom:16px">As featured &amp; trusted across</p>
+    <div class="press rv">
+      <img src="images/press/gq.svg" alt="GQ" loading="lazy">
+      <img src="images/press/vogue.svg" alt="Vogue" loading="lazy">
+      <img src="images/press/lofficiel.svg" alt="L'Officiel" loading="lazy">
+      <img src="images/press/omega.svg" alt="Omega" loading="lazy">
+      <img src="images/press/google.svg" alt="Google" loading="lazy">
+      <img src="images/press/youtube.svg" alt="YouTube" loading="lazy">
+      <img src="images/press/instagram.svg" alt="Instagram" loading="lazy">
+      <img src="images/press/trustpilot.svg" alt="Trustpilot" loading="lazy">
+      <img src="images/press/sitejabber.png" alt="Sitejabber" loading="lazy">
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="foot">
+  <p>Ridley Academy</p>
+  <p class="compliance">Your Breakthrough Session is free and carries no obligation. We'll only use your contact details to schedule and confirm your call.</p>
+</footer>
+
+<script>
+(function(){
+  window.dataLayer=window.dataLayer||[];
+  dataLayer.push({event:'rdly_customtime_view'});
+
+  var form=document.getElementById('ctForm');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var name=document.getElementById('ctName').value.trim();
+    var email=document.getElementById('ctEmail').value.trim();
+    if(!name||!email||email.indexOf('@')<0){
+      (!name?document.getElementById('ctName'):document.getElementById('ctEmail')).focus();
+      return;
+    }
+    var days=[].slice.call(form.querySelectorAll('input[name=days]:checked')).map(function(c){return c.value});
+    var params=new URLSearchParams(window.location.search);
+    var payload={
+      name:name,email:email,
+      phone:document.getElementById('ctPhone').value.trim(),
+      timezone:document.getElementById('ctTz').value,
+      days:days.join(','),
+      notes:document.getElementById('ctNotes').value.trim(),
+      el:params.get('el')||'',
+      utm_source:params.get('utm_source')||'',
+      utm_medium:params.get('utm_medium')||'',
+      utm_campaign:params.get('utm_campaign')||'',
+      utm_content:params.get('utm_content')||'',
+      utm_term:params.get('utm_term')||''
+    };
+    dataLayer.push({event:'rdly_customtime_submit',ct_payload:payload});
+
+    /* CAPTURE, wired 7/31. Same endpoint and payload contract as apply.html and the
+       vsl-b front door, with source "custom-time" so these land as a distinct, and
+       genuinely high-intent, segment: somebody who wanted the call badly enough to
+       ask for a time that is not on the calendar. Someone has to own that inbox.
+       Fire and forget, so the thank-you never waits on the network. */
+    try{
+      if(window.RDLY){
+        payload.source='custom-time';
+        payload.consent=false;
+        window.RDLY.capture(payload);
+        window.RDLY.track('Lead','rdly_customtime_captured',{});
+      }
+    }catch(e){}
+
+    form.style.display='none';
+    document.getElementById('ctThanks').style.display='block';
+    document.getElementById('ctThanks').setAttribute('tabindex','-1');
+    document.getElementById('ctThanks').focus();
+  });
+})();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

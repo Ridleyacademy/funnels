@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Confirmed: Your Breakthrough Session Is Booked | Ridley Academy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E81420'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' fill='%23FFFBF4' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- NOTE for Ange: self-host these three fonts at deploy (font-display: swap). -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<!-- GTM CONTAINER HERE -->
+<style>
+  .booked-hero{padding:clamp(28px,5vw,52px) 0 clamp(14px,2.5vw,24px)}
+  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+  @media(max-width:720px){.vgrid{grid-template-columns:1fr}}
+  .vgrid .vlabel{font-family:var(--display);text-transform:uppercase;font-size:14px;letter-spacing:.05em;text-align:center;margin-top:10px}
+  .sig{font-family:var(--hand);font-size:26px;margin-top:14px;color:var(--gold-acc)}
+  /* pre-call checklist: boxless steps with hand-drawn numerals */
+  .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3.5vw,40px)}
+  @media(max-width:860px){.steps3{grid-template-columns:1fr}}
+  .step .snum{font-family:var(--hand);font-size:40px;color:var(--cherry);line-height:1;display:block}
+  .step h4{font-family:var(--display);text-transform:uppercase;font-size:17px;margin:10px 0 8px;font-weight:600}
+  .step ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .step ul li{font-size:15px;color:rgba(252,244,234,.7);padding-left:22px;position:relative}
+  .step ul li::before{content:"·";position:absolute;left:6px;font-weight:700;color:var(--cherry)}
+</style>
+</head>
+<body class="theme-dark">
+<!--
+  RIDLEY CONFIRMATION / SHOW-UP PAGE (replicates WarriorBabe /scheduled-success)
+  Landed after a completed Calendly booking (qualified or DQ path, both arrive here).
+  Job: engineer show-up. Logistics checklist, calendar commitment, objection-handling
+  videos, age-matched proof, warm note from Stephen. dataLayer: rdly_booked_view.
+-->
+<a class="skiplink" href="#main">Skip to content</a>
+
+<div class="topbar">You're booked. Take two minutes with this page before your call.</div>
+<div class="sitehead"><a class="logotype" href="index.html">Ridley <b>Academy</b></a></div>
+<main id="main">
+
+<section class="booked-hero">
+  <div class="wrap-narrow center">
+    <p class="hand rv" style="margin-bottom:8px">You're all set.</p>
+    <h1 class="h-lg rv" style="--d:.08s">Confirmed: your <span class="hl">Breakthrough Session</span> is booked</h1>
+    <p class="sub rv" style="margin-top:12px;max-width:640px;margin-left:auto;margin-right:auto;--d:.16s">Nice work. The details are on their way to your email and phone. Before you go, run through this quick 3-step checklist so you get the most out of your call.</p>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <h2 class="h-md center" style="margin-bottom:28px">Your 3-step pre-call checklist</h2>
+    <div class="steps3">
+      <div class="step rv">
+        <span class="snum">1.</span>
+        <h4>Know the logistics</h4>
+        <ul>
+          <li>Your session happens on Zoom. The link arrives by email and text.</li>
+          <li>Click the Zoom link 5 minutes before your call time.</li>
+          <li>Find a quiet room where you can talk freely for 30 minutes.</li>
+        </ul>
+      </div>
+      <div class="step rv" style="--d:.08s">
+        <span class="snum">2.</span>
+        <h4>Protect the time</h4>
+        <ul>
+          <li>Add the session to your calendar right now, while it's in front of you.</li>
+          <li>We'll text you to confirm before the call. A quick reply locks in your spot.</li>
+          <li>If something comes up, reschedule from the confirmation email rather than missing it.</li>
+        </ul>
+      </div>
+      <div class="step rv" style="--d:.16s">
+        <span class="snum">3.</span>
+        <h4>Watch these short videos</h4>
+        <ul>
+          <li>Three quick answers to the questions almost everyone brings to the call.</li>
+          <li>Watch them now and your session time goes further.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Filled 7/30 from the finished FAQ cuts found in ~/Desktop/Ridley-Academy/video ads
+         july 2026/faws/ (transcoded to 720p web copies in videos/). The cuts are horizontal
+         16:9, so the grid uses .vfaq frames instead of the vertical placeholders. Native
+         HTML5 players, preload=none, rdly_video_play fires on first play via the inline
+         onplay handlers. Remaining source cuts not used here: "How much does it cost" and
+         "Different programs we offer" (see VIDEO-MAP.md). -->
+    <div class="vgrid">
+      <div class="rv">
+        <video class="vfaq" controls preload="none" playsinline poster="videos/faq-what-is-the-masterclass-poster.jpg" onplay="if(!this.dataset.p){this.dataset.p=1;window.dataLayer&&dataLayer.push({event:'rdly_video_play',video_id:'faq-what-is-the-masterclass',page_path:location.pathname})}">
+          <source src="videos/faq-what-is-the-masterclass.mp4" type="video/mp4">
+        </video>
+        <p class="vlabel">What the masterclass includes · 1:06</p>
+      </div>
+      <div class="rv" style="--d:.08s">
+        <video class="vfaq" controls preload="none" playsinline poster="videos/faq-is-this-for-adults-poster.jpg" onplay="if(!this.dataset.p){this.dataset.p=1;window.dataLayer&&dataLayer.push({event:'rdly_video_play',video_id:'faq-is-this-for-adults',page_path:location.pathname})}">
+          <source src="videos/faq-is-this-for-adults.mp4" type="video/mp4">
+        </video>
+        <p class="vlabel">Is this really for adults? · 3:10</p>
+      </div>
+      <div class="rv" style="--d:.16s">
+        <video class="vfaq" controls preload="none" playsinline poster="videos/faq-how-long-does-it-take-poster.jpg" onplay="if(!this.dataset.p){this.dataset.p=1;window.dataLayer&&dataLayer.push({event:'rdly_video_play',video_id:'faq-how-long-does-it-take',page_path:location.pathname})}">
+          <source src="videos/faq-how-long-does-it-take.mp4" type="video/mp4">
+        </video>
+        <p class="vlabel">How long does it take · 1:58</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="wrap">
+    <h2 class="h-md center" style="margin-bottom:18px">Students who sat where you're sitting</h2>
+    <div class="grid-2" style="max-width:900px;margin:0 auto">
+      <div class="tcard rv">
+        <span class="stars">★★★★★</span>
+        <p>At 68, Glenwood learned to play with both hands and read music in one year.</p>
+        <div class="who">Glenwood Clark, 68</div>
+        <span class="badge">Ridley Academy student</span>
+      </div>
+      <div class="tcard rv" style="--d:.08s">
+        <span class="stars">★★★★★</span>
+        <p>"I've had eight piano teachers, and I learned more from the Ridley Academy than all the others combined."</p>
+        <div class="who">David Clarke</div>
+        <span class="badge">Ridley Academy student</span>
+      </div>
+      <div class="tcard rv" style="--d:.16s">
+        <span class="stars">★★★★★</span>
+        <p>Carlos reached his goal to play piano in less than 6 months. His verdict: "worth it."</p>
+        <div class="who">Carlos Rodriguez</div>
+        <span class="badge">Ridley Academy student</span>
+      </div>
+      <div class="tcard rv" style="--d:.24s">
+        <span class="stars">★★★★★</span>
+        <p>A professional musician with a music education degree, Alice calls the method "streamlined, effective and exciting."</p>
+        <div class="who">Alice Saddler</div>
+        <span class="badge">Professional musician</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="split split--rev">
+      <div class="rv-l">
+        <div class="photo photo--tilt2 hero-photo"><img src="images/perf-jump.jpg" srcset="images/perf-jump-640.jpg 640w, images/perf-jump.jpg 1200w" sizes="(max-width: 860px) 92vw, 42vw" alt="Stephen Ridley leaping mid-performance at the piano" loading="lazy"></div>
+      </div>
+      <div class="rv-r">
+        <p class="h-md" style="margin-bottom:10px">One last thing from Stephen</p>
+        <p style="color:rgba(252,244,234,.78);font-size:16px">Booking this call is the kind of small, concrete step most people never take. They think about piano for years and wait for a someday that doesn't come. You did something different today, and I don't take that lightly. Come as you are. You don't need to prepare anything, and you never have to play a note. Just bring your honest answers and whatever questions you have. We'll take it from there.</p>
+        <p class="sig">Stephen</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="foot">
+  <p>Ridley Academy</p>
+  <p class="compliance">Your Breakthrough Session is free and carries no obligation. We'll only use your contact details to schedule and confirm your call.</p>
+</footer>
+
+<script>
+(function(){
+  window.dataLayer=window.dataLayer||[];
+  dataLayer.push({event:'rdly_booked_view'});
+})();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Book Your Free Breakthrough Session | Ridley Academy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E81420'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' fill='%23FFFBF4' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- NOTE for Ange: self-host these three fonts at deploy (font-display: swap). -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<!-- GTM CONTAINER HERE -->
+<style>
+  /* page-specific: layout mirrors join.warriorbabe.com apply page (captures in scratchpad/wb/apply-a.png, apply-b.png):
+     black page, centered accent H1, centered checkmark promises, WHITE form card popping on black,
+     2-col proof collage below the form, Apply pill at the bottom. */
+  .apply-hero{padding:clamp(28px,5vw,52px) 0 clamp(18px,3vw,28px);text-align:center}
+  .apply-hero .check-list{max-width:620px;margin:22px auto 0}
+  .form-card{max-width:640px;margin:0 auto;border-radius:var(--radius-lg);padding:clamp(24px,4.5vw,44px);box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+  /* the form card stays LIGHT on the dark page, exactly like WB's white JotForm on black */
+  .theme-dark .form-card{background:var(--paper);color:var(--ink);border-color:var(--line)}
+  .theme-dark .form-card p{color:var(--ink)}
+  .theme-dark .form-card .q-sub{color:var(--ink-soft)}
+  .theme-dark .form-card .opt{background:var(--paper);border-color:var(--line);color:var(--ink)}
+  .theme-dark .form-card .opt.sel{background:#FDF0F0;border-color:var(--cherry)}
+  .theme-dark .form-card .field{background:var(--paper);border-color:var(--line);color:var(--ink)}
+  .theme-dark .form-card .field::placeholder{color:#9c6b70}
+  .theme-dark .form-card .backlink{color:var(--ink-soft)}
+  .theme-dark .form-card .consent{color:var(--ink-soft)}
+  .theme-dark .form-card .dq-screen p{color:var(--ink-soft)}
+  .theme-dark .form-card .err{color:var(--cherry)}
+  /* 2-col review-screenshot collage below the form (their proof collage) */
+  .collage2{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:960px;margin:0 auto}
+  @media(max-width:600px){.collage2{grid-template-columns:1fr}}
+  .collage2 img{border-radius:12px;border:1.5px solid rgba(252,244,234,.12);background:#fff;width:100%}
+  /* slim progress bar (replaces 13 dots; count stays private) */
+  .progress{height:6px;max-width:300px;margin:8px auto 30px;background:var(--line-2);border-radius:999px;overflow:hidden}
+  .progress i{display:block;height:100%;width:0;background:var(--cherry);border-radius:999px;transition:width .5s var(--ease)}
+  /* checkbox affordance on multi-select steps only */
+  .opts[data-multi] .opt{position:relative;padding-left:50px}
+  .opts[data-multi] .opt::before{content:"";position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;border:1.5px solid var(--line);border-radius:6px;background:var(--paper);transition:background .2s var(--ease),border-color .2s var(--ease)}
+  .opts[data-multi] .opt.sel::before{background:var(--cherry);border-color:var(--cherry)}
+  .opts[data-multi] .opt.sel::after{content:"✓";position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;text-align:center;color:#fff;font-size:13px;font-weight:700;line-height:1}
+  .contact-fields{display:flex;flex-direction:column;gap:14px}
+  .contact-fields label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
+  .consent{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-top:4px}
+  /* submitting screen pulse */
+  .loader{display:flex;gap:8px;justify-content:center;margin-top:20px}
+  .loader span{width:10px;height:10px;border-radius:50%;background:var(--cherry)}
+  @media (prefers-reduced-motion: no-preference){
+    .loader span{animation:pulse 1s infinite ease-in-out}
+    .loader span:nth-child(2){animation-delay:.15s}
+    .loader span:nth-child(3){animation-delay:.3s}
+    @keyframes pulse{0%,100%{opacity:.25;transform:scale(.85)}50%{opacity:1;transform:scale(1)}}
+  }
+  .dq-screen{text-align:center}
+  .dq-screen h3{font-family:var(--display);text-transform:uppercase;font-size:clamp(20px,4vw,26px);margin-bottom:12px}
+  .dq-screen p{color:var(--ink-soft);font-size:16px;margin-bottom:14px}
+  .err{color:var(--cherry);font-size:13.5px;text-align:center;margin-top:10px;display:none}
+  .err.on{display:block}
+</style>
+</head>
+<body class="theme-dark">
+<!--
+  RIDLEY APPLICATION PAGE (replicates WarriorBabe /schedule-apply + JotForm v5-DTA/sentence-stem hybrid)
+  Built 2026-07-28 from the teardown in ~/riddley/warriorbabe-hack/03-VSL-BOOKING.md
+
+  ROUTING RULES (for Ange), implemented in finish() below:
+    1. HARD DQ: Q1 = No OR Q2 = No
+       -> in-form screen suggesting the $27 4 Magic Chords Mini Course, link to /tripwire.
+       -> fires dataLayer event rdly_apply_dq {dq_type:'hard'}. No booking page.
+       (Mirrors WB's in-form kill screen + /next-steps downsell, but polite.)
+    2. SOFT DQ: (Q10 = "Less than $500" AND Q11 = "5/10") OR Q13 = No
+       -> route to booking-b.html (the DQ twin; identical copy, different Calendly event).
+       -> fires rdly_apply_complete {route:'dq'} + rdly_apply_dq {dq_type:'soft'}.
+    3. QUALIFIED: everyone else -> booking.html. Fires rdly_apply_complete {route:'qualified'}.
+  Query params (el, utm_*, quiz segments) are carried through to the booking page untouched.
+
+  HIDDEN FIELDS TO WIRE ON THE REAL FORM BACKEND (placeholders, WB carries all of these):
+    utm_source, utm_medium, utm_campaign, utm_term, utm_content,
+    _fbc, _fbp (Meta browser cookies), gclid (Google), el (source tag), setter (attribution).
+  Capture from cookies/URL at load and post with the application payload.
+
+  dataLayer events on this page:
+    rdly_apply_start (load), rdly_apply_step (each step view, with step number),
+    rdly_apply_complete (route decided), rdly_apply_dq (hard or soft).
+-->
+<a class="skiplink" href="#main">Skip to content</a>
+
+<div class="topbar">Booking your free 30-minute Breakthrough Session · takes about 2 minutes</div>
+<div class="sitehead"><a class="logotype" href="index.html">Ridley <b>Academy</b></a></div>
+<main id="main">
+
+<section class="apply-hero">
+  <div class="wrap">
+    <span class="eyebrow rv">Step 1 of 2 · then you pick your time</span>
+    <h1 class="h-xl rv" style="max-width:900px;margin:0 auto;--d:.06s">Book your free 30-minute <span class="hl">Breakthrough Session</span></h1>
+    <p class="sub rv" style="margin:14px auto 0;--d:.12s">A few quick questions so the call is actually about you, then the calendar opens and you choose your time. Here's what the call gives you:</p>
+    <ul class="check-list rv" style="--d:.18s">
+      <li><b>Clarity.</b> You'll finally see what's actually held you back at the piano (hint: it was never talent).</li>
+      <li><b>A personalized path.</b> We'll map where you are to the songs you want to play, step by step.</li>
+      <li><b>A conversation, not a checkout.</b> No pressure, no surprises, and you never have to play a note.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section--tight" id="apply-form">
+  <div class="wrap-narrow">
+    <div class="card form-card" aria-live="polite">
+      <div class="progress" id="progress" role="progressbar" aria-label="Application progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
+
+      <!-- Q1: opener (yes/no). No = hard DQ -->
+      <div class="form-step" data-q="1">
+        <p class="q">Do you want to be able to sit down and play real music?</p>
+        <p class="q-sub">That's what we teach, so we want to make sure we're a match.</p>
+        <div class="opts" data-key="q1">
+          <button class="opt" data-val="Yes">Yes. That's exactly what I want.</button>
+          <button class="opt" data-val="No">No, that's not really my goal.</button>
+        </div>
+      </div>
+
+      <!-- Q2: commitment to the process (yes/no). No = hard DQ -->
+      <div class="form-step" data-q="2">
+        <p class="q">Do you want to move forward?</p>
+        <p class="q-sub">Step 1 is these questions. Step 2 is the calendar, where you pick the time for your free 30-minute call.</p>
+        <div class="opts" data-key="q2">
+          <button class="opt" data-val="Yes">Yes, let's keep going.</button>
+          <button class="opt" data-val="No">No, I'm not ready for a call.</button>
+        </div>
+        <div class="form-nav"><button class="backlink">Back</button></div>
+      </div>
+
+      <!-- Q3: age band -->
+      <div class="form-step" data-q="3">
+        <p class="q">Which age group describes you?</p>
+        <p class="q-sub">Our students range from 5 to 96, and most are over 50. This helps us tailor the call.</p>
+        <div class="opts" data-key="q3">
+          <button class="opt" data-val="Under 35">Under 35</button>
+          <button class="opt" data-val="35 to 44">35 to 44</button>
+          <button class="opt" data-val="45 to 54">45 to 54</button>
+          <button class="opt" data-val="55 to 64">55 to 64</button>
+          <button class="opt" data-val="65 or older">65 or older</button>
+        </div>
+        <div class="form-nav"><button class="backlink">Back</button></div>
+      </div>
+
+      <!-- Q4: sentence stem, multi-select -->
+      <div class="form-step" data-q="4">
+        <p class="q">"I want to..."</p>
+        <p class="q-sub">Select all that apply</p>
+        <div class="opts" data-multi="1" data-key="q4">
+          <button class="opt" data-val="play songs I love">Play the songs I actually love</button>
+          <button class="opt" data-val="play by ear">Sit down and play by ear</button>
+          <button class="opt" data-val="play for people">Feel confident playing for people</button>
+          <button class="opt" data-val="follow through">Finally follow through this time</button>
+        </div>
+        <div class="form-nav"><button class="btn btn--block next" disabled>Continue</button><button class="backlink">Back</button></div>
+      </div>
+
+      <!-- Q5: sentence stem, multi-select -->
+      <div class="form-step" data-q="5">
+        <p class="q">"I can't seem to..."</p>
+        <p class="q-sub">Select all that apply</p>
+        <div class="opts" data-multi="1" data-key="q5">
+          <button class="opt" data-val="stick with practice">Stick with practice for more than a few weeks</button>
+          <button class="opt" data-val="get past beginner">Get past the same beginner plateau</button>
+          <button class="opt" data-val="make sheet music click">Make sheet music click</button>
+          <button class="opt" data-val="find the right method">Find a way of learning that fits my life</button>
+        </div>
+        <div class="form-nav"><button class="btn btn--block next" disabled>Continue</button><button class="backlink">Back</button></div>
+      </div>
+
+      <!-- Q6: sentence stem, multi-select -->
+      <div class="form-step" data-q="6">
+        <p class="q">"The thing I'm afraid of is..."</p>
+        <p class="q-sub">Select all that apply. Honest answers help us help you.</p>
+        <div class="opts" data-multi="1" data-key="q6">
+          <button class="opt" data-val="too old">That I'm too old to start</button>
+          <button class="opt" data-val="not musical">That I'm just not musical</button>
+          <button class="opt" data-val="quit again">That I'll quit again</button>
+          <button class="opt" data-val="waste money again">That I'll waste money again</button>
+        </div>
+        <div class="form-nav"><button class="btn btn--block next" disabled>Continue</button><button class="backlink">Back</button></div>
+      </div>
+
+      <!-- Q7: past attempts, multi-select -->
+      <div class="form-step" data-q="7">
+        <p class="q">What have you tried?</p>
+        <p class="q-sub">Select all that apply</p>
+        <div class="opts" data-multi="1" data-key="q7">
+          <button class="opt" data-val="apps">Apps (Simply Piano, Yousician, Flowkey...)</button>
+          <button class="opt" data-val="childhood lessons">Lessons as a kid</button>
+          <button class="opt" data-val="adult lessons">Lessons as an adult</button>
+          <button class="opt" data-val="youtube">YouTube tutorials</button>
+          <button class="opt" data-val="books">Method books on my own</button>
+          <button class="opt" data-val="nothing yet">Nothing yet, this is my start</button>
+        </div>
+        <div class="form-nav"><button class="btn btn--block next" disabled>Continue</button><button class="backlink">Back</button></div>
+      </div>
+
+      <!-- Q8 ("permission to vent") and Q9 ("magic wand") open-text steps were REMOVED 7/31
+           per Chris. data-q numbering intentionally skips 8 and 9 so the remaining keys
+           (q10, q11, q13) still match the routing rules above and the CRM payload. -->
+
+      <!-- Q10: money qualifier -->
+      <div class="form-step" data-q="10">
+        <p class="q">How much have you invested in learning piano so far?</p>
+        <p class="q-sub">Lessons, apps, books, keyboards, all of it.</p>
+        <div class="opts" data-key="q10">
+          <button class="opt" data-val="Less than $500">Less than $500</button>
+          <button class="opt" data-val="$500 to $2,000">$500 to $2,000</button>
+          <button class="opt" data-val="$2,000 to $5,000">$2,000 to $5,000</button>
+          <button class="opt" data-val="$5,000 to $10,000">$5,000 to $10,000</button>
+          <button class="opt" data-val="More than $10,000">More than $10,000</button>
+        </div>
+        <div class="form-nav"><button class="backlink">Back</button></div>
+      </div>
+
+      <!-- Q11: commitment scale (only 5/7/9/10 offered) -->
+      <div class="form-step" data-q="11">
+        <p class="q">Right now, how committed are you to learning for real?</p>
+        <p class="q-sub">There's no wrong answer. It just shapes the conversation.</p>
+        <div class="opts" data-key="q11">
+          <button class="opt" data-val="5/10"><b>5/10.</b> Curious, but honestly not sure I'd follow through yet.</button>
+          <button class="opt" data-val="7/10"><b>7/10.</b> Ready, if the path in front of me actually makes sense.</button>
+          <button class="opt" data-val="9/10"><b>9/10.</b> I've decided. I want to start and I'm willing to put in the time.</button>
+          <button class="opt" data-val="10/10"><b>10/10.</b> Done waiting. This has been on my list for years and I'm ready now.</button>
+        </div>
+        <div class="form-nav"><button class="backlink">Back</button></div>
+      </div>
+
+      <!-- Q12: contact details -->
+      <div class="form-step" data-q="12">
+        <p class="q">Almost done. Where should we send your call details?</p>
+        <p class="q-sub">One more question after this, then the calendar opens.</p>
+        <div class="contact-fields">
+          <div><label for="f-name">Full name</label><input class="field" type="text" id="f-name" autocomplete="name"></div>
+          <div><label for="f-email">Email</label><input class="field" type="email" id="f-email" autocomplete="email"></div>
+          <div><label for="f-phone">Mobile phone</label><input class="field" type="tel" id="f-phone" autocomplete="tel"></div>
+          <p class="consent">We'll text your Zoom link and appointment reminders to this number. Message and data rates may apply. Reply STOP to opt out, HELP for help.</p>
+        </div>
+        <p class="err" id="contact-err">Please add your name, a valid email, and a phone number.</p>
+        <div class="form-nav"><button class="btn btn--block" id="contact-next">Continue</button><button class="backlink">Back</button></div>
+      </div>
+
+      <!-- Q13: final gate -->
+      <div class="form-step" data-q="13">
+        <p class="q">Last question. Once you pick your time, will you be there?</p>
+        <p class="q-sub">Answer this and your calendar opens. We'll confirm by text before the call.</p>
+        <div class="opts" data-key="q13">
+          <button class="opt" data-val="Yes">Yes, I'll be there.</button>
+          <button class="opt" data-val="No">No, I can't promise that right now.</button>
+        </div>
+        <div class="form-nav"><button class="backlink">Back</button></div>
+      </div>
+
+      <!-- HARD DQ screen (Q1 or Q2 = No). Not part of the normal step order. -->
+      <div class="form-step dq-screen" id="hard-dq">
+        <h3>No hard feelings</h3>
+        <p>Based on your answer, a call probably isn't the right next step today, and we'd rather be straight with you than book a conversation you don't want.</p>
+        <p>If you'd like a low-pressure way to start anyway, the <b>4 Magic Chords Mini Course</b> is $27 and comes with the 100+ Song Workbook free. It has a 30-day money-back guarantee, and you keep the workbook either way.</p>
+        <!-- Tripwire destination: /tripwire (ThriveCart product-1168). Carry query params through. -->
+        <a class="btn btn--gold" id="tripwire-link" href="tripwire.html">See the $27 Mini Course</a>
+        <div class="form-nav"><button class="backlink" id="dq-back">I misclicked, take me back</button></div>
+      </div>
+
+      <!-- Submitting screen -->
+      <div class="form-step center" id="submitting">
+        <p class="q">Opening your calendar...</p>
+        <p class="q-sub">One moment. Pick the time that suits you on the next screen.</p>
+        <div class="loader" aria-hidden="true"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- proof below the form -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat rv"><b>40,000+</b><span>Students</span></div>
+      <div class="stat rv" style="--d:.08s"><b>60+</b><span>Countries</span></div>
+      <div class="stat rv" style="--d:.16s"><b>5 to 96</b><span>Ages</span></div>
+      <div class="stat rv" style="--d:.24s"><b>1,300+</b><span>Five-star reviews</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:22px">
+      <h2 class="h-lg rv">1,300+ five-star reviews <span class="hl">and counting.</span></h2>
+    </div>
+    <div class="collage2 rv">
+      <img src="images/reviews/mq-cisco.png" alt="Five-star Trustpilot review from Cisco" loading="lazy">
+      <img src="images/reviews/mq-jacqueline-larsson.png" alt="Five-star Trustpilot review from Jacqueline Larsson" loading="lazy">
+      <img src="images/reviews/mq-debbie-poulin.png" alt="Five-star Trustpilot review from Debbie Poulin" loading="lazy">
+      <img src="images/reviews/mq-stephen-anderson.png" alt="Five-star Trustpilot review from Stephen Anderson" loading="lazy">
+      <img src="images/reviews/mq-manuela-clark.png" alt="Five-star Trustpilot review from Manuela Clark" loading="lazy">
+      <img src="images/reviews/mq-julie-lalancette.png" alt="Five-star Trustpilot review from Julie Lalancette" loading="lazy">
+    </div>
+    <p class="center" style="margin-top:12px;font-size:12.5px;color:rgba(252,244,234,.5)">Real Ridley Academy students. Individual results vary.</p>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="wrap center">
+    <p style="font-size:14px;color:rgba(252,244,234,.55);margin-bottom:16px">As featured &amp; trusted across</p>
+    <div class="press rv">
+      <img src="images/press/gq.svg" alt="GQ" loading="lazy">
+      <img src="images/press/vogue.svg" alt="Vogue" loading="lazy">
+      <img src="images/press/lofficiel.svg" alt="L'Officiel" loading="lazy">
+      <img src="images/press/omega.svg" alt="Omega" loading="lazy">
+      <img src="images/press/google.svg" alt="Google" loading="lazy">
+      <img src="images/press/youtube.svg" alt="YouTube" loading="lazy">
+      <img src="images/press/instagram.svg" alt="Instagram" loading="lazy">
+      <img src="images/press/trustpilot.svg" alt="Trustpilot" loading="lazy">
+      <img src="images/press/sitejabber.png" alt="Sitejabber" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="wrap-narrow center">
+    <h2 class="h-lg rv">Ready when <span class="hl">you are</span></h2>
+    <p class="sub rv" style="margin:12px auto 0">About 2 minutes of questions, then you're on the calendar. The call is free: a conversation, not a checkout.</p>
+    <a class="btn rv" style="margin-top:22px" href="#apply-form">Book my free Breakthrough Session</a>
+  </div>
+</section>
+
+</main>
+<footer class="foot">
+  <p>Ridley Academy</p>
+  <p class="compliance">Your Breakthrough Session is free and carries no obligation. We'll only use your contact details to schedule and confirm your call.</p>
+</footer>
+
+<script>
+(function(){
+  var APP_ID='RDLY-apply-v1';
+  var answers={};
+  window.dataLayer=window.dataLayer||[];
+  function dl(ev,extra){var o={event:ev,app_id:APP_ID};for(var k in (extra||{}))o[k]=extra[k];dataLayer.push(o);}
+
+  // Ordered question steps (excludes hard-dq + submitting screens)
+  var steps=[].slice.call(document.querySelectorAll('.form-step[data-q]'));
+  var hardDQ=document.getElementById('hard-dq');
+  var submitting=document.getElementById('submitting');
+  var cur=0, dqReturn=0;
+
+  // progress bar
+  var progEl=document.getElementById('progress');
+  var progFill=progEl.querySelector('i');
+  function setProgress(n){
+    var pct=Math.round(((n+1)/steps.length)*100);
+    progFill.style.width=pct+'%';
+    progEl.setAttribute('aria-valuenow',pct);
+  }
+
+  function hideAll(){[].slice.call(document.querySelectorAll('.form-step')).forEach(function(s){s.classList.remove('on');});}
+  // only scroll if the card top has drifted out of view; never jump to page top
+  var formCard=document.querySelector('.form-card');
+  function keepCardVisible(){
+    var top=formCard.getBoundingClientRect().top;
+    if(top<0) window.scrollTo({top:window.scrollY+top-16,behavior:'smooth'});
+  }
+  // a11y: announce step changes and move focus to the new step's heading
+  function focusHeading(el){
+    var h=el.querySelector('.q');
+    if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}
+  }
+  function show(n){
+    hideAll();
+    cur=n;
+    steps[cur].classList.add('on');
+    setProgress(cur);
+    keepCardVisible();
+    focusHeading(steps[cur]);
+    dl('rdly_apply_step',{step:cur+1});
+  }
+  function showHardDQ(){
+    dqReturn=cur;
+    hideAll();
+    hardDQ.classList.add('on');
+    focusHeading(hardDQ);
+    dl('rdly_apply_dq',{dq_type:'hard',step:cur+1});
+  }
+
+  steps.forEach(function(step,idx){
+    var q=step.getAttribute('data-q');
+    var multi=step.querySelector('[data-multi]');
+    var opts=[].slice.call(step.querySelectorAll('.opt'));
+    var next=step.querySelector('.next');
+    var back=step.querySelector('.backlink');
+    var ta=step.querySelector('textarea[data-key]');
+    var keyEl=step.querySelector('[data-key]');
+    var key=keyEl?keyEl.getAttribute('data-key'):null;
+
+    opts.forEach(function(o){
+      o.addEventListener('click',function(){
+        if(multi){
+          o.classList.toggle('sel');
+          var sel=opts.filter(function(x){return x.classList.contains('sel');});
+          if(next) next.disabled=sel.length===0;
+          answers[key]=sel.map(function(x){return x.getAttribute('data-val');});
+        }else{
+          opts.forEach(function(x){x.classList.remove('sel');});
+          o.classList.add('sel');
+          answers[key]=o.getAttribute('data-val');
+          // Q1 / Q2 "No" = hard DQ. Q13 answered = submit. Otherwise auto-advance.
+          if((q==='1'||q==='2')&&o.getAttribute('data-val')==='No'){setTimeout(showHardDQ,220);return;}
+          if(q==='13'){setTimeout(finish,220);return;}
+          setTimeout(function(){show(idx+1);},220);
+        }
+      });
+    });
+
+    if(ta){
+      ta.addEventListener('input',function(){
+        answers[key]=ta.value.trim();
+        if(next) next.disabled=ta.value.trim().length===0;
+      });
+      if(next) next.disabled=true;
+    }
+    if(next) next.addEventListener('click',function(){if(!next.disabled)show(idx+1);});
+    if(back) back.addEventListener('click',function(){show(idx-1);});
+  });
+
+  // hard DQ screen: back out
+  document.getElementById('dq-back').addEventListener('click',function(){show(dqReturn);});
+  // carry source params onto the tripwire link
+  if(window.location.search){
+    var tl=document.getElementById('tripwire-link');
+    tl.href=tl.getAttribute('href')+window.location.search;
+  }
+
+  // contact step validation
+  document.getElementById('contact-next').addEventListener('click',function(){
+    var name=document.getElementById('f-name').value.trim();
+    var email=document.getElementById('f-email').value.trim();
+    var phone=document.getElementById('f-phone').value.trim();
+    var ok=name.length>1 && /^\S+@\S+\.\S+$/.test(email) && phone.length>6;
+    document.getElementById('contact-err').classList.toggle('on',!ok);
+    if(!ok) return;
+    answers.name=name; answers.email=email; answers.phone=phone;
+    var contactIdx=steps.findIndex(function(s){return s.getAttribute('data-q')==='12';});
+    show(contactIdx+1);
+  });
+
+  /* ROUTING (see the rules in the comment at the top of this file):
+     SOFT DQ = (Q10 "Less than $500" AND Q11 "5/10") OR Q13 "No"  -> booking-b.html
+     QUALIFIED = everyone else                                    -> booking.html
+     Existing query params (el, utm_*, quiz segments) are passed through untouched. */
+  function finish(){
+    hideAll();
+    submitting.classList.add('on');
+    var softDQ=(answers.q10==='Less than $500' && answers.q11==='5/10') || answers.q13==='No';
+    var dest=softDQ?'booking-b.html':'booking.html';
+    dl('rdly_apply_complete',{route:softDQ?'dq':'qualified'});
+    if(softDQ) dl('rdly_apply_dq',{dq_type:'soft'});
+
+    /* CAPTURE, wired 7/31. Everyone who finishes the application becomes a contact
+       here, at the moment they finish, whether or not they go on to pick a slot.
+       That is the whole point: previously an applicant who did not book vanished.
+
+       Same endpoint and same payload shape as the vsl-b front door, with source
+       "application" so the two funnel tests can be told apart in ActiveCampaign.
+       The full answer set rides along so Charlie and Danny can read the lead before
+       they dial. Fire and forget, so a slow or dead endpoint never delays the
+       redirect. See shared.js for the contract. */
+    try{
+      if(window.RDLY){
+        var payload={
+          source:'application',
+          name:answers.name,email:answers.email,phone:answers.phone,
+          /* The application's own consent step. The door's SMS checkbox does not
+             exist on this path, so this stays explicit rather than assumed. */
+          consent:false,
+          route:softDQ?'dq':'qualified',
+          /* The capture function tags on `dq`, not `route`: true adds
+             "VSL Tripwire Routed" on top of "VSL Application". Both are sent so
+             the tag is applied and the human-readable value survives in the logs. */
+          dq:softDQ
+        };
+        /* Multi-select steps hold arrays. ActiveCampaign custom fields want a string,
+           so flatten here rather than leaving the endpoint to guess. */
+        for(var k in answers){
+          if(k.charAt(0)!=='q') continue;
+          var v=answers[k];
+          payload[k]=Object.prototype.toString.call(v)==='[object Array]'?v.join(', '):v;
+        }
+        window.RDLY.capture(payload);
+        /* Lead fires on a completed application, which is the equivalent moment to
+           the booking-form submit on vsl-a. Schedule fires later, on the Calendly
+           confirmation, from shared.js. */
+        window.RDLY.track('Lead','rdly_apply_captured',{route:payload.route});
+      }
+    }catch(e){}
+
+    setTimeout(function(){window.location.href=dest+window.location.search;},900);
+  }
+
+  // init
+  steps[0].classList.add('on');
+  setProgress(0);
+  dl('rdly_apply_start');
+})();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

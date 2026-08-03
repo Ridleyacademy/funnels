@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>The App-Quitter's Exit Plan | Ridley Academy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E81420'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' fill='%23FFFBF4' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- NOTE for Ange: self-host these three fonts at deploy (font-display: swap). -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<!-- GTM CONTAINER HERE -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  dataLayer.push({ event: "rdly_offramp_view", el: "offramp" });
+  // All Apply CTAs on this page carry ?el=offramp so apply.html can attribute the source.
+  function rdlyCta(pos){
+    dataLayer.push({ event: "rdly_offramp_cta_click", cta_position: pos });
+  }
+</script>
+<style>
+  /* page-specific: layout mirrors join.warriorbabe.com/glp1-vip (capture in scratchpad/wb/glp1.png) */
+  .hero{padding:clamp(24px,3.5vw,44px) 0 clamp(32px,4.5vw,56px);text-align:center}
+  .hero h1{font-size:clamp(32px,5.4vw,58px);max-width:920px;margin:12px auto 0}
+  .hero .sub{margin:16px auto 0;max-width:60ch}
+  .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,3vw,40px)}
+  @media(max-width:960px){.pillars{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.pillars{grid-template-columns:1fr}}
+  .pillar .num{font-family:var(--display);font-weight:600;font-size:clamp(52px,7vw,84px);line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--cherry);display:block;margin-bottom:10px}
+  .pillar h3{font-size:19px;margin-bottom:8px}
+  .pillar p{font-size:15px;color:rgba(252,244,234,.7)}
+  .forum-quote{position:relative;padding:20px 22px 18px 58px;border:1.5px solid rgba(252,244,234,.12);border-radius:var(--radius-sm);font-size:15.5px;font-style:italic}
+  .forum-quote::before{content:"\201C";position:absolute;left:16px;top:2px;font-family:var(--hand);font-size:52px;line-height:1;color:var(--gold);font-style:normal}
+  .forum-quote .src{display:block;margin-top:8px;font-style:normal;font-size:13px}
+  .step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2.5vw,28px)}
+  @media(max-width:960px){.step-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.step-grid{grid-template-columns:1fr}}
+  .step h3{font-size:17px;margin:10px 0 6px}
+  .step p{font-size:15px;color:rgba(252,244,234,.7)}
+  .step .snum{font-family:var(--hand);font-size:34px;color:var(--cherry);line-height:1}
+  .cta-dark{position:relative;overflow:hidden}
+  .cta-dark .bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;opacity:.22}
+  .cta-dark .wrap-narrow{position:relative;z-index:2}
+  .collage{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:1000px;margin:0 auto}
+  @media(max-width:720px){.collage{grid-template-columns:repeat(2,1fr)}}
+  .collage img{border-radius:12px;border:1.5px solid rgba(252,244,234,.12);background:#fff;width:100%}
+</style>
+</head>
+<body class="theme-dark">
+<a class="skiplink" href="#main">Skip to content</a>
+
+<div class="topbar">For adults who finished the streaks and still can't play a song</div>
+<header class="sitehead"><a class="logotype" href="index.html" style="color:var(--paper)">Ridley <b>Academy</b></a></header>
+<main id="main">
+
+<!-- ============ 1. HERO: centered, accent phrases, VSL with caption pill (mirrors GLP-1) ============ -->
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow rv">The App-Quitter's Exit Plan</span>
+    <h1 class="rv" style="--d:.06s">You did the streaks. You followed the falling notes. <span class="hl">So why can't you play?</span></h1>
+    <p class="sub lede rv" style="--d:.12s">The apps taught you to track a screen, not to play music. It's a method problem, and there's an exit plan. Watch the video below. We built one.</p>
+
+    <div class="vframe rv" data-vsl data-src="videos/vsl-main.mp4" data-poster="images/masterclass-poster.jpg" data-vsl-cta="apply.html?el=vsl-offramp" style="max-width:860px;margin:28px auto 0;--d:.18s">
+      <!-- SELF-HOSTED VSL until a dedicated offramp cut is recorded. See index.html note. -->
+      <img src="images/masterclass-poster.jpg" alt="Play: why the apps never made you a player">
+      <div class="playbtn"></div>
+      <div class="vpill">Why the apps never made you a player</div>
+    </div>
+
+    <div class="rv" style="margin-top:26px">
+      <a class="btn" href="apply.html?el=offramp" onclick="rdlyCta('hero')">Book my free Breakthrough Session</a>
+      <p class="btn-note">A conversation, not a checkout. You never have to play a note.</p>
+      <!-- [CAPACITY-PLACEHOLDER: if a real weekly session cap exists, a one-line honest scarcity note can sit here] -->
+    </div>
+
+    <div class="stat-trio rv" style="margin-top:34px">
+      <div><b>40,000+</b><span>Students taught</span></div>
+      <div><b>10+</b><span>Years teaching</span></div>
+      <div><b>1,300+</b><span>Five-star reviews</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. PROOF COLLAGE (mirrors their transformations grid) ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:22px">
+      <span class="eyebrow rv">Real students · Real reviews</span>
+      <h2 class="h-xl rv">1,300+ five-star reviews <span class="hl">and counting.</span></h2>
+    </div>
+    <div class="collage rv">
+      <img src="images/reviews/mq-cisco.png" alt="Five-star Trustpilot review from Cisco" loading="lazy">
+      <img src="images/reviews/mq-jacqueline-larsson.png" alt="Five-star Trustpilot review from Jacqueline Larsson" loading="lazy">
+      <img src="images/reviews/mq-becky-cawley.png" alt="Five-star Trustpilot review from Becky Cawley" loading="lazy">
+      <img src="images/reviews/mq-chip-ross.png" alt="Five-star Trustpilot review from Chip Ross" loading="lazy">
+      <img src="images/reviews/mq-elaine-white.png" alt="Five-star Trustpilot review from Elaine White" loading="lazy">
+      <img src="images/reviews/mq-john-thierry.png" alt="Five-star Trustpilot review from John Thierry" loading="lazy">
+    </div>
+    <p class="center" style="margin-top:12px;font-size:12.5px;color:rgba(252,244,234,.5)">Real Ridley Academy students. Individual results vary.</p>
+  </div>
+</section>
+
+<!-- ============ 3. PROBLEM (left-aligned, quote, big stat; mirrors their problem block) ============ -->
+<section class="section">
+  <div class="wrap-narrow">
+    <span class="eyebrow rv">The problem nobody talks about</span>
+    <h2 class="h-xl rv">The apps trained your reflexes. <span class="hl">They can't make you a player.</span></h2>
+    <p class="rv" style="margin-top:16px;font-size:16.5px">The streaks worked, for what they were designed to do. You showed up daily. But falling-note games build note-tracking reflexes, not musicianship: your fingers learned sequences without ever learning why those notes belong together, and the whole thing lives behind a screen.</p>
+    <p class="rv" style="margin-top:12px;font-size:16.5px">Close the app and the music closes with it. That's not a discipline problem. It's what the product was built to do.</p>
+    <div class="forum-quote rv" style="margin-top:22px">
+      <!-- [REAL-QUOTE-PLACEHOLDER: pull a verified student quote or a public forum quote (r/piano threads on quitting Simply Piano / Yousician are full of them). Do not publish this section with placeholder text.] -->
+      "Placeholder: real quote from an app learner about grinding streaks and still not being able to play goes here."
+      <span class="src">[REAL-QUOTE-PLACEHOLDER: name or handle + source]</span>
+    </div>
+    <div class="bigstat rv" style="margin-top:22px">
+      <b>4 chords</b>
+      <span>carry more than 100 songs you already love. The apps never taught you to own them without the screen.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. FULL-BLEED CINEMATIC BAND (their photo break) ============ -->
+<div class="bleed rv">
+  <img src="images/perf-streetpiano.jpg" srcset="images/perf-streetpiano-640.jpg 640w, images/perf-streetpiano.jpg 1200w" sizes="100vw" alt="Stephen Ridley playing an open street piano surrounded by a crowd" loading="lazy">
+</div>
+
+<!-- ============ 5. WHAT THE APPS NEVER TOLD YOU (icon-card grid; mirrors their research grid) ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:26px">
+      <span class="eyebrow rv">The mechanics are simple</span>
+      <h2 class="h-xl rv">What the apps <span class="hl">never told you</span></h2>
+    </div>
+    <div class="icon-grid">
+      <div class="card rv">
+        <span class="ic">🎯</span>
+        <h3>Note-tracking is a reaction skill</h3>
+        <p>Hitting the right key as a bar falls toward it is a rhythm-game reflex. It isn't reading music and it isn't playing it.</p>
+      </div>
+      <div class="card rv" style="--d:.06s">
+        <span class="ic">🧠</span>
+        <h3>Sequences without understanding</h3>
+        <p>Your fingers memorized patterns you never understood, so one slip and the piece collapses. You can't start from the middle. You can't recover.</p>
+      </div>
+      <div class="card rv" style="--d:.12s">
+        <span class="ic">📱</span>
+        <h3>The screen owns your playing</h3>
+        <p>If you can only play with a tablet propped on the music stand, the app owns the music. Close it and the music closes with it.</p>
+      </div>
+      <div class="card rv" style="--d:.18s">
+        <span class="ic">🔁</span>
+        <h3>Apps optimize for retention</h3>
+        <p>A subscription is built to keep you subscribed. Streaks and badges are engagement mechanics. Making you a real player would end the relationship.</p>
+      </div>
+      <div class="card rv" style="--d:.24s">
+        <span class="ic">🎓</span>
+        <h3>Lessons optimize for exams</h3>
+        <p>The traditional route isn't the fix either: years of scales and grade pieces, built to pass assessments rather than to make you the person who plays what they love.</p>
+      </div>
+      <div class="card rv" style="--d:.3s">
+        <span class="ic">🎹</span>
+        <h3>Ridley starts with the music</h3>
+        <p>Real songs first. Theory taught through the music you're playing, not before it. You need a path that starts with the music. That's the exit plan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. TIMELINE (vertical rail; mirrors their what-happens-when-you-stop) ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:28px">
+      <span class="eyebrow rv">The timeline</span>
+      <h2 class="h-xl rv">What happens after you <span class="hl">quit the app</span></h2>
+      <p class="sub rv" style="margin:12px auto 0">Most people quit with no plan. Here's the honest timeline, and why having a plan changes it.</p>
+    </div>
+    <div class="tl">
+      <div class="tl-item rv">
+        <span class="when">Week 1 to 2</span>
+        <h4>The habit disappears</h4>
+        <p>The daily reminder is gone, and with it the only structure you had. The piano starts collecting quiet.</p>
+      </div>
+      <div class="tl-item rv">
+        <span class="when">Week 2 to 4</span>
+        <h4>The sequences fade</h4>
+        <p>The pieces you memorized start slipping, because they were never understood in the first place.</p>
+      </div>
+      <div class="tl-item rv">
+        <span class="when">Month 1 to 3</span>
+        <h4>You walk past the piano</h4>
+        <p>It becomes furniture again. "I'll get back to it someday" moves back in. You've heard yourself say it before.</p>
+      </div>
+      <div class="tl-item win rv">
+        <span class="when">With the Ridley Method</span>
+        <h4>A different story is possible</h4>
+        <!-- [TIMELINE-PLACEHOLDER: "first song in week one" and "repertoire by month three" mirror the method's phase claims (First Song, Real Repertoire). Confirm exact week/month framing with Chris before ad spend.] -->
+        <p>Your first real song in week one. Theory arriving through the songs you're playing. A mentor correcting course before habits set, and by month three, a growing repertoire played without a screen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. COMPARISON TABLE (mirrors theirs) ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:28px">
+      <h2 class="h-xl rv">Apps alone vs. <span class="hl">the Ridley Method</span></h2>
+    </div>
+    <div class="table-scroll rv">
+      <table class="compare">
+        <thead>
+          <tr><th></th><th>Apps</th><th>Traditional lessons</th><th>The Ridley Method</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Time to your first real song</b></td>
+            <td class="no">Often never. Simplified arrangements on a screen, not the real thing.</td>
+            <td class="no">Months to years. Scales and method books come first.</td>
+            <td class="yes">Week one. Real songs are the starting point, not the reward.</td>
+          </tr>
+          <tr>
+            <td><b>Reading music</b></td>
+            <td class="no">No. Falling notes replace notation.</td>
+            <td class="yes">Yes, but drilled before you can play anything you care about.</td>
+            <td class="yes">Yes, learned through the songs you're already playing.</td>
+          </tr>
+          <tr>
+            <td><b>Playing without the screen</b></td>
+            <td class="no">No. Close the app, lose the music.</td>
+            <td class="yes">Eventually.</td>
+            <td class="yes">From the start. The piano is the whole interface.</td>
+          </tr>
+          <tr>
+            <td><b>Songs you actually love</b></td>
+            <td class="no">Whatever's licensed, simplified.</td>
+            <td class="no">Whatever's in the grade book.</td>
+            <td class="yes">The music you came to the piano for.</td>
+          </tr>
+          <tr>
+            <td><b>Personal feedback</b></td>
+            <td class="no">An algorithm scoring key presses.</td>
+            <td class="yes">Yes, 30 to 60 minutes a week.</td>
+            <td class="yes">A mentor who knows your playing and your goals.</td>
+          </tr>
+          <tr>
+            <td><b>Cost over two years</b></td>
+            <td class="no">A subscription that keeps billing whether you progress or not.</td>
+            <td class="no">Two years of weekly private lessons runs $5,200 to $10,400.</td>
+            <td class="yes">Walked through openly on your free Breakthrough Session.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. METHOD: four phases ============ -->
+<section class="section">
+  <div class="wrap">
+    <div style="margin-bottom:36px;max-width:720px">
+      <span class="eyebrow">The exit plan</span>
+      <h2 class="h-lg rv">Four phases from screen-follower to pianist</h2>
+    </div>
+    <div class="pillars">
+      <div class="pillar rv">
+        <span class="num">1</span>
+        <h3 class="h-md">First Song</h3>
+        <p>You play a real song from the very beginning. This is where the app habit gets replaced by something better: the pull of music you can actually play.</p>
+      </div>
+      <div class="pillar rv" style="--d:.08s">
+        <span class="num">2</span>
+        <h3 class="h-md">Real Repertoire</h3>
+        <p>One song becomes a set. You build a growing list of pieces you can sit down and play, and the concepts inside them start connecting.</p>
+      </div>
+      <div class="pillar rv" style="--d:.16s">
+        <span class="num">3</span>
+        <h3 class="h-md">Musical Fluency</h3>
+        <p>Reading, theory, and technique come together through the music itself. You understand what your hands are doing and why, so nothing collapses when you slip.</p>
+      </div>
+      <div class="pillar rv" style="--d:.24s">
+        <span class="num">4</span>
+        <h3 class="h-md">Your Sound</h3>
+        <p>You stop reproducing and start expressing. The piano becomes yours: your taste, your interpretation, your sound.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. PRICE HANDLING ============ -->
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <div class="card center rv" style="padding:clamp(28px,4.5vw,44px);border-color:var(--gold);border-width:2px">
+      <h2 class="h-md">What does it cost?</h2>
+      <p style="margin-top:12px;font-size:16.5px">For context: two years of weekly private lessons runs $5,200 to $10,400, and most people who start them quit long before the two years are up.</p>
+      <p style="margin-top:10px;font-size:16.5px">We'll walk through exactly what's included and what it costs on your Breakthrough Session, openly and with zero pressure. No surprise checkout pages, no "act now" pricing.</p>
+      <a class="btn" style="margin-top:22px" href="apply.html?el=offramp" onclick="rdlyCta('price')">Book my free Breakthrough Session</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. TESTIMONIALS ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:28px">
+      <h2 class="h-lg rv">Students who found the exit</h2>
+    </div>
+    <div class="grid-3">
+      <div class="tcard rv">
+        <span class="stars">★★★★★</span>
+        <p>"I've had eight piano teachers, and I learned more from the Ridley Academy than all the others combined."</p>
+        <div class="who">David Clarke</div>
+        <span class="badge">Verified Trustpilot review</span>
+      </div>
+      <div class="tcard rv" style="--d:.1s">
+        <span class="stars">★★★★★</span>
+        <p>Carlos achieved his goal to play piano in less than 6 months. His verdict: "worth it."</p>
+        <div class="who">Carlos Rodriguez</div>
+        <span class="badge">Verified Trustpilot review</span>
+      </div>
+      <div class="tcard rv" style="--d:.2s">
+        <span class="stars">★★★★★</span>
+        <p>A professional musician with a music education degree, Alice calls the method "streamlined, effective and exciting."</p>
+        <div class="who">Alice Saddler</div>
+        <span class="badge">Verified Trustpilot review</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. WHO THIS IS FOR / NOT FOR ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:28px">
+      <h2 class="h-lg rv">This is for a specific kind of person</h2>
+      <p class="sub rv" style="margin:10px auto 0">We'd rather you self-select out now than book a call that wastes your evening.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card rv-l" style="border-color:var(--cherry)">
+        <h3 class="h-md" style="margin-bottom:16px">This is for you if</h3>
+        <ul class="check-list">
+          <li>You've put real time into an app (or lessons) and you're done pretending the streak counts as progress.</li>
+          <li>You want to sit down at a real piano and play real music, without a screen telling you what to do.</li>
+          <li>You're an adult who's willing to practice, as long as the practice is actually going somewhere.</li>
+          <li>You want a mentor who hears your playing, not an algorithm that scores your key presses.</li>
+        </ul>
+      </div>
+      <div class="card rv-r">
+        <h3 class="h-md" style="margin-bottom:16px">This is not for you if</h3>
+        <ul class="check-list x-list">
+          <li>You're looking for another free app or a five-minute-a-day shortcut.</li>
+          <li>You want to noodle occasionally with no real goal. That's fine, the apps are great for that.</li>
+          <li>You're not in a position to invest in structured coaching right now.</li>
+          <li>You want someone to make you practice. We give you a path worth practicing; the sitting down is yours.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. 4-STEP PROCESS ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:32px">
+      <h2 class="h-lg rv">How it works</h2>
+    </div>
+    <div class="step-grid">
+      <div class="step rv">
+        <span class="snum">1.</span>
+        <h3 class="h-md">Apply in 3 minutes</h3>
+        <p>A short application so we understand where you are and what you want from the piano.</p>
+      </div>
+      <div class="step rv" style="--d:.08s">
+        <span class="snum">2.</span>
+        <h3 class="h-md">Book your session</h3>
+        <p>A free 30-minute conversation. Not a checkout. You never have to play a note.</p>
+      </div>
+      <div class="step rv" style="--d:.16s">
+        <span class="snum">3.</span>
+        <h3 class="h-md">Meet your mentor</h3>
+        <p>If we're a fit, you're matched with a mentor and a plan built around your music.</p>
+      </div>
+      <div class="step rv" style="--d:.24s">
+        <span class="snum">4.</span>
+        <h3 class="h-md">Play for life</h3>
+        <p>Not a 400-day streak. A skill that's yours at any piano, in any room, forever.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. 12-MONTH ROADMAP ============ -->
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <div style="margin-bottom:24px">
+      <span class="eyebrow">Commitment is the feature</span>
+      <h2 class="h-lg rv">Your first 12 months, mapped</h2>
+      <p class="sub rv" style="margin-top:10px">Apps sell you "5 minutes a day." We'll be straight with you: becoming a pianist takes months, not minutes. Here's what those months look like when they're pointed in the right direction.</p>
+    </div>
+    <div class="phases">
+      <div class="phase rv">
+        <span class="tag">Months 1 to 3</span>
+        <div>
+          <h4>First Song, real momentum</h4>
+          <p>Your first real songs, played hands-on at the piano. The screen habit gets replaced by a playing habit.</p>
+        </div>
+      </div>
+      <div class="phase rv" style="--d:.06s">
+        <span class="tag">Months 3 to 6</span>
+        <div>
+          <h4>Real Repertoire</h4>
+          <p>A growing set of pieces you can sit down and play. Reading and theory build through the music itself.</p>
+        </div>
+      </div>
+      <div class="phase rv" style="--d:.12s">
+        <span class="tag">Months 6 to 9</span>
+        <div>
+          <h4>Musical Fluency</h4>
+          <p>The mechanics become understanding. You know why the music works, so you can recover, adapt, and learn new pieces faster.</p>
+        </div>
+      </div>
+      <div class="phase rv" style="--d:.18s">
+        <span class="tag">Months 9 to 12</span>
+        <div>
+          <h4>Your Sound</h4>
+          <p>You're not following anything anymore. You're playing music you love, your way, and choosing what comes next.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14. FAQ ============ -->
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <div class="center" style="margin-bottom:24px">
+      <h2 class="h-lg rv">Questions app-quitters ask us</h2>
+    </div>
+    <div class="faq rv">
+      <details>
+        <summary>Is the call really free? What's the catch?</summary>
+        <p class="faq-body">It's free, and it's a conversation, not a checkout. You never have to play a note. We'll talk about where you are, what the apps did and didn't give you, and what a real path forward looks like for you specifically. If we think we can help, we'll show you exactly what that looks like and what it costs. If not, we'll tell you that too.</p>
+      </details>
+      <details>
+        <summary>Am I too old for this?</summary>
+        <p class="faq-body">Most of our students are over 50, and our students range from 5 to 96. The method was built for adults learning real music, not children working through grade books. If anything, you're right on time.</p>
+      </details>
+      <details>
+        <summary>Do I need a piano?</summary>
+        <p class="faq-body">You'll need access to a piano or a keyboard to practice on, the same one you've been propping the tablet against. If you're not sure whether your instrument is suitable, bring the question to your Breakthrough Session and we'll tell you straight.</p>
+      </details>
+      <details>
+        <summary>How is this actually different from the apps?</summary>
+        <p class="faq-body">The apps train you to track notes on a screen. The Ridley Method trains you to play music at a piano: real songs from week one, theory taught through the music instead of before it, and a mentor who listens to your playing and corrects course. When you close the laptop, everything you've learned comes with you.</p>
+      </details>
+      <details>
+        <summary>What does it cost?</summary>
+        <p class="faq-body">We'll walk through exactly what's included and what it costs on your Breakthrough Session. For context, two years of weekly private lessons runs $5,200 to $10,400. Our job on the call is to show you what you'd get for your investment and let you decide with the full picture in front of you.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15. FINAL CTA ============ -->
+<section class="section cta-dark" style="background:var(--bordeaux)">
+  <img class="bgimg" src="images/perf-jump.jpg" srcset="images/perf-jump-640.jpg 640w, images/perf-jump.jpg 1200w" sizes="100vw" alt="" loading="lazy">
+  <div class="wrap-narrow center">
+    <h2 class="h-xl rv">The streak is over. <span class="gold">The playing can start.</span></h2>
+    <p class="sub rv" style="margin:14px auto 26px">Apply in 3 minutes. Book your free Breakthrough Session. Find out what the apps never taught you.</p>
+    <a class="btn btn--gold rv" style="--d:.1s" href="apply.html?el=offramp" onclick="rdlyCta('final')">Book my free Breakthrough Session</a>
+    <p class="btn-note">A conversation, not a checkout. You never have to play a note.</p>
+  </div>
+</section>
+
+<!-- ============ 16. PRESS STRIP ============ -->
+<section class="section--tight">
+  <div class="wrap center">
+    <p style="font-size:14px;color:rgba(252,244,234,.55);margin-bottom:16px">As featured &amp; trusted across</p>
+    <div class="press">
+      <img src="images/press/gq.svg" alt="GQ" loading="lazy">
+      <img src="images/press/vogue.svg" alt="Vogue" loading="lazy">
+      <img src="images/press/lofficiel.svg" alt="L'Officiel" loading="lazy">
+      <img src="images/press/omega.svg" alt="Omega" loading="lazy">
+      <img src="images/press/google.svg" alt="Google" loading="lazy">
+      <img src="images/press/youtube.svg" alt="YouTube" loading="lazy">
+      <img src="images/press/instagram.svg" alt="Instagram" loading="lazy">
+      <img src="images/press/trustpilot.svg" alt="Trustpilot" loading="lazy">
+      <img src="images/press/sitejabber.png" alt="Sitejabber" loading="lazy">
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="foot">
+  <p>&copy; Ridley Academy. All rights reserved.</p>
+  <p class="compliance">Results vary by student and depend on practice and participation. Testimonials reflect individual experiences. Simply Piano, Yousician, and Flowkey are trademarks of their respective owners; Ridley Academy is not affiliated with or endorsed by them.</p>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

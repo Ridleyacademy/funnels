@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play Real Piano Before You Read a Note | Ridley Academy</title>
+<meta name="description" content="You can learn piano without reading sheet music first. Play real songs from day one, then learn reading through the music. 40,000+ students. Take the 60-second quiz.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E81420'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' fill='%23FFFBF4' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- NOTE for Ange: self-host these three fonts at deploy (font-display: swap). -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<!-- GTM CONTAINER HERE -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  dataLayer.push({ event: "rdly_site_view", page: "nosheet" });
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can you learn piano without reading sheet music?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You can play real songs without reading a note, and starting that way is faster for most adults. On the Ridley Method reading comes later, taught through the songs you already play, so notation lands as names for things your hands already know."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it bad to learn piano without sheet music?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No, as long as reading isn't skipped forever. The traditional order (notation first, music later) stalls adults. The reverse order (music first, notation through the music) keeps momentum and still gets you reading. Glenwood Clark started at 68 and in one year learned to play with both hands and read music."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you play piano without reading music?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Real songs are built from patterns: chords, progressions, and shapes that repeat across music. Learn the patterns inside songs you love and you can play long before you can sight-read. That's how Stephen Ridley learned on a street piano, and it's how the method starts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will I ever learn to read music with the Ridley Method?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Reading and theory arrive in the Musical Fluency phase, taught through your repertoire rather than through drills. Most students find notation far easier once they can already play."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is playing by ear or reading music better?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They're not rivals; they're stages. Pattern-playing gets you making music now, and reading multiplies what you can learn later. A method built for adults sequences them in that order instead of making notation the gate you must pass before touching real music."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  /* page-specific: dark port keeping the SEO lander section order (theme block in shared.css) */
+  .hero{padding:clamp(28px,4vw,52px) 0 clamp(36px,5vw,60px);text-align:center}
+  .hero h1{font-size:clamp(32px,5vw,56px);max-width:940px;margin:14px auto 0}
+  .hero .sub{margin:16px auto 0;max-width:60ch}
+  .statcards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:960px){.statcards{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.statcards{grid-template-columns:1fr}}
+  .statcard{background:#221014;border:1.5px solid rgba(252,244,234,.1);border-radius:var(--radius);padding:22px;text-align:left}
+  .statcard b{display:block;font-family:var(--display);font-weight:600;font-size:clamp(28px,3.6vw,40px);color:var(--paper);line-height:1.05}
+  .statcard span{display:block;margin-top:6px;font-size:13.5px;color:rgba(252,244,234,.6)}
+  .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,3vw,40px)}
+  @media(max-width:960px){.pillars{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.pillars{grid-template-columns:1fr}}
+  .pillar .num{font-family:var(--display);font-weight:600;font-size:clamp(52px,7vw,84px);line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--gold-acc);display:block;margin-bottom:10px}
+  .pillar h3{font-size:19px;margin-bottom:8px}
+  .pillar p{font-size:15px;color:rgba(252,244,234,.75)}
+  .proof-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:860px;margin:32px auto 0}
+  @media(max-width:700px){.proof-cards{grid-template-columns:1fr}}
+  .cta-dark{position:relative;overflow:hidden}
+  .cta-dark .bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;opacity:.22}
+  .cta-dark .wrap-narrow{position:relative;z-index:2}
+</style>
+</head>
+<body class="theme-dark">
+<a class="skiplink" href="#main">Skip to content</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logotype" href="index.html">Ridley <b>Academy</b></a>
+    <button class="nav-burger" aria-expanded="false" aria-controls="navlinks" onclick="this.setAttribute('aria-expanded',document.getElementById('navlinks').classList.toggle('open'));">Menu</button>
+    <div class="nav-links" id="navlinks">
+      <a href="how-it-works.html">How It Works</a>
+      <a href="success.html">Success Stories</a>
+      <a href="about.html">About</a>
+      <a href="mentors.html">Mentors</a>
+      <a class="btn" href="apply.html?el=site-nav">Book a Free Call</a>
+    </div>
+  </div>
+</nav>
+<main id="main">
+
+<!-- ============ 1. HERO: centered accent-phrase + quiz CTA ============ -->
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow rv">Piano without sheet music first</span>
+    <h1 class="rv" style="--d:.06s">Play real piano <span class="hl">before you read a note.</span></h1>
+    <p class="sub lede rv" style="--d:.12s">Sheet music isn't the entrance exam. Songs are built from patterns your hands can learn directly, and reading comes easier once you can already play. The traditional order is backwards for adults.</p>
+    <div class="rv" style="margin-top:24px;--d:.18s">
+      <a class="btn" href="../quiz-funnel/index.html?el=nosheet">Take the 60-second quiz</a>
+      <p class="btn-note">Free. It maps what's been in your way and what your path looks like.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FULL-BLEED PHOTO BAND (cinematic break) ============ -->
+<div class="bleed rv">
+  <img src="images/perf-streetpiano.jpg" srcset="images/perf-streetpiano-640.jpg 640w, images/perf-streetpiano.jpg 1200w" sizes="100vw" alt="Stephen Ridley playing a street piano surrounded by a crowd" loading="lazy">
+</div>
+
+<!-- ============ STAT CARDS ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <p class="hand rv center" style="margin-bottom:18px">There was no sheet music on the street piano.</p>
+    <div class="statcards">
+      <div class="statcard rv"><b>40,000+</b><span>Students</span></div>
+      <div class="statcard rv" style="--d:.08s"><b>60+</b><span>Countries</span></div>
+      <div class="statcard rv" style="--d:.16s"><b>5 to 96</b><span>Ages of students</span></div>
+      <div class="statcard rv" style="--d:.24s"><b>1,300+</b><span>Five-star reviews</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. WHY NOTATION-FIRST FAILS ADULTS: icon-card grid ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:26px">
+      <h2 class="h-xl rv">Why notation-first <span class="hl">stalls adult learners</span></h2>
+      <p class="sub rv" style="margin:12px auto 0">Reading music is a beautiful skill. Making it the gate you must pass before touching real music is the mistake.</p>
+    </div>
+    <div class="icon-grid">
+      <div class="card rv">
+        <span class="ic">🎼</span>
+        <h3>It front-loads the driest part</h3>
+        <p>Staff lines, note names, and counting drills before a single song you'd choose to play. Adults don't have patience for homework with no payoff, and they shouldn't. That order kills the momentum you walked in with.</p>
+      </div>
+      <div class="card rv" style="--d:.08s">
+        <span class="ic">🧩</span>
+        <h3>It hides the patterns</h3>
+        <p>Real songs run on chords, progressions, and shapes that repeat across all of music. Notation-first teaching buries those patterns under symbols, so you decode dots instead of learning how music actually works.</p>
+      </div>
+      <div class="card rv" style="--d:.16s">
+        <span class="ic">🎮</span>
+        <h3>The app "fix" isn't playing either</h3>
+        <p>Falling-note games remove notation but replace it with screen-following. Take the screen away and there's still no song. The answer isn't no structure. It's the right order of structure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. THE RIDLEY DIFFERENCE ============ -->
+<section class="section--tight" style="padding-bottom:clamp(48px,7vw,88px)">
+  <div class="wrap-narrow center">
+    <h2 class="h-lg rv">Music first. Reading through the music.</h2>
+    <p class="sub rv" style="margin:14px auto 0">On the Ridley Method you play a real song from the very beginning, hands on keys, no notation required. Reading and theory arrive later, taught through the songs you already play, where every symbol finally has a sound attached. You end up doing both: playing and reading.</p>
+    <p class="hand rv" style="margin-top:20px">Notation is names for things your hands already know.</p>
+  </div>
+</section>
+
+<!-- ============ 4. THE METHOD: 4 PHASES ============ -->
+<section class="section--tight" style="padding-bottom:clamp(56px,8vw,100px)">
+  <div class="wrap">
+    <div style="margin-bottom:36px;max-width:720px">
+      <span class="eyebrow">The Ridley Method</span>
+      <h2 class="h-xl rv">Four phases. <span class="hl-gold">Music from day one.</span></h2>
+    </div>
+    <div class="pillars">
+      <div class="pillar rv"><span class="num">1</span><h3 class="h-md">First Song</h3><p>You play a real song from the very beginning. Not an exercise. A song.</p></div>
+      <div class="pillar rv" style="--d:.08s"><span class="num">2</span><h3 class="h-md">Real Repertoire</h3><p>One song becomes a set: a growing list of pieces you can sit down and play.</p></div>
+      <div class="pillar rv" style="--d:.16s"><span class="num">3</span><h3 class="h-md">Musical Fluency</h3><p>Reading, theory, and technique come together through the music itself.</p></div>
+      <div class="pillar rv" style="--d:.24s"><span class="num">4</span><h3 class="h-md">Your Sound</h3><p>You stop reproducing and start expressing. The piano becomes yours.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. PROOF: pull-quote + testimonial cards ============ -->
+<section class="section--tight" style="padding-bottom:clamp(48px,7vw,88px)">
+  <div class="wrap">
+    <p class="quote-xl rv">"A professional musician with a music education degree calls the method <span class="hl">streamlined, effective and exciting.</span>"</p>
+    <p class="quote-attrib rv">Alice Saddler · Verified review</p>
+    <div class="proof-cards">
+      <div class="tcard rv">
+        <span class="stars">★★★★★</span>
+        <p>Alice is a professional musician with a music education degree. Her words for the method: "streamlined, effective and exciting."</p>
+        <div class="who">Alice Saddler</div>
+        <span class="badge">Verified review</span>
+      </div>
+      <div class="tcard rv" style="--d:.1s">
+        <span class="stars">★★★★★</span>
+        <p>At 68, Glenwood learned to play with both hands and read music in one year, starting from songs, not from drills.</p>
+        <div class="who">Glenwood Clark, 68</div>
+        <span class="badge">Verified Trustpilot review</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. COMPARISON TABLE ============ -->
+<section class="section--tight" style="padding-bottom:clamp(48px,7vw,88px)">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:28px">
+      <h2 class="h-lg rv">Three answers to the sheet-music problem</h2>
+      <p class="sub rv" style="margin:10px auto 0">Skip it forever, drill it first, or learn it through the music. Only one makes players.</p>
+    </div>
+    <div class="table-scroll rv">
+      <table class="compare">
+        <thead>
+          <tr><th></th><th>Apps</th><th>Traditional lessons</th><th>The Ridley Method</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>How they handle notation</b></td>
+            <td class="no">Skip it. Falling notes replace reading forever.</td>
+            <td class="no">Drill it first, before any music you care about.</td>
+            <td class="yes">Learn it later, through songs you already play.</td>
+          </tr>
+          <tr>
+            <td><b>Time to your first real song</b></td>
+            <td class="no">Often never. Simplified arrangements on a screen, not the real thing.</td>
+            <td class="no">Months to years. Scales and method books come first.</td>
+            <td class="yes">Real songs are the starting point, not the reward.</td>
+          </tr>
+          <tr>
+            <td><b>Can you play without the screen or the page?</b></td>
+            <td class="no">No. The screen is the crutch.</td>
+            <td class="no">Often not. The page becomes the crutch.</td>
+            <td class="yes">Yes. Patterns first means the music lives in your hands.</td>
+          </tr>
+          <tr>
+            <td><b>Built for adults</b></td>
+            <td class="no">Built for engagement streaks, any age.</td>
+            <td class="no">Built for children working toward exams.</td>
+            <td class="yes">Built for adults. Most of our students are over 50.</td>
+          </tr>
+          <tr>
+            <td><b>Personal feedback</b></td>
+            <td class="no">An algorithm scoring key presses.</td>
+            <td class="yes">Yes, 30 to 60 minutes a week.</td>
+            <td class="yes">A mentor who knows your playing and your goals.</td>
+          </tr>
+          <tr>
+            <td><b>Cost over two years</b></td>
+            <td class="no">A subscription that keeps billing whether you progress or not.</td>
+            <td class="no">Two years of weekly private lessons runs $5,200 to $10,400.</td>
+            <td class="yes">Walked through openly on a free Breakthrough Session.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. WHO THIS IS FOR ============ -->
+<section class="section--tight" style="padding-bottom:clamp(48px,7vw,88px)">
+  <div class="wrap-narrow">
+    <div class="center" style="margin-bottom:24px">
+      <h2 class="h-lg rv">Who learns this way</h2>
+    </div>
+    <div class="card rv" style="border-color:var(--cherry)">
+      <ul class="check-list">
+        <li>Sheet music is the thing that's kept you from starting, or the thing that made you quit last time.</li>
+        <li>You want your hands on real songs now, and you're happy to learn reading once it has a reason.</li>
+        <li>You tried the falling-note apps and noticed you were following, not playing.</li>
+        <li>You're willing to practice, as long as the practice is actually going somewhere.</li>
+      </ul>
+    </div>
+    <p class="sub rv center" style="margin:18px auto 0;--d:.1s">If that's you, the 60-second quiz is the easiest next step. It maps where you are and what your path would look like.</p>
+    <div class="center rv" style="margin-top:18px;--d:.15s">
+      <a class="btn" href="../quiz-funnel/index.html?el=nosheet">Take the 60-second quiz</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. FAQ ============ -->
+<section class="section--tight" style="padding-bottom:clamp(48px,7vw,88px)">
+  <div class="wrap-narrow">
+    <div class="center" style="margin-bottom:24px">
+      <h2 class="h-lg rv">Playing without sheet music: the questions we hear most</h2>
+    </div>
+    <div class="faq rv">
+      <details>
+        <summary>Can you learn piano without reading sheet music?</summary>
+        <p class="faq-body">Yes. You can play real songs without reading a note, and starting that way is faster for most adults. Reading comes later, taught through the songs you already play, so notation lands as names for things your hands already know.</p>
+      </details>
+      <details>
+        <summary>Is it bad to learn without sheet music?</summary>
+        <p class="faq-body">No, as long as reading isn't skipped forever. The traditional order (notation first, music later) stalls adults. The reverse order keeps momentum and still gets you reading. For one real example: Glenwood Clark started at 68 and in one year learned to play with both hands and read music.</p>
+      </details>
+      <details>
+        <summary>How do you play piano without reading music?</summary>
+        <p class="faq-body">Real songs are built from patterns: chords, progressions, and shapes that repeat across music. Learn the patterns inside songs you love and you can play long before you can sight-read. That's how Stephen learned on a street piano, and it's how the method starts.</p>
+      </details>
+      <details>
+        <summary>Will I ever learn to read music?</summary>
+        <p class="faq-body">Yes. Reading and theory arrive in the Musical Fluency phase, taught through your repertoire rather than through drills. Most students find notation far easier once they can already play.</p>
+      </details>
+      <details>
+        <summary>Is playing by ear or reading music better?</summary>
+        <p class="faq-body">They're not rivals; they're stages. Pattern-playing gets you making music now, and reading multiplies what you can learn later. A method built for adults sequences them in that order.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. ABOUT RIDLEY: authority block + press ============ -->
+<section class="section--tight" style="padding-bottom:clamp(56px,8vw,100px)">
+  <div class="wrap">
+    <div class="split--rev split">
+      <div class="rv-l">
+        <div class="photo photo--tilt"><img src="images/perf-stance.jpg" srcset="images/perf-stance-640.jpg 640w, images/perf-stance.jpg 1200w" sizes="(max-width: 860px) 92vw, 42vw" alt="Stephen Ridley playing piano standing, mid-performance" loading="lazy"></div>
+      </div>
+      <div>
+        <span class="eyebrow">About Ridley Academy</span>
+        <h2 class="h-lg rv">The method came from the street, not the conservatory.</h2>
+        <p class="sub rv" style="margin-top:14px">Stephen Ridley learned on a beat-up street piano, found the structure inside real songs, and turned that into a method he has spent 10+ years teaching and performing worldwide. Today it has carried 40,000+ students in 60+ countries, with 1,300+ five-star reviews. Most of them are adults.</p>
+        <a class="btn btn--gold rv" style="margin-top:22px;--d:.1s" href="about.html">Read Stephen's story</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap center" style="margin-top:clamp(40px,6vw,64px)">
+    <p style="font-size:14px;color:rgba(252,244,234,.55);margin-bottom:16px">As featured &amp; trusted across</p>
+    <div class="press">
+      <img src="images/press/gq.svg" alt="GQ" loading="lazy">
+      <img src="images/press/vogue.svg" alt="Vogue" loading="lazy">
+      <img src="images/press/lofficiel.svg" alt="L'Officiel" loading="lazy">
+      <img src="images/press/omega.svg" alt="Omega" loading="lazy">
+      <img src="images/press/google.svg" alt="Google" loading="lazy">
+      <img src="images/press/youtube.svg" alt="YouTube" loading="lazy">
+      <img src="images/press/instagram.svg" alt="Instagram" loading="lazy">
+      <img src="images/press/trustpilot.svg" alt="Trustpilot" loading="lazy">
+      <img src="images/press/sitejabber.png" alt="Sitejabber" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. FINAL CTA: quiz (bordeaux with photo bleed) ============ -->
+<section class="section cta-dark" style="background:var(--bordeaux)">
+  <img class="bgimg" src="images/perf-lights.jpg" srcset="images/perf-lights-640.jpg 640w, images/perf-lights.jpg 1200w" sizes="100vw" alt="" loading="lazy">
+  <div class="wrap-narrow center">
+    <h2 class="h-xl rv">The dots on the page can wait. <span class="gold">The music can't.</span></h2>
+    <p class="sub rv" style="margin:14px auto 26px">Sixty seconds. It maps what's been in your way and what your path looks like.</p>
+    <a class="btn btn--gold rv" style="--d:.1s" href="../quiz-funnel/index.html?el=nosheet">Take the 60-second quiz</a>
+  </div>
+</section>
+
+</main>
+<!-- ============ FOOTER ============ -->
+<footer class="sitefoot">
+  <div class="cols">
+    <div>
+      <a class="logotype" href="index.html" style="color:var(--paper)">Ridley <b>Academy</b></a>
+      <p style="margin-top:12px;max-width:34ch">Piano for adults. Real songs first, theory through the music, and a path that ends with the piano being yours.</p>
+    </div>
+    <div>
+      <h5>Learn</h5>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="../quiz-funnel/index.html">The 60-Second Quiz</a>
+      <a href="tripwire.html">4 Magic Chords ($27)</a>
+      <a href="apply.html?el=site-footer">Book a Free Call</a>
+    </div>
+    <div>
+      <h5>Academy</h5>
+      <a href="about.html">About</a>
+      <a href="mentors.html">Mentors</a>
+      <a href="success.html">Success Stories</a>
+      <h5 style="margin-top:18px">Guides</h5>
+      <a href="learn-piano-after-50.html">Piano After 50</a>
+      <a href="online-piano-lessons-adults.html">Lessons for Adults</a>
+      <a href="online-piano-course.html">Online Piano Course</a>
+      <a href="piano-teacher-cost.html">Piano Lesson Costs</a>
+      <a href="learn-piano-without-sheet-music.html">Play Without Sheet Music</a>
+      <a href="how-much-does-ridley-academy-cost.html">Ridley Academy Cost</a>
+      <a href="best-ways-to-learn-piano.html">Best Ways to Learn</a>
+      <a href="ridley-academy-review.html">Ridley Academy Review</a>
+    </div>
+    <div>
+      <h5>Support</h5>
+      <a href="support.html">Contact Us</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+  </div>
+  <div class="legal">
+    <p>&copy; 2026 Ridley Academy. All rights reserved. Results vary by student and depend on practice and participation. Testimonials reflect individual experiences.</p>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

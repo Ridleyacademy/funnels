@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>You're In | 4 Magic Chords Mini Course | Ridley Academy</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E81420'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' fill='%23FFFBF4' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- NOTE for Ange: self-host these three fonts at deploy (font-display: swap). -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<!-- GTM CONTAINER HERE -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  dataLayer.push({ event: "rdly_tw_confirm_view" });
+</script>
+<style>
+  /* page-specific styles only */
+  .step-label{display:inline-block;background:var(--cherry);color:#fff;font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:13px;padding:6px 16px;border-radius:999px;margin-bottom:14px}
+  .survey-shell{border-radius:var(--radius-lg);padding:clamp(24px,4.5vw,44px)}
+  .survey-done{text-align:center;padding:10px 0}
+  .cal-slot{background:var(--cream-2);border:1.5px dashed var(--line);border-radius:var(--radius);min-height:420px;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;color:var(--ink-soft);font-size:14.5px}
+  .name-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:560px){.name-row{grid-template-columns:1fr}}
+  #step2{opacity:.45;pointer-events:none;transition:opacity .3s}
+  #step2.unlocked{opacity:1;pointer-events:auto}
+  /* the survey card stays LIGHT on the dark page (paper popping on black, like the apply form card) */
+  .theme-dark .survey-shell{background:var(--paper);color:var(--ink);border-color:var(--line)}
+  .theme-dark .survey-shell p{color:var(--ink)}
+  .theme-dark .survey-shell .q-sub{color:var(--ink-soft)}
+  .theme-dark .survey-shell .opt{background:var(--paper);border-color:var(--line);color:var(--ink)}
+  .theme-dark .survey-shell .opt.sel{background:#FDF0F0;border-color:var(--cherry)}
+  .theme-dark .survey-shell .field{background:var(--paper);border-color:var(--line);color:var(--ink)}
+  .theme-dark .survey-shell .field::placeholder{color:#9c6b70}
+  .theme-dark .survey-shell .backlink{color:var(--ink-soft)}
+</style>
+</head>
+<body class="theme-dark">
+<a class="skiplink" href="#main">Skip to content</a>
+
+<div class="topbar">Order confirmed. Your course access and workbook are on the way to your inbox.</div>
+<header class="sitehead"><a class="logotype" href="index.html">Ridley <b>Academy</b></a></header>
+<main id="main">
+
+<!-- ============ CONFIRMATION HERO ============ -->
+<section class="section--tight" style="padding-top:clamp(32px,5vw,56px)">
+  <div class="wrap-narrow">
+    <span class="eyebrow">Welcome to Ridley Academy</span>
+    <h1 class="h-xl rv">You're in. The <span class="hl">4 Magic Chords</span> are yours.</h1>
+    <p class="hand rv" style="margin-top:12px;--d:.1s">The hard part was starting. You just did that.</p>
+    <p class="sub rv" style="margin-top:12px;--d:.18s">Check your email. Your access to the 4 Magic Chords Mini Course and your free 100+ Song Workbook are on their way right now (give it a few minutes, and check spam if it's shy). While that lands, two quick things will set you up to get the most out of it.</p>
+  </div>
+</section>
+
+<!-- ============ STEP 1: QUALIFICATION SURVEY ============ -->
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <div class="center rv">
+      <span class="step-label">Step 1</span>
+      <h2 class="h-lg">Tell us where you're starting from</h2>
+      <p class="sub" style="margin:10px auto 22px;max-width:560px">Seven quick questions, about a minute. Your answers help us personalize your free Breakthrough Session so the conversation is about you, not a script.</p>
+    </div>
+
+    <div class="card survey-shell" aria-live="polite">
+      <div class="progress-dots" id="dots"></div>
+
+      <form id="twSurvey" onsubmit="return false">
+
+        <!-- Q1: what drew you to piano -->
+        <div class="form-step on" data-q="drew_to_piano">
+          <p class="q">What drew you to the piano?</p>
+          <p class="q-sub">There's no wrong answer here.</p>
+          <div class="opts">
+            <button type="button" class="opt">I've always wanted to play, and I'm done waiting</button>
+            <button type="button" class="opt">A specific song or artist I want to play</button>
+            <button type="button" class="opt">I played as a kid and want it back</button>
+            <button type="button" class="opt">I want a creative outlet in my life</button>
+            <button type="button" class="opt">There's a piano in my home that deserves better</button>
+          </div>
+        </div>
+
+        <!-- Q2: age band -->
+        <div class="form-step" data-q="age_band">
+          <p class="q">Which best describes you?</p>
+          <p class="q-sub">Our students range from 5 to 96, so you're in good company either way.</p>
+          <div class="opts">
+            <button type="button" class="opt">Under 30</button>
+            <button type="button" class="opt">30 to 44</button>
+            <button type="button" class="opt">45 to 59</button>
+            <button type="button" class="opt">60 to 74</button>
+            <button type="button" class="opt">75 or better</button>
+          </div>
+        </div>
+
+        <!-- Q3: what have you tried -->
+        <div class="form-step" data-q="tried_before">
+          <p class="q">What have you tried so far?</p>
+          <p class="q-sub">Pick the closest fit.</p>
+          <div class="opts">
+            <button type="button" class="opt">Apps like Simply Piano, Yousician, or Flowkey</button>
+            <button type="button" class="opt">Traditional lessons with a teacher</button>
+            <button type="button" class="opt">YouTube videos and teaching myself</button>
+            <button type="button" class="opt">A mix of all of the above</button>
+            <button type="button" class="opt">Nothing yet. This is my first real step</button>
+          </div>
+        </div>
+
+        <!-- Q4: biggest frustration (open text) -->
+        <div class="form-step" data-q="frustration">
+          <p class="q">What's been the most frustrating part of learning so far?</p>
+          <p class="q-sub">Say it plainly. This is the part your mentor reads most carefully.</p>
+          <textarea class="field" id="f_frustration" placeholder="For example: I practiced for months and still can't play a single song for anyone..."></textarea>
+          <div class="form-nav">
+            <button type="button" class="btn btn--block" data-next>Continue</button>
+          </div>
+        </div>
+
+        <!-- Q5: magic wand (open text) -->
+        <div class="form-step" data-q="magic_wand">
+          <p class="q">Magic wand time: a year from now, what does playing piano look like for you?</p>
+          <p class="q-sub">Paint the picture. Where are you, what are you playing, who's listening?</p>
+          <textarea class="field" id="f_magicwand" placeholder="For example: it's Christmas, the family's around, and I just sit down and play..."></textarea>
+          <div class="form-nav">
+            <button type="button" class="btn btn--block" data-next>Continue</button>
+          </div>
+        </div>
+
+        <!-- Q6: mentor openness -->
+        <div class="form-step" data-q="mentor_interest">
+          <p class="q">If the path were laid out for you, would you want a mentor guiding you along it?</p>
+          <p class="q-sub">Honest answers help us make your session useful, whichever one you pick.</p>
+          <div class="opts">
+            <button type="button" class="opt">Yes. A real person in my corner is exactly what's been missing</button>
+            <button type="button" class="opt">Probably. I'd want to hear how it works first</button>
+            <button type="button" class="opt">Maybe someday. Right now I want to explore on my own</button>
+          </div>
+        </div>
+
+        <!-- Q7: name + email -->
+        <div class="form-step" data-q="contact">
+          <p class="q">Last step: who should we prepare this for?</p>
+          <p class="q-sub">If we caught these from your order, just confirm they're right.</p>
+          <!-- PREFILL NOTE: ThriveCart passes buyer details on the success redirect. We read
+               first_name / last_name / email (also name / customer_email) from the URL query
+               string and prefill these fields so most buyers only confirm and continue. -->
+          <div class="name-row" style="margin-bottom:12px">
+            <input class="field" type="text" id="f_first" placeholder="First name" autocomplete="given-name">
+            <input class="field" type="text" id="f_last" placeholder="Last name" autocomplete="family-name">
+          </div>
+          <input class="field" type="email" id="f_email" placeholder="Email (where your course access was sent)" autocomplete="email">
+          <div class="form-nav">
+            <button type="button" class="btn btn--block" id="finishBtn">Finish and unlock Step 2</button>
+          </div>
+        </div>
+
+        <!-- Done state -->
+        <div class="form-step" data-q="done">
+          <div class="survey-done">
+            <p class="q">Done. Thank you.</p>
+            <p class="q-sub" style="margin-bottom:0">Your answers are saved. Now grab your session time below, and we'll come to the call already knowing your story.</p>
+          </div>
+        </div>
+
+      </form>
+
+      <div class="form-nav" style="margin-top:6px">
+        <button type="button" class="backlink" id="backBtn" style="display:none">Go back a question</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 2: BOOK THE BREAKTHROUGH SESSION ============ -->
+<section class="section" id="step2">
+  <div class="wrap-narrow">
+    <div class="center">
+      <span class="step-label">Step 2</span>
+      <h2 class="h-lg">Book your free Breakthrough Session</h2>
+      <p class="sub" style="margin:10px auto 22px;max-width:600px">A free 30-minute conversation with the Ridley team about where you are and where you want to get to. A conversation, not a checkout. You never have to play a note. First, a quick welcome from Stephen.</p>
+    </div>
+
+    <!-- Filled 7/30: "Welcome, thank you. Option one" cut found on this machine, transcoded
+         to videos/welcome-stephen.mp4 (0:56). Native player, preload=none. -->
+    <video class="vfaq" controls preload="none" playsinline poster="videos/welcome-stephen-poster.jpg" style="width:100%;aspect-ratio:16/9;border-radius:var(--radius-lg);background:#000;margin-bottom:26px" onplay="if(!this.dataset.p){this.dataset.p=1;window.dataLayer&&dataLayer.push({event:'rdly_video_play',video_id:'welcome-stephen',page_path:location.pathname})}">
+      <source src="videos/welcome-stephen.mp4" type="video/mp4">
+    </video>
+
+    <!-- CALENDLY, wired 7/31. Qualified event, mounted by shared.js. The buyer's name,
+         email and phone prefill from what they already gave at checkout, so booking is
+         one tap after a purchase. -->
+    <div data-cal="qualified">
+      <div class="cal-slot">Loading the calendar&hellip;</div>
+    </div>
+    <p class="btn-note">Pick any time that works. If nothing fits, reply to your confirmation email and we'll find one together.</p>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIAL ROW ============ -->
+<section class="section--tight" style="padding-bottom:clamp(48px,8vw,96px)">
+  <div class="wrap">
+    <div class="center rv" style="margin-bottom:24px">
+      <h2 class="h-md">You're in good company</h2>
+    </div>
+    <div class="grid-3">
+      <div class="tcard rv">
+        <span class="stars">★★★★★</span>
+        <p>"I've had eight piano teachers, and I learned more from the Ridley Academy than all the others combined."</p>
+        <div class="who">David Clarke</div>
+        <span class="badge">Verified Trustpilot review</span>
+      </div>
+      <div class="tcard rv" style="--d:.1s">
+        <span class="stars">★★★★★</span>
+        <p>At 68, Glenwood learned to play with both hands and read music within one year.</p>
+        <div class="who">Glenwood Clark</div>
+        <span class="badge">Verified Trustpilot review</span>
+      </div>
+      <div class="tcard rv" style="--d:.2s">
+        <span class="stars">★★★★★</span>
+        <p>Carlos achieved his goal to play piano in less than 6 months. His verdict: "worth it."</p>
+        <div class="who">Carlos Rodriguez</div>
+        <span class="badge">Verified Trustpilot review</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="foot">
+  <p>&copy; Ridley Academy. All rights reserved.</p>
+  <p class="compliance">Your 4 Magic Chords Mini Course purchase is covered by a 30-day money-back guarantee, and the 100+ Song Workbook is yours to keep either way. Results vary by student and depend on practice and participation.</p>
+</footer>
+
+<script>
+(function(){
+  var steps = Array.prototype.slice.call(document.querySelectorAll("#twSurvey .form-step"));
+  var qSteps = steps.filter(function(s){ return s.dataset.q !== "done"; });
+  var dots = document.getElementById("dots");
+  var backBtn = document.getElementById("backBtn");
+  var current = 0;
+  var started = false;
+  var answers = {};
+
+  // progress dots (one per question step)
+  qSteps.forEach(function(){
+    var d = document.createElement("span");
+    d.className = "dot";
+    dots.appendChild(d);
+  });
+  function paint(){
+    var ds = dots.children;
+    for (var i = 0; i < ds.length; i++) ds[i].className = i <= current ? "dot on" : "dot";
+    backBtn.style.display = (current > 0 && current < qSteps.length) ? "inline" : "none";
+  }
+
+  function show(i){
+    steps.forEach(function(s){ s.classList.remove("on"); });
+    var el = steps[i] || steps[steps.length - 1];
+    el.classList.add("on");
+    // a11y: move focus to the new step's heading so screen readers follow
+    var h = el.querySelector(".q, h3, h2");
+    if (h){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
+    current = i;
+    paint();
+  }
+
+  function track(evt, data){
+    window.dataLayer = window.dataLayer || [];
+    var payload = { event: evt };
+    for (var k in data) payload[k] = data[k];
+    dataLayer.push(payload);
+  }
+
+  function markStart(){
+    if (!started){ started = true; track("rdly_tw_survey_start", {}); }
+  }
+
+  function advance(){
+    var q = steps[current].dataset.q;
+    track("rdly_tw_survey_step", { question: q, step_index: current + 1, answer: answers[q] || "" });
+    show(current + 1);
+    if (steps[current].dataset.q === "done") return;
+  }
+
+  // option buttons
+  steps.forEach(function(step){
+    var opts = step.querySelectorAll(".opt");
+    opts.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        markStart();
+        opts.forEach(function(b){ b.classList.remove("sel"); });
+        btn.classList.add("sel");
+        answers[step.dataset.q] = btn.textContent.trim();
+        setTimeout(advance, 180);
+      });
+    });
+  });
+
+  // continue buttons on open-text steps
+  document.querySelectorAll("[data-next]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      markStart();
+      var step = btn.closest(".form-step");
+      var ta = step.querySelector("textarea");
+      if (ta) answers[step.dataset.q] = ta.value.trim();
+      advance();
+    });
+  });
+
+  backBtn.addEventListener("click", function(){ if (current > 0) show(current - 1); });
+
+  // prefill name/email from ThriveCart success-redirect query params
+  var p = new URLSearchParams(location.search);
+  var first = p.get("first_name") || p.get("firstname") || (p.get("name") || "").split(" ")[0] || "";
+  var last = p.get("last_name") || p.get("lastname") || "";
+  var email = p.get("email") || p.get("customer_email") || "";
+  if (first) document.getElementById("f_first").value = first;
+  if (last) document.getElementById("f_last").value = last;
+  if (email) document.getElementById("f_email").value = email;
+
+  // finish: validate contact, fire complete, unlock step 2
+  document.getElementById("finishBtn").addEventListener("click", function(){
+    markStart();
+    var f = document.getElementById("f_first").value.trim();
+    var e = document.getElementById("f_email").value.trim();
+    if (!f || !e || e.indexOf("@") < 1){
+      alert("Add your first name and the email you used at checkout so we can match your answers to your order.");
+      return;
+    }
+    answers.contact = f + " " + document.getElementById("f_last").value.trim() + " <" + e + ">";
+    track("rdly_tw_survey_step", { question: "contact", step_index: qSteps.length, answer: "provided" });
+    track("rdly_tw_survey_complete", {
+      drew_to_piano: answers.drew_to_piano || "",
+      age_band: answers.age_band || "",
+      tried_before: answers.tried_before || "",
+      mentor_interest: answers.mentor_interest || "",
+      has_frustration_text: !!(answers.frustration && answers.frustration.length),
+      has_magic_wand_text: !!(answers.magic_wand && answers.magic_wand.length)
+    });
+    // SUBMISSION NOTE: wire answers to the backend of record (ActiveCampaign fields or a
+    // webhook) here. Until wired, answers exist only in the dataLayer.
+    show(steps.length - 1);
+    var s2 = document.getElementById("step2");
+    s2.classList.add("unlocked");
+    setTimeout(function(){ s2.scrollIntoView({ behavior: "smooth" }); }, 350);
+  });
+
+  paint();
+})();
+</script>
+<script src="shared.js"></script>
+
+</body>
+</html>
