@@ -1,0 +1,152 @@
+<!-- ============ FRONT DOOR ============
+     Hidden by default (.door{display:none}). The pre-paint bootstrap in
+     <head> adds .is-door to <html>, which is what reveals it.
+
+     The offer is the ONE full video already on the page
+     (YouTube XO74o7ehyx8), not a multi-part course: they opt in, the
+     door lifts, and that video restarts from 0 with sound. Nothing is
+     promised that the page does not deliver on the very next frame.
+
+     Every image here is already on the deploy, so this adds no new
+     assets beyond the four files themselves:
+       masterclass-poster.jpg     the VSL's own opening frame
+       real/perf-stance.jpg       Steven at the grand, packed hall
+       real/perf-streetpiano.jpg  the street piano crowd
+       real/perf-lights.jpg       phone lights at an open-air concert
+
+     Copy is grounded in the brand's own language: "Fast. Fun. Simple.",
+     "10X faster than traditional methods", "10-15 minutes a day",
+     "understand music, don't just memorize it" (ridleyacademy.com).
+     Proof numbers are the verified set from PRODUCT.md only.
+     ==================================== -->
+<div class="door" id="door" role="dialog" aria-modal="true" aria-labelledby="doorH1">
+  <div class="door__in">
+
+    <div class="door__copy">
+      <div class="door__logo">
+        <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <rect x="4" y="22" width="5.5" height="14" rx="2.5" fill="currentColor"/>
+          <rect x="12" y="15" width="5.5" height="21" rx="2.5" fill="currentColor"/>
+          <rect x="20" y="8" width="5.5" height="28" rx="2.5" fill="currentColor"/>
+          <rect x="28" y="3" width="5.5" height="33" rx="2.5" fill="currentColor"/>
+        </svg>
+        <span>Ridley Academy</span>
+      </div>
+
+      <span class="eyebrow">Free piano video</span>
+
+      <h1 class="door__h1" id="doorH1">Learn Piano In <span class="fire-text">Weeks, Not Years</span>.</h1>
+
+      <p class="door__sub">Stephen Ridley's free <b>video</b> on the method <b>40,000+ adults</b> used to go from zero to playing the songs they love, on <b>10 minutes a day</b>. No sheet music. No experience needed.</p>
+    </div>
+
+    <!-- Everything in here sits directly under the copy on desktop (same
+         column, next row) but BELOW the form on a phone. That ordering is
+         the whole point: on mobile the fields have to be reachable without
+         a scroll, so the supporting detail waits its turn. -->
+    <div class="door__more">
+      <ul class="door__list">
+        <li><i class="door__tick"></i><span><b>Why you were never the problem.</b> The one shift that makes the piano finally click.</span></li>
+        <li><i class="door__tick"></i><span><b>Understand it, don't memorise it.</b> How Steven plays without reading a note.</span></li>
+        <li><i class="door__tick"></i><span><b>Ten minutes, not two hours.</b> The short daily practice that replaces long drills.</span></li>
+      </ul>
+
+      <div class="door__band">
+        <img src="images/real/perf-stance.jpg" alt="Stephen Ridley playing a grand piano in front of a packed concert hall" width="1200" height="1500" loading="eager" decoding="async">
+        <img src="images/real/perf-streetpiano.jpg" alt="Stephen Ridley singing on top of a street piano surrounded by a crowd" width="1200" height="1500" loading="eager" decoding="async">
+        <img src="images/real/perf-lights.jpg" alt="Thousands of fans holding up phone lights at a Stephen Ridley open-air concert" width="1200" height="1500" loading="eager" decoding="async">
+      </div>
+      <p class="door__hand">He teaches it exactly the way he plays it.</p>
+
+      <div class="door__stats">
+        <div>
+          <div class="door__statn">40,000+</div>
+          <div class="door__statl">Students</div>
+        </div>
+        <div>
+          <div class="door__statn">60+</div>
+          <div class="door__statl">Countries</div>
+        </div>
+        <div>
+          <div class="door__statn">5 to 96</div>
+          <div class="door__statl">Ages taught</div>
+        </div>
+        <div>
+          <div class="door__statn">1,300+</div>
+          <div class="door__statl"><span class="door__stars">★★★★★</span>Reviews</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="door__card">
+      <!-- a real button, not a decorative play badge: it sends focus to the
+           first empty field, so the affordance does something honest. -->
+      <button type="button" class="door__vid" id="doorVid" aria-label="Watch the free video. Enter your details to start it.">
+        <img src="images/masterclass-poster.jpg" alt="Stephen Ridley at the piano in the opening frame of the free video" width="1280" height="720" loading="eager" decoding="async">
+        <span class="door__play" aria-hidden="true"></span>
+        <span class="door__vidtag">Free video</span>
+      </button>
+
+      <h2>Watch it now, free</h2>
+      <p class="door__cardsub">It plays on the very next screen. No download, no waiting.</p>
+
+      <form id="doorForm" novalidate>
+        <div class="door__fields">
+          <input class="door__field" type="text" name="name" placeholder="First name" required autocomplete="given-name" autocapitalize="words">
+          <input class="door__field" type="email" name="email" placeholder="Email address" required autocomplete="email" inputmode="email">
+          <input class="door__field" type="tel" name="phone" placeholder="Phone number" required autocomplete="tel" inputmode="tel">
+        </div>
+        <label class="door__consent">
+          <input type="checkbox" name="consent" value="1">
+          <span>Text me piano tips and any call reminders. Message and data rates may apply. Reply STOP to opt out.</span>
+        </label>
+        <button type="submit" class="btn btn--fire btn--block" id="doorBtn">Show Me How It Works ›</button>
+        <p class="door__note">🔒 Free. No card needed. Unsubscribe any time.</p>
+        <!-- Shown by the handler only to someone who has opted in before.
+             The gate is still the first view on every visit, but a returning
+             visitor can choose to go straight back in rather than submit
+             again. Re-entry never re-fires capture. -->
+        <p class="door__again" id="doorAgain" hidden>
+          Already registered? <button type="button" id="doorAgainBtn">Watch again ›</button>
+        </p>
+        <p class="door__fine">By entering your details you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a> and consent to being contacted about your request.</p>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ POST-VIDEO CHOICE ============
+     Injected directly after the page's own hero CTA, which is hidden for
+     opted-in visitors (.is-opted .gate-cta{display:none}).
+
+     One tap to the calendar. We already hold name, email and phone from
+     the door, so they are passed to Calendly as prefill rather than
+     re-typed. The soft exit under it goes to the $27 tripwire.
+
+     NO QUALIFICATION IN THIS FLOW. An investment line sat here and was
+     cut by Chris on 7/31. Nothing now filters for fit between the ad and
+     the calendar: no price, no form, no qualifying questions. If call
+     quality needs a filter later, the zero-click place to put it is a
+     required custom question on the Calendly event itself, since that
+     step is already being taken. Do not add one here without a reason.
+     ============================================ -->
+<div class="choice" id="choice">
+  <h2 class="choice__h">Ready to start playing?</h2>
+  <p class="choice__sub">Book a free 30-minute call. We'll map your way in, answer your questions, and find which program fits where you are now.</p>
+  <button type="button" class="btn btn--fire btn--lg" id="choiceBook">Book My Free Call ›</button>
+  <p class="choice__note">🔒 Free. No card needed. 30 minutes.</p>
+
+  <!-- Calendly mounts here, in place of the button, prefilled from the gate.
+       Booking is caught by main.js's existing `calendly.event_scheduled`
+       listener, which sends them to /thank-you where the Meta Schedule
+       conversion fires. Nothing new is fired here, so Schedule cannot
+       double-count. -->
+  <div class="choice__cal" id="choiceCal" hidden>
+    <div class="choice__calhost" id="choiceCalHost"></div>
+    <p class="choice__powered">Powered by Calendly · Free Piano Consultation</p>
+  </div>
+
+  <br>
+  <a class="choice__alt" id="choiceLater" href="/tripwire">I'm not ready yet →</a>
+</div>

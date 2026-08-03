@@ -1,0 +1,294 @@
+<!-- ============================================================
+     FRONT DOOR (vsl-b): free video opt-in before the VSL.
+     Injected by optin-front-door/build.sh. Three blocks total, all
+     inline so the door paints on the first frame with no extra
+     request: this <style>, the bootstrap below it, and the markup +
+     handler further down the document.
+
+     Behaviour
+       - Door covers the page until they opt in. Nothing under it is
+         removed, so the VSL is already buffered when it lifts, and
+         the full video starts instantly on submit.
+       - ?v=plain skips the door entirely (rollback + QA switch).
+       - A visitor who already opted in (ridley_lead_v1 in
+         localStorage) never sees it again, on any visit.
+       - If JS fails or is blocked the class is never added, so the
+         page renders exactly as it does today. Fails OPEN, always.
+
+     Event ladder, deliberately distinct so the vsl-a/vsl-b test is
+     not confounded (VSL-B-RETEST-BUILD.md blocker 3):
+       CompleteRegistration - front-door opt-in (this file)
+       Lead                 - booking form submit (main.js, unchanged)
+       Schedule             - /thank-you (unchanged)
+     The ad sets bid LEAD, so vsl-b still optimises toward bookings,
+     exactly like vsl-a.
+
+     DESIGN SYSTEM
+     The door borrows the page's own components rather than inventing
+     lookalikes: .btn .btn--fire .btn--block for the CTA (real pill,
+     real --grad-fire, real idle motion), .eyebrow for the kicker,
+     .fire-text for the accent words, var(--hand) Caveat for the one
+     handwritten annotation. Only layout scaffolding is .door__*.
+     Radii follow DESIGN.md: 18px card, 26px large media, 12px inputs,
+     pill buttons. Spacing runs off a scoped 4pt scale, never ad-hoc
+     values, so the rhythm is deliberate instead of uniform.
+     ============================================================ -->
+<style>
+.door{
+  /* 4pt scale, named by relationship. Every gap below comes from here. */
+  --d-1:4px; --d-2:8px; --d-3:12px; --d-4:16px;
+  --d-5:24px; --d-6:32px; --d-7:48px; --d-8:64px;
+  --d-gutter:clamp(20px,5vw,60px);
+  display:none;
+}
+html.is-door,html.is-door body{overflow:hidden!important;height:100%}
+html.is-door .door{
+  display:flex;position:fixed;inset:0;z-index:9999;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  background:var(--cream,#F8F6F2);
+  background-image:radial-gradient(115% 75% at 8% -12%,rgba(232,20,32,.11),transparent 58%);
+  align-items:flex-start;justify-content:center;
+}
+.door__in{
+  width:100%;max-width:1200px;margin:auto;
+  padding:clamp(24px,4vw,56px) var(--d-gutter);
+  display:grid;gap:clamp(28px,3.2vw,44px);
+  grid-template-columns:1fr;align-items:start;
+}
+/* MOBILE ORDER: promise, then the form, then the proof. The form has to
+   be reachable without a scroll on a phone, which is where the paid
+   traffic lands. Proof earns its keep below it, not above it. */
+.door__copy{order:1}
+.door__card{order:2}
+.door__more{order:3}
+/* DESKTOP: the 7/5 asymmetric split from DESIGN.md, not a 50/50 that
+   reads as undesigned. Copy and proof stack in the wide column; the
+   card spans both rows in the narrow one, top-aligned so the form is
+   never pushed below the fold by however tall the left side runs. */
+@media(min-width:900px){
+  .door__in{
+    grid-template-columns:7fr 5fr;
+    grid-template-rows:auto 1fr;
+    gap:var(--d-5) clamp(40px,4.5vw,72px);
+  }
+  .door__copy{grid-column:1;grid-row:1}
+  .door__more{grid-column:1;grid-row:2}
+  .door__card{grid-column:2;grid-row:1/span 2;align-self:start}
+}
+
+/* ---- wide column: promise ---- */
+.door__logo{
+  display:flex;align-items:center;gap:.5em;font-family:var(--display,Oswald,sans-serif);
+  text-transform:uppercase;letter-spacing:.07em;font-size:.8rem;font-weight:600;
+  color:var(--ink,#2A060D);margin:0 0 var(--d-6);
+}
+.door__logo svg{width:25px;height:25px;color:var(--cherry,#E81420)}
+.door__copy .eyebrow{color:var(--cherry,#E81420);margin:0}
+.door__h1{
+  font-family:var(--display,Oswald,sans-serif);font-weight:600;line-height:.99;
+  font-size:clamp(2.35rem,5vw,3.9rem);letter-spacing:-.005em;
+  color:var(--ink,#2A060D);margin:var(--d-4) 0 0;text-wrap:balance;
+}
+/* measure agrees with the list below it; a narrower sub above wider
+   bullets reads as an accident, not a decision. */
+.door__sub{
+  font-size:clamp(1rem,1.4vw,1.12rem);line-height:1.55;
+  color:var(--ink-soft,#7a3a40);max-width:52ch;margin:var(--d-4) 0 0;
+}
+/* tight grouping: the three points are one unit, so they sit close to
+   each other and further from everything else. */
+.door__list{list-style:none;margin:0 0 var(--d-7);padding:0;display:grid;gap:var(--d-3)}
+.door__list li{display:flex;gap:var(--d-3);align-items:baseline;font-size:.95rem;line-height:1.5;color:var(--ink-soft,#7a3a40)}
+.door__list b{color:var(--ink,#2A060D);font-weight:600}
+.door__tick{
+  flex:0 0 auto;width:6px;height:6px;border-radius:50%;
+  background:var(--cherry,#E81420);transform:translateY(-2px);
+}
+
+/* ---- wide column: proof ---- */
+/* Asymmetric band, not three identical tiles. The concert-hall frame
+   leads at 1.6x and carries the 26px large-media radius; the street
+   piano and the crowd support it at 18px. */
+.door__band{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:var(--d-2)}
+.door__band img{
+  width:100%;height:clamp(104px,10.5vw,146px);object-fit:cover;
+  display:block;background:var(--cream-2,#F1EBDF);border-radius:18px;
+}
+.door__band img:nth-child(1){border-radius:26px;object-position:50% 26%}
+.door__band img:nth-child(2){object-position:56% 34%}
+.door__band img:nth-child(3){object-position:50% 60%}
+/* the one handwritten moment on the door, per DESIGN.md's hand accent */
+.door__hand{
+  font-family:var(--hand,'Caveat',cursive);font-weight:700;
+  font-size:clamp(1.12rem,1.7vw,1.32rem);line-height:1.25;
+  color:var(--burgundy,#B00C19);margin:var(--d-3) 0 0;
+  transform:rotate(-1.2deg);transform-origin:left center;
+}
+/* sized so all four figures hold a single line in the 7fr column; the row
+   wrapping one stat onto its own line was the tell that this was tuned by
+   eye rather than measured. */
+.door__stats{display:flex;flex-wrap:wrap;gap:var(--d-5) clamp(18px,2.3vw,34px);margin-top:var(--d-6)}
+.door__statn{
+  font-family:var(--display,Oswald,sans-serif);font-weight:600;
+  font-size:clamp(1.6rem,2.3vw,2.05rem);line-height:1;color:var(--ink,#2A060D);
+}
+.door__statl{
+  font-weight:600;font-size:.72rem;color:var(--ink-soft,#7a3a40);
+  margin-top:var(--d-2);text-transform:uppercase;letter-spacing:.09em;
+}
+/* stars ride WITH the label, never above the numeral: a stacked star row
+   knocks that one figure off the shared baseline and the whole row reads
+   as misaligned. */
+.door__stars{color:var(--gold,#FFB42B);letter-spacing:.08em;margin-right:.35em}
+
+/* ---- narrow column: the form ---- */
+.door__card{
+  background:var(--paper,#FFFBF4);border:1px solid var(--line,rgba(42,6,13,.14));
+  border-radius:18px;padding:clamp(20px,2.4vw,28px);
+  box-shadow:0 24px 60px -28px rgba(42,6,13,.38);
+}
+/* inner radius sits under the card's, never over it */
+.door__vid{
+  position:relative;display:block;width:100%;padding:0;border:0;cursor:pointer;
+  border-radius:14px;overflow:hidden;aspect-ratio:16/9;max-height:158px;
+  background:#1a0409;margin:0 0 var(--d-5);
+}
+.door__vid img{width:100%;height:100%;object-fit:cover;display:block}
+.door__vid::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(26,4,9,0) 44%,rgba(26,4,9,.7) 100%);
+}
+.door__play{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(232,20,32,.95);box-shadow:0 6px 20px -6px rgba(0,0,0,.7);
+  transition:transform .25s var(--ease,cubic-bezier(.2,.7,.2,1));
+}
+/* optical: a triangle centred geometrically reads left of centre */
+.door__play::after{
+  content:"";border-style:solid;border-width:8px 0 8px 13px;
+  border-color:transparent transparent transparent #fff;margin-left:3px;
+}
+.door__vid:hover .door__play{transform:translate(-50%,-50%) scale(1.08)}
+.door__vidtag{
+  position:absolute;left:12px;bottom:10px;color:#fff;
+  font-family:var(--body,sans-serif);text-transform:uppercase;
+  letter-spacing:.09em;font-size:.64rem;font-weight:700;
+  text-shadow:0 1px 6px rgba(0,0,0,.65);
+}
+.door__card h2{
+  font-family:var(--display,Oswald,sans-serif);font-weight:600;
+  font-size:clamp(1.4rem,2vw,1.68rem);line-height:1.1;
+  color:var(--ink,#2A060D);margin:0;
+}
+.door__cardsub{font-size:.88rem;color:var(--ink-soft,#7a3a40);margin:var(--d-2) 0 0;line-height:1.5}
+.door__fields{display:grid;gap:var(--d-3);margin-top:var(--d-5)}
+.door__field{
+  width:100%;box-sizing:border-box;font:inherit;font-size:1rem;
+  padding:.92em 1em;border-radius:12px;
+  border:1.5px solid var(--line,rgba(42,6,13,.14));background:var(--cream,#F8F6F2);
+  color:var(--ink,#2A060D);transition:border-color .18s,background .18s;
+}
+.door__field::placeholder{color:rgba(122,58,64,.7)}
+.door__field:focus{outline:none;border-color:var(--cherry,#E81420);background:#fff}
+.door__field.is-valid{border-color:#1E9E5A;background:#fff}
+.door__field.is-bad{border-color:#F50C1C}
+.door__consent{
+  display:flex;gap:var(--d-3);align-items:flex-start;margin:var(--d-4) 0 var(--d-5);
+  font-size:.79rem;line-height:1.45;color:var(--ink-soft,#7a3a40);cursor:pointer;
+}
+.door__consent input{flex:0 0 auto;width:17px;height:17px;margin:.1em 0 0;accent-color:var(--cherry,#E81420)}
+.door__card .btn{font-size:clamp(.98rem,1.5vw,1.08rem);padding:1.1em 1.6em}
+.door__note{font-size:.78rem;color:var(--ink-soft,#7a3a40);margin:var(--d-3) 0 0}
+.door__fine{font-size:.7rem;line-height:1.5;color:rgba(122,58,64,.82);margin:var(--d-3) 0 0}
+.door__fine a{color:inherit;text-decoration:underline}
+
+@media(prefers-reduced-motion:no-preference){
+  .door__in{animation:doorIn .55s cubic-bezier(.16,1,.3,1) both}
+  @keyframes doorIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+}
+@media(max-width:520px){
+  .door__band img{height:88px}
+  .door__band img:nth-child(1){border-radius:20px}
+}
+
+/* ---- PHONE: get the CTA above the fold ----
+   Measured 7/31 on 390x844: the submit button landed at y=938, i.e. below
+   the fold, on the exact device paid traffic arrives on. The promise still
+   has to read, so nothing is cut. Everything above the button is tightened
+   instead, and the poster shrinks to a thumbnail: it is a cue that a video
+   is waiting, not the video itself. */
+@media(max-width:899px){
+  .door__in{padding-top:clamp(16px,3vw,24px);gap:var(--d-5)}
+  .door__logo{margin-bottom:var(--d-3)}
+  .door__h1{margin-top:var(--d-2)}
+  .door__sub{margin-top:var(--d-3);font-size:1rem;line-height:1.45}
+  .door__card{padding:var(--d-4)}
+  .door__vid{max-height:84px;margin-bottom:var(--d-4);border-radius:12px}
+  .door__vid .door__play{width:40px;height:40px}
+  .door__card h2{font-size:1.22rem}
+  .door__cardsub{margin:var(--d-1) 0 var(--d-4);font-size:.88rem;line-height:1.4}
+  .door__consent{margin-top:var(--d-3)}
+}
+
+/* ---- POST-VIDEO CHOICE ----------------------------------------------
+   Shown only to a visitor who has already opted in (html.is-opted), in
+   place of the page's own "Book My Free Piano Consultation" CTA. We have
+   their name, email and phone from the door, so there is nothing left to
+   type: one tap goes to the calendar, and the soft exit sits under it.
+   Qualification is done in the copy above the button, not in extra steps. */
+.is-opted .gate-cta{display:none!important}
+.choice{display:none}
+.is-opted .choice{display:block;max-width:640px;margin:clamp(26px,3.4vw,44px) auto 0;text-align:center}
+.choice__h{font-size:clamp(23px,3.1vw,32px);line-height:1.15;margin:0 0 10px}
+.choice__sub{margin:0 auto 6px;max-width:30em;line-height:1.5;opacity:.86}
+.choice .btn{width:100%;max-width:420px}
+.choice__note{margin:10px 0 0;font-size:.86rem;opacity:.7}
+.choice__alt{display:inline-block;margin-top:20px;font-size:.95rem;opacity:.72;
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.choice__alt:hover{opacity:1}
+
+/* ---- inline Calendly, revealed in place of the button ---- */
+.choice__cal{margin-top:var(--d-5,24px)}
+.choice__calhost{
+  width:100%;min-height:720px;border-radius:18px;overflow:hidden;
+  background:var(--paper,#FFFBF4);border:1px solid var(--line,rgba(42,6,13,.14));
+}
+@media(max-width:640px){.choice__calhost{min-height:1040px}}
+.choice__powered{
+  margin:10px 0 0;font-size:.76rem;opacity:.6;
+  text-transform:uppercase;letter-spacing:.07em;
+}
+/* once the calendar is up, the pitch above it has done its job */
+.is-booking .choice__sub,
+.is-booking #choiceBook,
+.is-booking .choice__note{display:none}
+
+/* ---- returning visitor: re-entry ----
+   Only revealed for someone carrying a prior opt-in. Quiet by design: the
+   form is still the main path, this is the shortcut for a re-watch. */
+.door__again{
+  margin:var(--d-3) 0 0;text-align:center;font-size:.85rem;
+  color:var(--ink-soft,#7a3a40);
+}
+.door__again button{
+  background:none;border:0;padding:0;cursor:pointer;font:inherit;
+  color:var(--cherry,#E81420);font-weight:600;
+  text-decoration:underline;text-underline-offset:3px;
+}
+.door__again button:hover{color:var(--burgundy,#B00C19)}
+</style>
+<!-- pre-paint bootstrap: decide on the door before the first frame so the
+     page never flashes behind it. Mirrors the ?v=gated bootstrap above. -->
+<script>try{(function(){
+  var q=location.search;
+  if(q.indexOf('v=plain')>-1||q.indexOf('door=off')>-1)return;
+  /* THE GATE IS ALWAYS THE FIRST VIEW (Chris, 7/31). No localStorage
+     bypass: every visit starts here, including a return visit from
+     someone who has already opted in. A known lead gets their fields
+     pre-filled by the handler, so it stays a single tap rather than a
+     re-type, and the capture is not sent twice. is-opted is added only
+     after they pass the gate, which is what swaps the page's hero CTA
+     for the two-way choice. */
+  document.documentElement.className+=' is-door';
+})();}catch(e){}</script>
