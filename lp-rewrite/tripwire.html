@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Meta Pixel Code (base: init + PageView). Conversion events fire from
+     main.js/funnel.js at the correct moments (Lead on form submit,
+     InitiateCheckout on the $27 checkout, ViewContent on the upsells);
+     Schedule fires ONLY on thank-you.html, Purchase ONLY from ThriveCart. -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2032449947451129');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<title>Play 100+ Songs With 4 Magic Chords | Ridley Academy</title>
+<meta name="description" content="A 25-minute mini course: learn 4 magic chords and play over 100 of your favorite songs today, even if you've never touched a piano.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2A060D">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
+<!-- ThriveCart checkout host (real payment) -->
+<link rel="preconnect" href="https://tinder.thrivecart.com" crossorigin>
+<link rel="preconnect" href="https://ridleyacademy.thrivecart.com" crossorigin>
+<link rel="dns-prefetch" href="https://tinder.thrivecart.com">
+<!-- The checkout is the whole point of this page, so start fetching ThriveCart's
+     script HERE rather than waiting for the parser to reach the async <script>
+     near the bottom of the body. On a cold visit that is the slowest thing on the
+     page, and it gates the iframe the visitor actually pays through. If they came
+     from the landing page it is already cached (main.js warms it there). -->
+<link rel="preload" href="https://tinder.thrivecart.com/embed/v1/thrivecart.js" as="script">
+<link rel="stylesheet" href="styles.css?v=124">
+<link rel="stylesheet" href="funnel.css?v=27">
+<link rel="prefetch" href="upsell-1.html">
+<link rel="prefetch" href="images/real/tw-joy.jpg" as="image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='4' y='22' width='6' height='14' rx='2' fill='%23C52233'/%3E%3Crect x='13' y='14' width='6' height='22' rx='2' fill='%23A51C30'/%3E%3Crect x='22' y='7' width='6' height='29' rx='2' fill='%23FF2230'/%3E%3Crect x='31' y='2' width='6' height='34' rx='2' fill='%2374121D'/%3E%3C/svg%3E">
+</head>
+<body data-base="27" data-bump="37">
+
+<div class="progress" id="progress"></div>
+<a class="sitelogo" id="sitelogo" href="index.html">
+  <svg class="sitelogo__mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <rect x="4" y="22" width="5.5" height="14" rx="2.5" fill="currentColor"/><rect x="12" y="15" width="5.5" height="21" rx="2.5" fill="currentColor"/><rect x="20" y="8" width="5.5" height="28" rx="2.5" fill="currentColor"/><rect x="28" y="3" width="5.5" height="33" rx="2.5" fill="currentColor"/>
+  </svg>
+  <span>Ridley Academy</span>
+</a>
+<a id="top"></a>
+
+<!-- ============ OFFER HERO ============ -->
+<section class="pagehero">
+  <div class="wrap">
+    <span class="eyebrow eyebrow--center eyebrow--wait eyebrow--mega"><b class="wait-big">Wait!</b><span class="oneline oneline--wait">Before you go · a special way to start today</span></span>
+    <h1 class="h1--under" style="margin-top:.35em">Play <span class="fire-text">100+ Songs</span> On Piano<br>With Just <span class="fire-text">4 Magic Chords</span></h1>
+    <p class="lede" style="max-width:620px;margin:.7em auto 0">A short, concise, <b>25-minute mini course</b>. Learn four chords and start playing over a hundred of your favorite songs <b>today</b>, with zero theory and zero experience.</p>
+
+    <div class="pviz reveal" style="margin-top:clamp(24px,3vw,40px)">
+      <figure class="pviz__joy"><img src="images/real/tw-joy.jpg" alt="A delighted adult playing her favorite songs at home" loading="lazy" decoding="async"><figcaption>This is what it feels like</figcaption></figure>
+      <span class="pviz__badge">Instant access</span>
+      <div class="pviz__laptop">
+        <div class="pviz__screen"><img src="images/real/tw-lesson.jpg" alt="Playing songs on the piano at home with the 4 magic chords"></div>
+        <div class="pviz__base"></div>
+      </div>
+      <div class="pviz__box"><img src="images/product/box-4chords.png" alt="The 4 Magic Chords course box" loading="lazy" decoding="async"></div>
+    </div>
+
+    <div class="reveal d1" style="margin-top:clamp(20px,2.6vw,30px)">
+      <div class="anchorx">
+        <span class="anchorx__old">$47</span>
+        <span class="anchorx__new anchorx__new--green">$27</span>
+        <span class="anchorx__note">One-time · instant access · yours for life</span>
+      </div>
+      <div style="margin-top:1.2em"><a href="#checkout" class="btn btn--fire btn--lg">Get Instant Access ›</a></div>
+      <p class="cta-note cta-note--dark">🔒 Secure checkout</p>
+    </div>
+
+    <div class="tpx reveal d2"><b>Excellent</b><span class="tpx__stars"><i></i><i></i><i></i><i></i><i></i></span> <span data-count="400000" data-suffix="+">0</span> students have taken this course</div>
+  </div>
+</section>
+
+<!-- ============ SONGS ============ -->
+<section class="section--tight center">
+  <div class="wrap">
+    <div class="sec-intro center reveal" style="margin-bottom:clamp(20px,3vw,34px)">
+      <span class="eyebrow eyebrow--center" style="justify-content:center">Songs you'll be playing today</span>
+      <h2 class="h-lg" style="margin-top:.4em">Four Chords. <span class="fire-text">A Hundred Songs You Love.</span></h2>
+    </div>
+    <!-- the 4-chord classics, carouseling -->
+    <div class="tmarquee" data-marquee><div class="tmarquee__track" style="animation-duration:44s">
+      <div class="songmq"><span class="songmq__t">Let It Be</span><span class="songmq__a">The Beatles</span></div>
+      <div class="songmq"><span class="songmq__t">Someone Like You</span><span class="songmq__a">Adele</span></div>
+      <div class="songmq"><span class="songmq__t">Can You Feel The Love Tonight</span><span class="songmq__a">Elton John</span></div>
+      <div class="songmq"><span class="songmq__t">Stand By Me</span><span class="songmq__a">Ben E. King</span></div>
+      <div class="songmq"><span class="songmq__t">Hallelujah</span><span class="songmq__a">Leonard Cohen</span></div>
+      <div class="songmq"><span class="songmq__t">Perfect</span><span class="songmq__a">Ed Sheeran</span></div>
+      <div class="songmq"><span class="songmq__t">No Woman, No Cry</span><span class="songmq__a">Bob Marley</span></div>
+    </div></div>
+    <div class="tmarquee tmarquee--rev" data-marquee style="margin-top:clamp(12px,1.6vw,18px)"><div class="tmarquee__track" style="animation-duration:52s">
+      <div class="songmq"><span class="songmq__t">You're Beautiful</span><span class="songmq__a">James Blunt</span></div>
+      <div class="songmq"><span class="songmq__t">Halo</span><span class="songmq__a">Beyoncé</span></div>
+      <div class="songmq"><span class="songmq__t">All Of Me</span><span class="songmq__a">John Legend</span></div>
+      <div class="songmq"><span class="songmq__t">Don't Stop Believin'</span><span class="songmq__a">Journey</span></div>
+      <div class="songmq"><span class="songmq__t">Let Her Go</span><span class="songmq__a">Passenger</span></div>
+      <div class="songmq"><span class="songmq__t">With Or Without You</span><span class="songmq__a">U2</span></div>
+      <div class="songmq songmq--more"><span class="songmq__t">...and 100+ more</span><span class="songmq__a">all included</span></div>
+    </div></div>
+    <div class="center" style="margin-top:clamp(24px,3vw,38px)"><a href="#checkout" class="btn btn--fire btn--lg">Get Instant Access For $27 ›</a></div>
+  </div>
+</section>
+
+<!-- ============ WHAT YOU GET ============ -->
+<section class="section band-dark">
+  <div class="wrap">
+    <div class="sec-intro center reveal">
+      <span class="eyebrow eyebrow--center" style="justify-content:center">Everything included</span>
+      <h2 class="h-lg" style="margin-top:.4em">By The End Of Today, <span class="fire-text">You're Playing</span></h2>
+    </div>
+    <div class="cards cards--duo" style="max-width:940px;margin:0 auto">
+      <article class="rcard reveal">
+        <div class="getviz"><div class="getviz__course"><img src="images/real/tw-minicourse.jpg" alt="Playing songs at home in the 25-minute mini course" loading="lazy" decoding="async"><span class="getviz__chip">▶ 25 min</span></div></div>
+        <div class="rcard__metric">The <span class="fire-text">25-minute</span> mini course</div><p class="rcard__quote">Stephen walks you through the four magic chords step by step. No theory, no prior experience, nothing to figure out. Play songs today and make people think you've been playing for weeks.</p></article>
+      <article class="rcard reveal d1">
+        <div class="getviz"><img class="getviz__book" src="images/product/workbook-100songs.png" alt="The 100+ Song Workbook" loading="lazy" decoding="async"></div>
+        <div class="rcard__metric">The <span class="fire-text">100+ song</span> workbook</div><p class="rcard__quote">Every song mapped out with exactly how to play it, even if today is the very first time you've ever sat at a piano. Print it, keep it, play from it forever.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROOF ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-intro center reveal">
+      <span class="eyebrow eyebrow--center" style="justify-content:center">From the students who tried it</span>
+      <h2 class="h-lg" style="margin-top:.4em">"I Didn't Realize Piano <span class="fire-text">Could Be So Easy"</span></h2>
+    </div>
+    <div class="cards">
+      <article class="rcard reveal"><div class="rcard__metric"><span class="fire-text">So easy,</span> so fast</div><p class="rcard__quote">"I didn't realize piano can be so easy. I'm instantly playing songs that I love!"</p><div class="rcard__foot"><div class="rcard__init">K</div><div class="rcard__name">Karen<small><span class="tp-tag">✔ Verified</span> · Google · 5-Day Challenge</small></div><div class="rcard__stars">★★★★★</div></div></article>
+      <article class="rcard reveal d1"><div class="rcard__metric">"This course <span class="fire-text">is crazy"</span></div><p class="rcard__quote">"Oh my god it's so fast, I can't believe it. This course is crazy!"</p><div class="rcard__foot"><div class="rcard__init">R</div><div class="rcard__name">Rick<small><span class="tp-tag">✔ Verified</span> · Google · 5-Day Challenge</small></div><div class="rcard__stars">★★★★★</div></div></article>
+      <article class="rcard reveal d2"><div class="rcard__metric">Playing <span class="fire-text">the same day</span></div><p class="rcard__quote">"I played my first real song the same afternoon I started. My family couldn't believe it."</p><div class="rcard__foot"><div class="rcard__init">D</div><div class="rcard__name">Donna<small><span class="tp-tag">✔ Verified</span> · Google · 5-Day Challenge</small></div><div class="rcard__stars">★★★★★</div></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHECKOUT ============ -->
+<section class="section" id="checkout" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-intro center reveal" style="margin-bottom:clamp(22px,3vw,36px)">
+      <span class="eyebrow eyebrow--center" style="justify-content:center">Secure checkout</span>
+      <h2 class="h-lg" style="margin-top:.4em">You're One Step From <span class="fire-text">Your First Song</span></h2>
+    </div>
+    <div class="checkout reveal">
+      <!-- REAL ThriveCart embeddable checkout · account "ridleyacademy" · product 1168.
+           ThriveCart owns the payment fields, the order bump ($37 "7 Tips To Sound
+           Like A Pro"), the live total and the post-purchase flow (upsells / success
+           page). Those are all configured INSIDE the ThriveCart product, not here.
+           If the $37 bump or the one-click upsells should appear, set them up on
+           product 1168 in ThriveCart. -->
+      <div class="co-card co-card--tc">
+        <div class="tc-embed">
+          <div data-thrivecart-account="ridleyacademy" data-thrivecart-tpl="v2" data-thrivecart-product="1168" class="thrivecart-embeddable" data-thrivecart-embeddable="tc-ridleyacademy-1168-AEAC4K">
+            <div class="tc-loading"><span class="tc-spinner" aria-hidden="true"></span>Loading your secure checkout&hellip;</div>
+          </div>
+          <!-- CHECKOUT PREFILL. Carries the name, email and phone they already typed
+               on the landing page straight into ThriveCart, so nobody types their
+               details twice on the one step where friction actually costs money.
+               ThriveCart reads `data-thrivecart-querystring` off the embed element
+               when its script initialises, so this MUST run before the vendor
+               script further down the page. Parameter names are ThriveCart's own
+               (see their "Pre-fill your checkout fields" article). Wrapped in
+               try/catch and it simply does nothing if there is no stored lead, e.g.
+               someone who landed on this page directly. -->
+          <script>
+          (function () {
+            try {
+              var lead = JSON.parse(localStorage.getItem('ridley_lead_v1') || 'null');
+              if (!lead) return;
+              var box = document.querySelector('.thrivecart-embeddable');
+              if (!box) return;
+              var q = [];
+              function add(param, val) {
+                if (val && String(val).trim()) q.push(param + '=' + encodeURIComponent(String(val).trim()));
+              }
+              add('passthrough[customer_name]', lead.name);
+              add('passthrough[customer_email]', lead.email);
+              add('passthrough[customer_contactno]', lead.phone);
+              if (q.length) box.setAttribute('data-thrivecart-querystring', q.join('&'));
+            } catch (e) {}
+          })();
+          </script>
+        </div>
+        <p class="cta-note cta-note--dark" style="margin-top:1em">🔒 256-bit encrypted &middot; Instant access</p>
+      </div>
+
+      <aside class="summary">
+        <span class="eyebrow">What's included</span>
+        <div class="summary__row" style="margin-top:.6em"><span>4 Magic Chords Mini Course</span><b>$27.00</b></div>
+        <div class="summary__row"><span>100+ Song Workbook</span><b style="color:#3fe0a5">Included free</b></div>
+        <p class="summary__note">Your order bump and final total are confirmed in the secure checkout.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ThriveCart embed loader (product 1168). async: does not block render. -->
+<script async src="https://tinder.thrivecart.com/embed/v1/thrivecart.js" id="tc-ridleyacademy-1168-AEAC4K"></script>
+<!-- ThriveCart injects its checkout iframe as a SIBLING of our placeholder rather
+     than replacing it, so hide the "Loading" note the moment the iframe appears. -->
+<script>(function(){var box=document.querySelector('.thrivecart-embeddable');if(!box)return;var n=0;var t=setInterval(function(){n++;var frame=box.querySelector('iframe');var load=box.querySelector('.tc-loading');if(frame){if(load)load.style.display='none';clearInterval(t);}else if(n>=60){if(load)load.innerHTML='Having trouble loading the checkout? Please refresh the page.';clearInterval(t);}},500);})();</script>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <svg class="sitelogo__mark" viewBox="0 0 40 40" fill="none" aria-hidden="true" style="width:24px;height:24px"><rect x="4" y="22" width="5.5" height="14" rx="2.5" fill="#FF2230"/><rect x="12" y="15" width="5.5" height="21" rx="2.5" fill="#C20D1C"/><rect x="20" y="8" width="5.5" height="28" rx="2.5" fill="#FF4A4F"/><rect x="28" y="3" width="5.5" height="33" rx="2.5" fill="#74121D"/></svg>
+        Ridley Academy
+      </div>
+      <nav class="foot__links"><a href="index.html">Home</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
+    </div>
+    <div class="foot__fine">
+      <p>All prices are in US dollars. Payments are processed by a secure third-party payment processor; your full card details are never stored on this site. Testimonials labeled "5-Day Challenge" reflect student wins described in Ridley Academy's Google reviews. Individual results vary and are not guaranteed.</p>
+      <p>This site is not a part of the Facebook website or Meta Platforms, Inc. and is not endorsed by Meta in any way. FACEBOOK is a trademark of Meta Platforms, Inc. This site is not a part of, or endorsed by, YouTube or Google LLC. YOUTUBE is a trademark of Google LLC.</p>
+      <p>&copy; 2026 RA MIGR Inc. dba Ridley Academy. The Ridley Method. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="stickycta" id="stickycta"><a href="#checkout" class="btn btn--fire">Get Instant Access · $27</a></div>
+
+<script src="main.js?v=102"></script>
+<script src="funnel.js?v=7"></script>
+</body>
+</html>
