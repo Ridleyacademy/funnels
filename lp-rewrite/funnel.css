@@ -1,0 +1,401 @@
+/* ============================================================
+   FUNNEL PAGES · thank-you · tripwire · upsells · complete
+   (same system: cream base, ink, fire gradient, Tanker + Switzer)
+   ============================================================ */
+
+/* page hero (inner pages) */
+.pagehero{position:relative;overflow:hidden;text-align:center;color:var(--ink);
+  background:radial-gradient(125% 90% at 50% -10%, #FFFDF8 0%, #FBF6EC 58%, #F5EEDF 100%);
+  padding:clamp(70px,9vw,110px) 0 clamp(34px,5vw,56px)}
+.pagehero::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(60% 40% at 50% 4%, rgba(255,34,48,.06), transparent 60%)}
+.pagehero .wrap{position:relative;z-index:1}
+.pagehero h1{font-size:clamp(2rem,5.6vw,4rem);text-transform:uppercase;line-height:1.02}
+
+/* confirmation tick */
+.confirmx{width:84px;height:84px;border-radius:50%;margin:0 auto clamp(14px,2vw,22px);display:grid;place-items:center;
+  background:var(--grad-fire);color:#fff;box-shadow:0 22px 48px -16px rgba(165,28,48,.7)}
+.confirmx svg{width:40px;height:40px;stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* add-to-calendar buttons */
+.calbtns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:clamp(16px,2vw,24px)}
+.calbtn{display:inline-flex;align-items:center;gap:.55em;padding:.9em 1.5em;border-radius:60px;background:#fff;
+  border:1px solid var(--line);font-weight:800;font-size:.92rem;color:var(--ink);text-transform:uppercase;letter-spacing:.03em;
+  box-shadow:var(--shadow-sm);transition:transform .2s var(--ease),border-color .2s;cursor:pointer}
+.calbtn:hover{transform:translateY(-2px);border-color:var(--cherry)}
+.calbtn.done{border-color:#00b67a;color:#00966b}
+.calbtn svg{width:18px;height:18px;flex:none}
+.calbtn--wa{background:#e7f9f0;border-color:rgba(0,182,122,.4)}
+
+/* FAQ accordion */
+.faqx{max-width:820px;margin:0 auto;text-align:left}
+.faqx__item{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm)}
+.faqx__q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1em;text-align:left;
+  padding:1.1em 1.3em;font-family:var(--display);text-transform:uppercase;font-size:clamp(1.02rem,2vw,1.3rem);color:var(--ink);line-height:1.1}
+.faqx__q .tog{flex:none;width:30px;height:30px;border-radius:50%;background:var(--grad-fire);color:#fff;display:grid;place-items:center;
+  font-size:1.15rem;font-family:var(--body);font-weight:800;transition:transform .35s var(--ease)}
+.faqx__item.open .tog{transform:rotate(45deg)}
+.faqx__a{height:0;overflow:hidden;transition:height .45s var(--ease)}
+.faqx__a-in{padding:0 1.3em 1.25em;color:var(--ink-soft);font-size:.97rem;line-height:1.6}
+.faqx__a-in b{color:var(--ink)}
+.faqx__vid{margin-top:.9em;font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--cherry);display:flex;align-items:center;gap:.5em}
+.faqx__vid::before{content:"▶";font-size:.7em}
+
+/* docu video cards */
+.docu{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px)}
+.docu__card{position:relative;aspect-ratio:16/10;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--line);
+  box-shadow:var(--shadow-sm);cursor:pointer;background:#160308}
+.docu__card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8;transition:transform .4s var(--ease)}
+.docu__card:hover img{transform:scale(1.05)}
+.docu__card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,2,3,.15),rgba(8,2,3,.68))}
+.docu__t{position:absolute;left:14px;right:14px;bottom:12px;z-index:2;font-family:var(--display);text-transform:uppercase;
+  color:#fff;font-size:clamp(1rem,1.8vw,1.3rem);line-height:1.05;text-shadow:0 2px 12px rgba(0,0,0,.8)}
+/* centered play badge for the click-to-play films (bigger = clearly tappable) */
+.docu__play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;width:58px;height:58px;border-radius:50%;
+  background:var(--grad-fire);display:grid;place-items:center;box-shadow:0 12px 30px -8px rgba(165,28,48,.85);
+  transition:transform .25s var(--ease)}
+.docu__card--film:hover .docu__play{transform:translate(-50%,-50%) scale(1.08)}
+.docu__play svg{width:22px;height:22px;fill:#fff;margin-left:3px}
+/* the film cards are <button>s: strip native button chrome. 16/9 (not the
+   gallery 16/10) so the card matches the video exactly - the chromeless crop
+   below is built for 16/9, and a mismatched box left the poster peeking under
+   the video along the bottom edge. */
+.docu__card--film{padding:0;margin:0;font:inherit;text-align:left;color:inherit;-webkit-appearance:none;appearance:none;display:block;aspect-ratio:16/9}
+/* once tapped, the chromeless player FILLS the card (height:100% + aspect-ratio:auto
+   override the inherited .vembed--frame 16/9 sizing that otherwise left the stage
+   short) and the poster/title/badge step aside so nothing shows through. */
+.docu__stage{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;z-index:3;background:#000;overflow:hidden}
+/* films crop DEEPER than the standard 150%: YouTube's paused-state overlays
+   (title band, More Videos tray) reach past the standard letterbox band and
+   were peeking in at the card's top/bottom edges. 200% pushes them fully
+   outside the window; the video itself is width-fit so it is untouched. */
+.docu__stage iframe{height:200%}
+.docu__card.is-playing::after{opacity:0}
+.docu__card.is-playing img{opacity:0}
+.docu__card.is-playing .docu__t,.docu__card.is-playing .docu__play{opacity:0;pointer-events:none}
+/* paused film = show the POSTER, not YouTube's paused screen (which is where
+   the title/More-Videos junk lives). The chip on the shield still invites the
+   resume tap; the iframe stays alive underneath so resume keeps their place. */
+.docu__card.is-vidpaused img{opacity:1;transition:none}
+.docu__card.is-vidpaused .docu__stage{background:transparent}
+.docu__card.is-vidpaused .docu__stage iframe{visibility:hidden}
+@media(max-width:700px){.docu{grid-template-columns:1fr}}
+
+/* Instagram link under the films */
+.iglink{display:inline-flex;align-items:center;gap:.55em;padding:.5em .95em;border-radius:999px;border:1px solid var(--line);
+  color:var(--ink-soft);text-decoration:none;font-weight:700;font-size:.95rem;transition:color .25s var(--ease),border-color .25s var(--ease),transform .25s var(--ease)}
+.iglink__glyph{width:22px;height:22px;fill:currentColor;transition:fill .25s var(--ease)}
+.iglink:hover{color:var(--red);border-color:rgba(217,13,26,.5);transform:translateY(-1px)}
+
+/* countdown pill + progress bar */
+.countpill{display:inline-flex;align-items:center;gap:.7em;padding:.7em 1.3em;border-radius:60px;background:#fff;
+  border:1.5px solid var(--cherry);box-shadow:var(--shadow-sm);font-weight:800}
+.countpill__lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+.countpill__clock{font-family:var(--display);font-size:1.25rem;color:var(--red);font-variant-numeric:tabular-nums}
+.prog95{max-width:520px;margin:0 auto}
+.prog95__lbl{display:flex;justify-content:space-between;font-weight:800;font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:.55em}
+.prog95__track{height:12px;border-radius:60px;background:rgba(42,6,13,.1);overflow:hidden}
+.prog95__fill{height:100%;width:0;border-radius:60px;background:var(--grad-fire);box-shadow:0 0 16px rgba(255,34,48,.5);transition:width 1.4s var(--ease)}
+
+/* price anchor */
+.anchorx{display:inline-flex;align-items:baseline;gap:clamp(14px,3vw,30px);flex-wrap:wrap;justify-content:center}
+.anchorx__old{font-family:var(--display);font-size:clamp(1.7rem,4vw,2.8rem);color:rgba(42,6,13,.4);text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:3px}
+.anchorx__new{font-family:var(--display);font-size:clamp(2.6rem,6vw,4.2rem);color:var(--red)}
+.anchorx__note{width:100%;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+
+/* product visual: laptop + box */
+.pviz{position:relative;display:grid;place-items:center;min-height:320px;perspective:1200px;margin:0 auto;max-width:560px}
+.pviz__laptop{width:min(82%,470px);position:relative;z-index:1}
+.pviz__screen{aspect-ratio:16/10;border-radius:14px 14px 0 0;border:3px solid #3a2a20;border-bottom:none;overflow:hidden;position:relative;background:#160308;box-shadow:var(--shadow)}
+.pviz__screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pviz__base{height:15px;background:linear-gradient(#4d3b30,#241a13);border-radius:0 0 16px 16px;box-shadow:0 22px 44px -18px rgba(20,3,7,.8)}
+.pviz__base::after{content:"";display:block;width:16%;height:4px;margin:4px auto;background:#160f0a;border-radius:0 0 6px 6px}
+.pviz__box{position:absolute;right:2%;bottom:6%;width:36%;max-width:200px;z-index:3;transform:rotateY(-16deg) rotateX(4deg);filter:drop-shadow(0 28px 38px rgba(20,3,7,.55))}
+.pviz__face{aspect-ratio:3/4;border-radius:10px;background:var(--grad-fire);border:1px solid rgba(255,255,255,.35);padding:1rem;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
+.pviz__kb{display:flex;gap:2px;height:15px}
+.pviz__kb span{flex:1;background:rgba(255,255,255,.5)}
+.pviz__kb span:nth-child(3n){background:#fff}
+.pviz__ttl{font-family:var(--display);text-transform:uppercase;font-size:clamp(1rem,2vw,1.3rem);line-height:1}
+.pviz__tag{font-weight:700;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.pviz__badge{position:absolute;z-index:4;top:4%;left:4%;font-weight:800;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--ink);padding:.45em .9em;border-radius:60px;box-shadow:var(--shadow-sm)}
+/* when the polaroid is actually shown (>820px, tripwire hero), lift the badge to the top edge so it clears the person's face.
+   .has-joy is the JS-added mirror of :has() for browsers without :has support (separate rule on purpose:
+   a comma-joined list with :has would be dropped entirely by those browsers) */
+@media(min-width:821px){.pviz:has(.pviz__joy) .pviz__badge{top:-9%}
+.pviz.has-joy .pviz__badge{top:-9%}}
+/* two-up card row (tripwire "by the end of today"): 2 columns on desktop/tablet, stack to 1 on phones so cards aren't cramped */
+.cards--duo{grid-template-columns:repeat(2,1fr)}
+@media(max-width:600px){.cards--duo{grid-template-columns:1fr;max-width:420px}}
+
+/* checkout */
+.checkout{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(18px,3vw,36px);align-items:start;text-align:left;max-width:1020px;margin:0 auto}
+@media(max-width:860px){.checkout{grid-template-columns:1fr}}
+.co-card{background:#FFFBF4;border:1px solid var(--line);border-radius:var(--radius);padding:clamp(20px,3vw,30px);box-shadow:var(--shadow-sm)}
+.co-card h3{font-size:1.5rem;text-transform:uppercase;margin-bottom:.7em}
+.co-two{display:grid;grid-template-columns:1fr 1fr;gap:.6em}
+.co-card .book__field{margin-bottom:.6em}
+.bump{border:2.5px dashed var(--cherry);border-radius:var(--radius-sm);padding:1.1em 1.2em;background:#FFF4E6;position:relative;margin:1em 0 1.2em}
+.bump__head{display:flex;align-items:flex-start;gap:.8em;cursor:pointer}
+.bump input{width:22px;height:22px;accent-color:var(--cherry);flex:none;margin-top:2px}
+.bump__title{font-family:var(--display);text-transform:uppercase;font-size:1.05rem;line-height:1.1;color:var(--ink)}
+.bump__price{font-weight:800;color:var(--red)}
+.bump__price s{color:var(--ink-soft);font-weight:600}
+.bump__copy{font-size:.85rem;color:var(--ink-soft);line-height:1.5;margin-top:.4em}
+.bump__arrow{position:absolute;left:-52px;top:50%;transform:translateY(-50%);font-family:var(--hand);font-size:1.3rem;color:var(--cherry);line-height:1;text-align:center}
+@media(max-width:700px){.bump__arrow{display:none}}
+.summary{background:var(--ink);color:var(--cream);border-radius:var(--radius);padding:clamp(20px,3vw,28px);position:sticky;top:20px;box-shadow:var(--shadow)}
+.summary .eyebrow{color:var(--gold-acc)}
+.summary__row{display:flex;justify-content:space-between;gap:1em;padding:.55em 0;font-size:.95rem;color:rgba(252,244,234,.85)}
+.summary__row b{color:#fff}
+.summary__total{display:flex;justify-content:space-between;align-items:baseline;margin-top:.7em;padding-top:1em;border-top:1px solid rgba(252,244,234,.18)}
+.summary__total .t{font-family:var(--display);font-size:2.1rem;color:var(--gold-acc)}
+
+/* value stack (final offer) */
+.vstack{max-width:680px;margin:0 auto;text-align:left;display:grid;gap:.7em}
+.vrow{display:flex;align-items:center;justify-content:space-between;gap:1em;background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:1em 1.2em;box-shadow:var(--shadow-sm);font-weight:600}
+.vrow .val{font-family:var(--display);color:var(--bordeaux);white-space:nowrap;font-size:1.1rem}
+.vrow .val.free{color:#00966b}
+.vtotal{display:flex;justify-content:space-between;align-items:baseline;padding:1em .4em 0}
+.vtotal__old{font-family:var(--display);font-size:1.6rem;color:rgba(42,6,13,.45);text-decoration:line-through;text-decoration-color:var(--red)}
+.vtotal__new{font-family:var(--display);font-size:clamp(2.2rem,5vw,3.2rem);color:var(--red)}
+
+/* story block */
+.storyx{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(22px,4vw,48px);align-items:center;text-align:left}
+@media(max-width:820px){.storyx{grid-template-columns:1fr}}
+.storyx__img{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);aspect-ratio:4/5;position:relative}
+.storyx__img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.storyx p{margin-top:.9em;color:var(--ink-soft)}
+.storyx p b{color:var(--ink)}
+
+/* decline link */
+.declinex{display:inline-block;margin-top:1.3em;color:var(--ink-soft);font-size:.86rem;text-decoration:underline;text-underline-offset:3px;background:none;cursor:pointer}
+.declinex:hover{color:var(--ink)}
+
+/* songs grid (tripwire) */
+.songs{display:grid;grid-template-columns:1fr 1fr;gap:.7em;max-width:760px;margin:0 auto;text-align:left}
+@media(max-width:640px){.songs{grid-template-columns:1fr}}
+.song{display:flex;justify-content:space-between;gap:1em;background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:.9em 1.1em;font-weight:600;box-shadow:var(--shadow-sm)}
+.song .a{color:var(--ink-soft);font-weight:500;white-space:nowrap}
+.song.more .a{color:var(--cherry);font-weight:800}
+
+/* ============================================================
+   Steven feedback pass 2 (thank-you + tripwire)
+   ============================================================ */
+
+/* thank-you: tight hero, title and video close together */
+.pagehero--tight{padding:clamp(34px,5vh,54px) 0 clamp(8px,1.4vh,14px)}
+.pagehero--tight .confirmx{width:54px;height:54px;margin-bottom:.6em}
+
+/* thank-you: reminder prompts */
+/* plain tip line (NOT buttons) so they aren't mistaken for something clickable */
+.remindx{display:flex;justify-content:center;gap:clamp(14px,2.6vw,32px);flex-wrap:wrap;margin-top:1.1em}
+.remindx span{font-weight:600;font-size:.92rem;color:var(--ink-soft)}
+
+/* thank-you: question blocks, title / video / text (videos from Steven) */
+.qblocks{max-width:860px;margin:0 auto;display:grid;gap:clamp(30px,4vw,48px)}
+.qblock{color:var(--cream)}
+.qblock__t{font-family:var(--display);text-transform:uppercase;font-size:clamp(1.4rem,3vw,2rem);line-height:1.05;margin-bottom:.6em;text-align:center}
+.qblock__vid{position:relative;aspect-ratio:16/9;border-radius:var(--radius-sm);overflow:hidden;margin-bottom:1em;
+  border:1px solid rgba(252,244,234,.18);box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+.qblock__vid img,.qblock__vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.6)}
+.qblock__vid video{filter:none}
+.qblock__chip{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;
+  background:rgba(0,0,0,.62);color:#fff;font-weight:800;font-size:clamp(.8rem,1.6vw,.95rem);letter-spacing:.03em;
+  padding:.7em 1.3em;border-radius:60px;border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(4px)}
+.qblock p{color:rgba(252,244,234,.85);line-height:1.6}
+.qblock p b{color:#fff}
+
+/* tripwire: joyful photo tucked behind the product mock */
+.pviz__joy{position:absolute;left:-9%;top:-7%;width:32%;max-width:250px;margin:0;transform:rotate(-6deg);z-index:4}
+.pviz__joy img{width:100%;border-radius:12px;border:5px solid #fff;box-shadow:0 26px 50px -18px rgba(20,3,7,.55);display:block}
+.pviz__joy figcaption{font-family:var(--hand);font-size:clamp(1rem,2vw,1.3rem);color:var(--bordeaux);text-align:center;margin-top:.35em;transform:rotate(-2deg)}
+@media(max-width:820px){.pviz__joy{display:none}}
+
+/* tripwire: green prices (money in, not money warning) */
+.anchorx__new--green{color:#0E9F5B}
+.summary__total .t--green{color:#3fe0a5}
+
+/* tripwire: song carousel pills */
+.songmq{flex:0 0 auto;display:flex;flex-direction:column;gap:.15em;background:#fff;border:1px solid var(--line);
+  border-radius:14px;padding:.9em 1.5em;box-shadow:var(--shadow-sm);text-align:left;min-width:200px}
+.songmq__t{font-family:var(--display);text-transform:uppercase;font-size:1.05rem;color:var(--ink);line-height:1.05}
+.songmq__a{font-weight:600;font-size:.82rem;color:var(--ink-soft)}
+.songmq--more .songmq__t{color:var(--red)}
+
+/* tripwire: what-you-get visuals */
+.getviz{display:flex;justify-content:center;margin-bottom:1.1em}
+.getviz__course{position:relative;width:min(300px,86%);aspect-ratio:16/10;border-radius:10px;overflow:hidden;
+  border:1px solid var(--line);box-shadow:var(--shadow-sm)}
+.getviz__course img{width:100%;height:100%;object-fit:cover;display:block}
+.getviz__chip{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.7);color:#fff;font-weight:800;
+  font-size:.74rem;padding:.35em .8em;border-radius:40px}
+.bookviz{position:relative;width:min(190px,64%);aspect-ratio:3/4;transform:rotate(-3deg)}
+.bookviz__spine{position:absolute;inset:0;background:#8e1420;border-radius:6px 10px 10px 6px;transform:translate(7px,7px)}
+.bookviz__cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4em;
+  background:linear-gradient(150deg,#FFFBF4,#F6E9D7);border:1px solid var(--line);border-left:6px solid #8e1420;
+  border-radius:6px 10px 10px 6px;box-shadow:0 24px 44px -18px rgba(20,3,7,.5);padding:1em;text-align:center}
+.bookviz__brand{font-weight:800;font-size:.6rem;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-soft)}
+.bookviz__ttl{font-family:var(--display);text-transform:uppercase;font-size:1.9rem;line-height:.95;color:var(--ink)}
+.bookviz__sub{font-weight:700;font-size:.72rem;color:var(--bordeaux)}
+.bookviz__keys{display:flex;gap:2px;margin-top:.4em}
+.bookviz__keys i{width:9px;height:26px;background:#fff;border:1px solid var(--line);border-radius:0 0 2px 2px}
+.bookviz__keys i:nth-child(2n){background:var(--ink);height:17px;width:6px;margin:0 -4px;z-index:1;border:0}
+
+
+/* ============ UPSELL: Complete Singing Bundle (VN8) ============ */
+/* sticky offer timer that stays as you scroll */
+.otobar{position:fixed;top:0;left:0;right:0;z-index:120;display:flex;align-items:center;justify-content:center;gap:clamp(10px,2.4vw,22px);
+  background:linear-gradient(90deg,#74121D,#B00C19);color:#fff;padding:clamp(9px,1.5vw,14px) 16px;box-shadow:0 8px 22px -8px rgba(0,0,0,.6);flex-wrap:wrap}
+.otobar__lbl{font-family:var(--body);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:clamp(.68rem,1.5vw,.9rem);opacity:.94}
+.otobar__clock{font-family:var(--display);font-size:clamp(1.3rem,3.4vw,2rem);line-height:1;letter-spacing:.02em;font-variant-numeric:tabular-nums;min-width:2.6em;text-align:center}
+.otobar__cta{font-family:var(--display);font-size:clamp(.82rem,1.7vw,1.02rem);text-transform:uppercase;letter-spacing:.03em;color:#2A060D;background:#FFD34E;padding:.42em 1.05em;border-radius:40px;white-space:nowrap;transition:transform .2s var(--ease)}
+.otobar__cta:hover{transform:translateY(-2px)}
+.has-otobar{padding-top:clamp(50px,7vw,64px)}
+.has-otobar .sitelogo{top:clamp(58px,8.5vw,76px)}
+
+/* three product boxes fanned as a bundle */
+.bundlehero{display:flex;justify-content:center;align-items:flex-end;gap:clamp(2px,1vw,14px);max-width:720px;margin:clamp(22px,3.2vw,40px) auto 0;padding:0 4vw}
+.bundlehero__item{margin:0;flex:1 1 0;max-width:250px}
+.bundlehero__item img{width:100%;height:auto;display:block;filter:drop-shadow(0 24px 38px rgba(0,0,0,.5))}
+.bundlehero__item--c{transform:translateY(-5%) scale(1.08);z-index:2;position:relative}
+.bundlehero__item--l{transform:rotate(-4deg) translateX(8%)}
+.bundlehero__item--r{transform:rotate(4deg) translateX(-8%)}
+
+/* cinematic performance banner */
+.bannerimg{margin:0;position:relative;overflow:hidden}
+.bannerimg img{width:100%;height:clamp(200px,32vw,400px);object-fit:cover;object-position:center 32%;display:block}
+.bannerimg figcaption{position:absolute;left:0;right:0;bottom:0;padding:clamp(18px,4vw,40px);background:linear-gradient(transparent,rgba(20,3,7,.9));color:var(--cream);font-family:var(--display);font-size:clamp(1.05rem,2.4vw,1.7rem);text-align:center}
+
+/* product rows (box + copy), alternating */
+.bundleitem{display:grid;grid-template-columns:minmax(170px,290px) 1fr;gap:clamp(22px,4vw,56px);align-items:center;max-width:940px;margin:0 auto clamp(30px,4vw,54px)}
+.bundleitem--rev .bundleitem__box{order:2}
+.bundleitem__box{margin:0}
+.bundleitem__box img{width:100%;height:auto;display:block;filter:drop-shadow(0 22px 40px rgba(0,0,0,.55))}
+.bundleitem__body{color:var(--cream)}
+.bundleitem__body h3{margin:.28em 0 .6em;color:var(--cream)}
+.bundleitem__no{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;color:var(--gold-acc)}
+.bundleitem__no--free{color:#3fe0a5}
+.bundleitem__val{opacity:.72}
+.bundleitem__proof{margin-top:1em;font-weight:700;color:var(--cream)}
+.ticklist{list-style:none;padding:0;margin:0;display:grid;gap:.55em}
+.ticklist li{position:relative;padding-left:2em;color:var(--cream);line-height:1.5}
+.ticklist li::before{content:"\2713";position:absolute;left:0;top:.05em;width:1.4em;height:1.4em;line-height:1.4em;text-align:center;border-radius:50%;background:#0E9F5B;color:#fff;font-size:.78em;font-weight:800}
+
+/* value stack */
+.valuestack{max-width:560px;margin:clamp(20px,3vw,32px) auto 0;background:rgba(252,244,234,.05);border:1px solid rgba(252,244,234,.14);border-radius:var(--radius);padding:clamp(18px,3vw,30px)}
+.valuerow{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:.7em 0;border-bottom:1px dashed rgba(252,244,234,.16);color:var(--cream)}
+.valuerow:last-child{border-bottom:0}
+.valuerow>span:first-child{font-weight:600}
+.valuerow__v{font-family:var(--display);font-size:1.15rem;color:var(--cream);white-space:nowrap}
+.valuerow__v--free{color:#3fe0a5}
+.valuerow__v--free s{opacity:.5;font-size:.8em;margin-left:.35em}
+.valuerow--total{font-weight:800}
+.valuerow--total .valuerow__v--old{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:3px;opacity:.75}
+.valuerow--today{border-top:2px solid rgba(252,244,234,.22);margin-top:.3em;padding-top:1em}
+.valuerow--today>span:first-child{font-family:var(--display);font-size:1.1rem}
+.valuerow--today .t--green{font-family:var(--display);font-size:clamp(1.9rem,5vw,2.4rem);color:#3fe0a5}
+
+@media(max-width:640px){
+  .bundleitem{grid-template-columns:1fr;max-width:400px;text-align:center;gap:16px}
+  .bundleitem--rev .bundleitem__box{order:0}
+  .bundleitem__box{max-width:210px;margin:0 auto}
+  .ticklist{text-align:left;max-width:320px;margin:0 auto}
+  .otobar__cta{display:none}
+  .otobar{gap:12px}
+}
+
+/* ============ red visible strikethroughs (funnel-wide) ============ */
+
+/* every crossed-out price: bold RED strike, still legible */
+s,del{text-decoration-line:line-through;text-decoration-color:var(--red);text-decoration-thickness:3px}
+.anchorx__old{color:rgba(42,6,13,.62);text-decoration-color:var(--red);text-decoration-thickness:4px}
+.vtotal__old{color:rgba(42,6,13,.62);text-decoration-color:var(--red);text-decoration-thickness:4px}
+.bump__price s{color:var(--ink-soft);text-decoration-color:var(--red);text-decoration-thickness:3px}
+.valuerow__v--free s{opacity:1;color:rgba(252,244,234,.74);text-decoration-color:var(--red);text-decoration-thickness:3px}
+.valuerow--total .valuerow__v--old{opacity:1;color:rgba(252,244,234,.82);text-decoration-color:var(--red);text-decoration-thickness:4px}
+
+/* ============ real 4-Magic-Chords product renders on the $27 page ============ */
+/* :has(img) scopes these to the tripwire box only; upsell-2's CSS box is untouched.
+   Each :has rule is mirrored below with JS-added classes (.has-img / .no-joy) as SEPARATE rules
+   so browsers without :has support still get the layout (a comma list would drop the whole rule). */
+.pviz__box:has(img){right:0;bottom:2%;width:44%;max-width:242px;transform:rotate(-2deg);filter:drop-shadow(0 26px 36px rgba(20,3,7,.5))}
+.pviz__box.has-img{right:0;bottom:2%;width:44%;max-width:242px;transform:rotate(-2deg);filter:drop-shadow(0 26px 36px rgba(20,3,7,.5))}
+.pviz__box img{width:100%;height:auto;display:block}
+/* upsell-2 only (its pviz has no polaroid): trim the box's overlap + slide the voucher card left so the "$500 CREDIT" reads clearly */
+.pviz:not(:has(.pviz__joy)) .pviz__box:has(img){width:35%;max-width:190px;bottom:4%}
+.pviz.no-joy .pviz__box.has-img{width:35%;max-width:190px;bottom:4%}
+.pviz:not(:has(.pviz__joy)) .pviz__screen img{object-position:84% center}
+.pviz.no-joy .pviz__screen img{object-position:84% center}
+.getviz{min-height:206px;align-items:center}
+.getviz__book{height:clamp(176px,26vw,208px);width:auto;display:block;filter:drop-shadow(0 20px 32px rgba(20,3,7,.5))}
+@media(max-width:640px){.getviz__book{height:clamp(158px,44vw,192px)}.pviz__box:has(img){max-width:180px}
+.pviz__box.has-img{max-width:180px}}
+
+/* ============ current/today prices: BIG + GREEN across the whole funnel ============ */
+.anchorx__new--green{font-size:clamp(3rem,7vw,4.8rem)}
+.vtotal__new{color:#0E9F5B;font-size:clamp(2.7rem,6vw,3.8rem)}
+.summary__total .t--green{font-size:2.35rem}
+
+/* $27 hero: shift the polaroid clear of the laptop + make the handwritten caption legible */
+.pviz__joy{left:-13%;top:-11%}
+.pviz__joy figcaption{font-weight:700;color:var(--red);text-shadow:0 1px 2px var(--cream),0 0 10px var(--cream),0 0 3px var(--cream)}
+
+/* post-decline offer heroes: the WAIT eyebrow leads, the title follows,
+   so the visitor instantly knows they are still inside the same order flow */
+.eyebrow--wait{font-size:clamp(1rem,2.2vw,1.4rem);letter-spacing:.12em;font-weight:800}
+h1.h1--offer{font-size:clamp(1.8rem,4.2vw,3.2rem);text-transform:uppercase}
+
+/* VN3 (Jul 17): on the tripwire the WAIT line is LARGER than the title */
+.eyebrow--wait.eyebrow--mega{display:block;text-align:center;font-size:clamp(1.7rem,4vw,3rem);letter-spacing:.05em;line-height:1.18}
+h1.h1--under{font-size:clamp(1.5rem,3.1vw,2.4rem)}
+
+/* VN4 (Jul 18): WAIT lockups on the offer pages.
+   .wait-big = the standalone WAIT word, big red display type.
+   .oneline  = a line that must NEVER wrap; sized against the wrap width so it
+   spans the page in one line on phones and desktops alike (wrap tops out at
+   1200px around a 1320px viewport, hence the min() caps). */
+.wait-big{display:block;text-align:center;color:var(--cherry);font-family:var(--display);font-weight:600;text-transform:uppercase;font-size:clamp(2.1rem,5.6vw,4rem);line-height:1.05;letter-spacing:.04em}
+.oneline{display:block;text-align:center;white-space:nowrap;letter-spacing:.05em}
+.oneline--wait{font-size:min(2.9vw,2.3rem);margin-top:.2em}
+.oneline--offer{font-size:min(3.55vw,2.85rem)}
+.only-big{font-size:1.32em;color:var(--ink);-webkit-text-fill-color:var(--ink);font-weight:800}
+.offer-sub{display:block;text-align:center;white-space:nowrap;font-size:min(3.4vw,1.45rem);margin-top:.4em;letter-spacing:.1em}
+/* bulletproof centering: a nowrap line WIDER than its column start-aligns and
+   hangs right (seen on the Limited Offer line inside the narrow wrap on wide
+   screens). max-content + the 50% shift pins the line's center to the column's
+   center no matter how wide the line is; old browsers fall back harmlessly. */
+.oneline,.offer-sub{width:max-content;max-width:none;position:relative;left:50%;transform:translateX(-50%)}
+
+/* real ThriveCart checkout embed (tripwire) */
+.co-card--tc{display:flex;flex-direction:column}
+.tc-embed{min-height:520px}
+.thrivecart-embeddable{width:100%}
+.thrivecart-embeddable iframe{width:100%!important;border:0;display:block}
+.tc-loading{display:flex;align-items:center;justify-content:center;gap:.6em;min-height:72px;color:var(--ink-soft);font-weight:600;text-align:center}
+.tc-embed .tc-loading{min-height:480px}
+.tc-spinner{width:20px;height:20px;border:3px solid rgba(42,6,13,.18);border-top-color:var(--cherry);border-radius:50%;animation:tcSpin .8s linear infinite;flex:none}
+@keyframes tcSpin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.tc-spinner{animation:none}}
+.summary__note{color:rgba(252,244,234,.72);font-size:.82rem;line-height:1.5;margin:.9em 0 0}
+
+/* real ThriveCart one-click upsell target (upsell-1 / upsell-2).
+   The target div is left EXACTLY as ThriveCart generates it (empty, no children)
+   because ThriveCart injects this step's accept/decline block into it - putting
+   our own markup inside stopped the injection. Keep this wrapper roomy so the
+   injected block is never squeezed. */
+.tc-upsell{max-width:720px;margin-left:auto;margin-right:auto}
+.thrivecart-custom-upsell-target{min-height:64px}
+/* The one-click upsell is a CROSS-ORIGIN ThriveCart iframe (served from
+   ridleyacademy.thrivecart.com). Its accept/decline buttons live inside that
+   iframe, so browser security blocks this site from restyling them, and a CSS
+   transform on the frame can't help either: ThriveCart renders the button
+   responsively to the frame width, so scaling up overflows and narrowing to
+   compensate just shrinks the button again. The button's size is therefore set
+   ONLY in ThriveCart's upsell-page design for product 1168.
+   The one thing we can safely do is give the frame the full viewport width on
+   phones (breaking out of the page gutter) so ThriveCart has maximum room. Capped
+   at 100vw so it never causes side-scroll. */
+@media(max-width:600px){
+  .tc-upsell{max-width:none;width:100vw;margin-left:50%;transform:translateX(-50%)}
+}
