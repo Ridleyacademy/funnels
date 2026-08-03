@@ -207,14 +207,14 @@
 
       <!-- Q10: money qualifier -->
       <div class="form-step" data-q="10">
-        <p class="q">How much have you invested in learning piano so far?</p>
-        <p class="q-sub">Lessons, apps, books, keyboards, all of it.</p>
+        <p class="q">You're closer to playing the piano you've always heard in your head than you think. How much are you ready to invest in making it real?</p>
+        <p class="q-sub">We ask because we build a plan around your answer. Knowing what you're working with lets us map the fastest realistic path for you, not a one-size-fits-all program.</p>
         <div class="opts" data-key="q10">
-          <button class="opt" data-val="Less than $500">Less than $500</button>
-          <button class="opt" data-val="$500 to $2,000">$500 to $2,000</button>
-          <button class="opt" data-val="$2,000 to $5,000">$2,000 to $5,000</button>
-          <button class="opt" data-val="$5,000 to $10,000">$5,000 to $10,000</button>
-          <button class="opt" data-val="More than $10,000">More than $10,000</button>
+          <button class="opt" data-val="Under $1,000">Under $1,000, I'm just getting started</button>
+          <button class="opt" data-val="$1,000 - $3,000">$1,000 - $3,000, I'm ready to commit</button>
+          <button class="opt" data-val="$3,000 - $6,000">$3,000 - $6,000, I'm serious about this</button>
+          <button class="opt" data-val="$6,000 - $10,000">$6,000 - $10,000, I want the fastest path</button>
+          <button class="opt" data-val="$10,000+">$10,000+, whatever it takes</button>
         </div>
         <div class="form-nav"><button class="backlink">Back</button></div>
       </div>
@@ -456,7 +456,7 @@
   function finish(){
     hideAll();
     submitting.classList.add('on');
-    var softDQ=(answers.q10==='Less than $500' && answers.q11==='5/10') || answers.q13==='No';
+    var softDQ=answers.q10==='Under $1,000' || answers.q13==='No';
     var dest=softDQ?'booking-b.html':'booking.html';
     dl('rdly_apply_complete',{route:softDQ?'dq':'qualified'});
     if(softDQ) dl('rdly_apply_dq',{dq_type:'soft'});

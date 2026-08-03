@@ -1160,7 +1160,7 @@
        Left as-is pending Chris. The capture beacon below now fires BEFORE this runs,
        so a redirected visitor is still a contact either way. */
     function isDisqualified() {
-      return answers.q1 === 'Not any time soon';
+      return answers.q1 === 'Not any time soon' || answers.q2 === 'Under $1,000';
     }
 
     /* Re-lock the calendar. Needed because Continue reveals it, and the visitor can

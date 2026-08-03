@@ -1144,7 +1144,7 @@
        Used by BOTH the Continue button and the live pill handler below, so the
        calendar can never disagree with the answers currently on screen. */
     function isDisqualified() {
-      return answers.q1 === 'Not any time soon' || answers.q2 === 'No';
+      return answers.q1 === 'Not any time soon' || answers.q2 === 'Under $1,000' || answers.q2 === 'No';
     }
 
     /* Re-lock the calendar. Needed because Continue reveals it, and the visitor can
