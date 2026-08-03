@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Your Piano Path Quiz | Ridley Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- NOTE for Ange: self-host these three fonts at deploy (font-display: swap). -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F8F6F2; --cream-2:#F1EBDF; --paper:#FFFBF4;
+    --cherry:#E81420; --ruby:#E23237; --burgundy:#B00C19; --bordeaux:#6E0717;
+    --ink:#2A060D; --ink-soft:#7a3a40; --gold:#FFB42B; --gold-acc:#FFC04A;
+    --line:rgba(42,6,13,.14);
+    --display:'Oswald',Arial,sans-serif;
+    --body:'Switzer',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --radius:18px; --radius-sm:12px;
+    --ease:cubic-bezier(.16,1,.3,1);
+    --shadow-warm:0 24px 60px -24px rgba(110,7,23,.28);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:var(--body);min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--gold);color:var(--ink)}
+  .topbar{background:var(--bordeaux);color:var(--paper);text-align:center;font-size:14px;padding:9px 16px;letter-spacing:.02em}
+  header{display:flex;justify-content:center;padding:18px 16px 6px}
+  header img{height:34px}
+  .wrap{width:100%;max-width:640px;margin:0 auto;padding:12px 20px 60px;flex:1}
+  /* numbered progress rail with Results endpoint (mirrors WarriorBabe /quiz) */
+  .dots{display:flex;gap:0;justify-content:center;align-items:center;margin:14px 0 26px}
+  .dot{width:26px;height:26px;border:1.5px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink-soft);font-family:var(--display);font-size:12.5px;display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s,background .2s;flex:0 0 auto}
+  .dot--results{width:auto;padding:0 12px;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .dot.on{border-color:var(--cherry);color:var(--cherry);background:#FDF0F0}
+  .rail{flex:0 1 26px;height:1.5px;background:var(--line);min-width:8px}
+  @media(max-width:480px){.dot{width:22px;height:22px;font-size:11px}.rail{min-width:5px}}
+  .step{display:none}
+  .step.on{display:block}
+  @media (prefers-reduced-motion: no-preference){.step.on{animation:fadeUp .35s var(--ease)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  h1,h2{font-family:var(--display);text-transform:uppercase;line-height:1.12;letter-spacing:.01em}
+  h2{font-size:clamp(24px,5.4vw,32px);text-align:center;margin-bottom:8px}
+  .sub{text-align:center;color:var(--ink-soft);font-size:16px;margin-bottom:22px}
+  .opts{display:flex;flex-direction:column;gap:12px}
+  .opt{background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:16px 18px;font-size:17px;text-align:left;cursor:pointer;transition:border-color .2s var(--ease),background .2s var(--ease),transform .2s var(--ease);font-family:var(--body);display:flex;align-items:center;gap:12px}
+  .opt:hover{border-color:var(--cherry);transform:translateX(4px)}
+  .opt:active{transform:scale(.99)}
+  .opt:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .opt.sel{border-color:var(--cherry);background:#FDF0F0}
+  .opt .em{font-size:20px}
+  .next,.cta{display:block;width:100%;margin-top:22px;background:var(--cherry);color:#fff;border:0;border-radius:999px;padding:17px 24px;font-family:var(--display);text-transform:uppercase;font-size:18px;letter-spacing:.04em;cursor:pointer;transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease)}
+  .next:hover,.cta:hover{background:var(--burgundy);transform:translateY(-2px);box-shadow:var(--shadow-warm)}
+  .next:active,.cta:active{transform:translateY(0) scale(.98)}
+  .next:focus-visible,.cta:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+  .next[disabled]{opacity:.35;cursor:default}
+  .next[disabled]:hover{background:var(--cherry);transform:none;box-shadow:none}
+  .back{display:block;margin:14px auto 0;background:none;border:0;color:var(--ink-soft);font-size:14px;cursor:pointer;text-decoration:underline}
+  .interstitial{text-align:center}
+  .interstitial .big{font-size:clamp(22px,5vw,28px);font-family:var(--display);text-transform:uppercase;margin-bottom:14px}
+  .interstitial p{color:var(--ink-soft);font-size:16px;margin-bottom:18px}
+  .proofcard{background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius);padding:18px;margin:0 0 12px;font-size:15px;text-align:left}
+  .proofcard b{display:block;margin-top:8px;color:var(--bordeaux);font-style:normal}
+  .calc{text-align:center;padding:40px 0}
+  .calc h2{margin-bottom:18px}
+  .bar{height:10px;background:var(--cream-2);border-radius:999px;overflow:hidden;margin:10px 0 4px}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cherry),var(--gold));border-radius:999px;transition:width 1.1s ease}
+  .barlabel{font-size:13px;color:var(--ink-soft);text-align:left;margin-top:10px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .skiplink{position:absolute;left:-9999px;top:0;z-index:100;background:var(--ink);color:var(--paper);padding:12px 20px;text-decoration:none;font-size:15px}
+  .skiplink:focus{left:0}
+  .fineprint{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:26px}
+</style>
+</head>
+<body>
+<!--
+  RIDLEY QUIZ FUNNEL v1 (prototype), built 2026-07-28 from the WarriorBabe teardown
+  (~/riddley/warriorbabe-hack). Architecture notes:
+  - Questions are persuasion-first (belief-priming, no wrong answers), segmentation on
+    age + past-attempts, micro-commitment closer. Mirrors WB /quiz + /quiz-7.
+  - No email gate (their current generation): redirect carries segments as params.
+  - dataLayer events mirror their wb_quiz_* naming for GTM.
+  - Proof numbers are real (40,000+ students, 60+ countries, ages 5 to 96) per
+    funnel-build/FACTS.md. No invented counters, no fake scarcity.
+  - REDIRECT_MAP points every segment into the booking flow (funnel-build/apply.html ->
+    booking.html), carrying el/quiz/age/tried params. The quiz's job is a booked call.
+    Swap 45+ to a second-presenter page when one exists.
+-->
+<a class="skiplink" href="#main">Skip to content</a>
+<div class="topbar">Hi. This should take less than a minute.</div>
+<h1 class="sr-only">The Ridley Academy 60-second piano quiz</h1>
+<header>
+  <a href="../index.html" style="font-family:var(--display);font-size:22px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-decoration:none">Ridley <span style="color:var(--cherry)">Academy</span></a>
+</header>
+<main class="wrap" id="main" aria-live="polite">
+  <div class="dots" id="dots"></div>
+
+  <!-- STEP 1: goals multi-select -->
+  <section class="step" data-step="1">
+    <h2>What do you want piano to give you?</h2>
+    <p class="sub">Select all that apply</p>
+    <div class="opts" data-multi="1" data-key="goals">
+      <button class="opt"><span class="em">🎵</span>Play the songs I actually love</button>
+      <button class="opt"><span class="em">🎹</span>Sit down and play by ear, no sheet music</button>
+      <button class="opt"><span class="em">🧠</span>Finally understand how music works</button>
+      <button class="opt"><span class="em">🔥</span>Stick with it this time, for good</button>
+    </div>
+    <button class="next" disabled>Continue</button>
+  </section>
+
+  <!-- STEP 2: social-proof interstitial -->
+  <section class="step interstitial" data-step="2">
+    <div class="big">Perfect. You're exactly who this was built for.</div>
+    <p>40,000+ students across 60+ countries have learned to play real music with Stephen's method, ages 5 to 96, most starting with zero experience and decades of "I always wanted to."</p>
+    <div class="proofcard">"I've had eight piano teachers and learned more from Ridley Academy than all the others combined."<b>David Clarke, verified Trustpilot review</b></div>
+    <button class="next">Keep going</button>
+    <button class="back">Back</button>
+  </section>
+
+  <!-- STEP 3: belief-priming -->
+  <section class="step" data-step="3">
+    <h2>Do you believe you need years of scales and theory before playing real songs?</h2>
+    <p class="sub">You might be surprised by the answer</p>
+    <div class="opts" data-key="belief">
+      <button class="opt">Yes, that's just how piano works</button>
+      <button class="opt">I'm not sure anymore, nothing I've tried has worked</button>
+      <button class="opt">No, but I don't know another way</button>
+    </div>
+    <button class="back">Back</button>
+  </section>
+
+  <!-- STEP 4: past attempts -->
+  <section class="step" data-step="4">
+    <h2>What have you tried before?</h2>
+    <p class="sub">Select all that apply</p>
+    <div class="opts" data-multi="1" data-key="tried">
+      <button class="opt"><span class="em">📱</span>Apps (Simply Piano, Yousician, Flowkey...)</button>
+      <button class="opt"><span class="em">🎼</span>Traditional lessons (as a kid or adult)</button>
+      <button class="opt"><span class="em">▶️</span>YouTube tutorials</button>
+      <button class="opt"><span class="em">📚</span>Method books on my own</button>
+      <button class="opt"><span class="em">🆕</span>Nothing yet, this is my start</button>
+    </div>
+    <button class="next" disabled>Continue</button>
+    <button class="back">Back</button>
+  </section>
+
+  <!-- STEP 5: age segmentation -->
+  <section class="step" data-step="5">
+    <h2>How can we tailor your path to you?</h2>
+    <p class="sub">Learning changes with life stage, and the method should too</p>
+    <div class="opts" data-key="age">
+      <button class="opt">Under 35</button>
+      <button class="opt">35-44</button>
+      <button class="opt">45-54</button>
+      <button class="opt">55+</button>
+    </div>
+    <button class="back">Back</button>
+  </section>
+
+  <!-- STEP 6: obstacle -->
+  <section class="step" data-step="6">
+    <h2>What's the #1 thing that's stopped you so far?</h2>
+    <div class="opts" data-key="obstacle">
+      <button class="opt"><span class="em">⏳</span>"I don't have time to practice for hours"</button>
+      <button class="opt"><span class="em">😔</span>"I start strong, then lose momentum"</button>
+      <button class="opt"><span class="em">🎼</span>"Reading sheet music feels impossible"</button>
+      <button class="opt"><span class="em">🤷</span>"I never knew what to practice next"</button>
+      <button class="opt"><span class="em">😟</span>"I secretly think I'm not musical"</button>
+    </div>
+    <button class="back">Back</button>
+  </section>
+
+  <!-- STEP 7: belief interstitial -->
+  <section class="step interstitial" data-step="7">
+    <div class="big">Here's what nobody told you</div>
+    <p>None of those are talent problems. They're method problems. Traditional teaching makes you earn the music with years of drills first. Stephen's method starts with the music, so momentum works for you instead of against you.</p>
+    <button class="next">Show me my path</button>
+    <button class="back">Back</button>
+  </section>
+
+  <!-- STEP 8: micro-commitment -->
+  <section class="step" data-step="8">
+    <h2>If a step-by-step path told you exactly what to play each day, would you follow it?</h2>
+    <div class="opts" data-key="commit">
+      <button class="opt">Absolutely, that's exactly what I've been missing</button>
+      <button class="opt">Yes, as long as it fits my schedule</button>
+      <button class="opt">Probably, I'd want to see it first</button>
+      <button class="opt">I'm skeptical, but curious</button>
+    </div>
+    <button class="back">Back</button>
+  </section>
+
+  <!-- CALC / RESULTS -->
+  <section class="step calc" data-step="9">
+    <h2>Building your personalized path...</h2>
+    <p class="sub">Next: pick the time for your free 30-minute Breakthrough Session.</p>
+    <div class="barlabel">Your goals</div><div class="bar"><i></i></div>
+    <div class="barlabel">Your starting point</div><div class="bar"><i></i></div>
+    <div class="barlabel">Your practice window</div><div class="bar"><i></i></div>
+    <div class="barlabel">Your first songs</div><div class="bar"><i></i></div>
+  </section>
+
+  <p class="fineprint">Ridley Academy · This quiz personalizes your recommendation. No spam, ever.</p>
+</main>
+
+<script>
+(function(){
+  var QUIZ_ID='RDLY-quiz-v1';
+  var answers={};
+  var steps=[].slice.call(document.querySelectorAll('.step'));
+  var cur=0;
+  window.dataLayer=window.dataLayer||[];
+  function dl(ev,extra){var o={event:ev,quiz_id:QUIZ_ID,step:cur+1};for(var k in (extra||{}))o[k]=extra[k];dataLayer.push(o);}
+
+  // progress dots (exclude calc screen)
+  var dotsEl=document.getElementById('dots');
+  for(var i=0;i<steps.length-1;i++){
+    if(i>0){var r=document.createElement('span');r.className='rail';dotsEl.appendChild(r);}
+    var d=document.createElement('span');
+    if(i===steps.length-2){d.className='dot dot--results';d.textContent='Results';}
+    else{d.className='dot';d.textContent=i+1;}
+    dotsEl.appendChild(d);
+  }
+  var dots=[].slice.call(dotsEl.querySelectorAll('.dot'));
+
+  function show(n){
+    steps[cur].classList.remove('on');
+    cur=n;
+    steps[cur].classList.add('on');
+    dots.forEach(function(d,i){d.classList.toggle('on',i<=cur);});
+    window.scrollTo({top:0,behavior:'smooth'});
+    // a11y: move focus to the new step's heading so screen readers follow
+    var h=steps[cur].querySelector('h2,.big');
+    if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}
+    dl('rdly_quiz_step_view');
+    if(steps[cur].classList.contains('calc')) finish();
+  }
+
+  steps.forEach(function(step,idx){
+    var multi=step.querySelector('[data-multi]');
+    var opts=[].slice.call(step.querySelectorAll('.opt'));
+    var next=step.querySelector('.next');
+    var back=step.querySelector('.back');
+    var key=(step.querySelector('[data-key]')||{}).dataset ? step.querySelector('[data-key]').dataset.key : null;
+
+    opts.forEach(function(o){
+      o.addEventListener('click',function(){
+        if(multi){
+          o.classList.toggle('sel');
+          var sel=opts.filter(function(x){return x.classList.contains('sel');});
+          if(next) next.disabled=sel.length===0;
+          if(key) answers[key]=sel.map(function(x){return x.textContent.trim();});
+        }else{
+          opts.forEach(function(x){x.classList.remove('sel');});
+          o.classList.add('sel');
+          if(key) answers[key]=o.textContent.trim();
+          setTimeout(function(){show(idx+1);},220);
+        }
+      });
+    });
+    if(next) next.addEventListener('click',function(){show(idx+1);});
+    if(back) back.addEventListener('click',function(){show(idx-1);});
+  });
+
+  function finish(){
+    dl('rdly_quiz_complete',{answers:JSON.stringify(answers)});
+    // animate bars then redirect
+    var bars=[].slice.call(document.querySelectorAll('.bar i'));
+    bars.forEach(function(b,i){setTimeout(function(){b.style.width=(88+Math.min(i*3,11))+'%';},200+i*550);});
+    // Quiz funnels into the CALL, not a lead form: every segment lands on the booking flow
+    // (apply.html -> booking.html). Segments ride along as params so the application and the
+    // booking page inherit them. Swap 45+/55+ to a second-presenter page when one exists.
+    // A/B on the bench: route through the VSL first (index.html) before the booking flow.
+    var REDIRECT_MAP={
+      'Under 35':'../apply.html','35-44':'../apply.html',
+      '45-54':'../apply.html','55+':'../apply.html'
+    };
+    var dest=(REDIRECT_MAP[answers.age]||'../apply.html');
+    var params=new URLSearchParams({el:'quiz',quiz:QUIZ_ID,age:answers.age||'',tried:(answers.tried||[]).join('|').slice(0,120)});
+    setTimeout(function(){window.location.href=dest+'?'+params.toString();},3200);
+  }
+
+  // init
+  steps[0].classList.add('on');
+  dots[0].classList.add('on');
+  dl('rdly_quiz_start');
+})();
+</script>
+</body>
+</html>
