@@ -1122,7 +1122,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var againBtn = document.getElementById('doorAgainBtn');
     if (again) again.hidden = false;
     if (againBtn) againBtn.addEventListener('click', function () {
-      try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_optin_repeat', optin_source: 'front-door-reentry', page_variant: 'vsl-b' }); } catch (e) {}
+      try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_optin_repeat', optin_source: 'front-door-reentry', page_variant: 'vsl-c' }); } catch (e) {}
       open(prior);
     });
   }
@@ -1228,11 +1228,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       /* CompleteRegistration, NOT Lead. Lead stays on the booking path so
          vsl-a and vsl-b keep optimising toward the same event. */
       try { if (window.fbq) window.fbq('track', 'CompleteRegistration', { content_name: 'Transformative Video', content_category: 'front-door' }); } catch (err) {}
-      try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_optin', optin_source: 'front-door', page_variant: 'vsl-b' }); } catch (err) {}
+      try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_optin', optin_source: 'front-door', page_variant: 'vsl-c' }); } catch (err) {}
     } else {
       /* Re-watch by a known lead. Worth seeing in GA, worth keeping out of
          the pixel and out of ActiveCampaign. */
-      try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_optin_repeat', optin_source: 'front-door', page_variant: 'vsl-b' }); } catch (err) {}
+      try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_optin_repeat', optin_source: 'front-door', page_variant: 'vsl-c' }); } catch (err) {}
     }
 
     open(lead);
@@ -1271,7 +1271,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   if (book) book.addEventListener('click', function () {
     var l = lead$();
     try { if (window.fbq) window.fbq('track', 'Lead', { content_name: 'Free Piano Consultation', content_category: 'post-video-choice' }); } catch (e) {}
-    try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_book_click', source: 'post-video-choice', page_variant: 'vsl-b' }); } catch (e) {}
+    try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_book_click', source: 'post-video-choice', page_variant: 'vsl-c' }); } catch (e) {}
 
     var host = document.getElementById('choiceCalHost');
     var wrap = document.getElementById('choiceCal');
@@ -1329,12 +1329,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   window.addEventListener('message', function (e) {
     if (!e || !e.data || typeof e.data !== 'object') return;
     if (e.data.event === 'calendly.event_scheduled') {
-      try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_call_booked', source: 'post-video-embed', page_variant: 'vsl-b' }); } catch (err) {}
+      try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_call_booked', source: 'post-video-embed', page_variant: 'vsl-c' }); } catch (err) {}
     }
   });
 
   if (later) later.addEventListener('click', function () {
-    try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_not_ready', source: 'post-video-choice', page_variant: 'vsl-b' }); } catch (e) {}
+    try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_not_ready', source: 'post-video-choice', page_variant: 'vsl-c' }); } catch (e) {}
     /* href="/tripwire" carries the navigation, so nothing is preventDefault'd
        here: if the dataLayer push throws, the visitor still gets there. */
   });
