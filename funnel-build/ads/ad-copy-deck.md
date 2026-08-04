@@ -26,21 +26,21 @@ Three-page architecture (their model): Brand page (Ridley Academy) / Founder pag
 - Headline: `Your Song Is the Curriculum`
 - Juxtaposition: the song you carry vs. the drills you were given. Sentence two proves sentence one.
 
-## LANE 2: Founder page → free training (ports Nikkiey's 18-month evergreen)
+## LANE 2: Founder page → the Transformative Video (ports Nikkiey's 18-month evergreen)
 
 **Ad 2.1 (Stephen first-person, evergreen candidate)**
 - First line: `Four chords. That's what I start every beginner on, and it unlocks more than 100 songs.`
-- Body: `I'm Stephen Ridley. I've taught 40,000+ students in 60+ countries, and almost every one arrived believing piano meant years of scales before the music starts. It doesn't. Music has a structure, and once you know the four chords that carry a century of songs, the piano stops being homework and starts being yours. I made a free training that shows exactly how it works. Watch it below.`
-- CTA: `Watch the free training.`
+- Body: `I'm Stephen Ridley. I've taught 40,000+ students in 60+ countries, and almost every one arrived believing piano meant years of scales before the music starts. It doesn't. Music has a structure, and once you know the four chords that carry a century of songs, the piano stops being homework and starts being yours. I made the Transformative Video, which shows exactly how it works. Watch it below.`
+- CTA: `Watch the Transformative Video.`
 - Headline: `Real Songs First. Theory Through the Music.`
-- Description: `Free training from Stephen Ridley.`
+- Description: `Transformative Video.` (20)
 - Destination: vsl-a LP, el=fb-stephen-training
 - Juxtaposition: four chords vs. years of scales. Mechanism named twice.
 
 **Ad 2.2 (origin story)**
 - First line: `I learned piano on a beat-up street piano, not in a conservatory. That accident became the method.`
-- Body: `Nobody handed me a method book, so I had to find the structure inside real songs. Ten years and 40,000+ students later, that's still how I teach: the music first, the theory through it. If lessons or apps didn't stick for you, watch the free training and see the difference.`
-- CTA: `Watch the free training.`
+- Body: `Nobody handed me a method book, so I had to find the structure inside real songs. Ten years and 40,000+ students later, that's still how I teach: the music first, the theory through it. If lessons or apps didn't stick for you, watch the Transformative Video and see the difference.`
+- CTA: `Watch the Transformative Video.`
 - Headline: `The Method the Street Taught`
 - Juxtaposition: street piano vs. conservatory.
 
@@ -74,7 +74,7 @@ Three-page architecture (their model): Brand page (Ridley Academy) / Founder pag
 **Ad 4.3 (three mistakes listicle, video)**
 - First line: `Three mistakes almost every adult makes at the piano. I made all three.`
 - Body: `1. Starting with scales instead of songs, so the joy dies before the skill arrives. 2. Trusting an app streak to turn into real playing. 3. Doing it alone, so the first stall becomes the last session. None of these are talent problems. They're method problems, and they're all fixable.`
-- CTA: `Watch the free training.`
+- CTA: `Watch the Transformative Video.`
 - Headline: `It Was Never About Talent`
 
 **Ad 4.4 (native demo, video: Stephen at the piano)**
@@ -82,7 +82,7 @@ Three-page architecture (their model): Brand page (Ridley Academy) / Founder pag
 - Body: `Same four chords, a dozen songs you know. This is the first lesson, and it's the reason students stay: the music shows up on day one, and the theory makes sense because you can already hear it.`
 - CTA: `Learn the four chords.`
 - Headline: `Four Chords, a Hundred Songs`
-- Destination: tripwire or training, el=fb-native-4mc
+- Destination: tripwire or the Transformative Video, el=fb-native-4mc
 
 ## LANE 5: Advertorial lane → $27 tripwire (ports "Ladies eating 1200 calories. Read this")
 
