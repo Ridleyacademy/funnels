@@ -327,14 +327,25 @@
       var box=document.createElement('div');
       box.className='calendly-inline-widget';
       box.setAttribute('data-url',calUrl(base));
+      /* NO INNER SCROLLBAR. Calendly's embed only scrolls inside itself when the
+         box is shorter than the view it is rendering, so the box has to track the
+         content. data-resize + resize:true turn on Calendly's own page_height
+         listener, which sets this element's height on every view change (month
+         grid, day-with-times, confirm form). The two are the same switch on the
+         two mount paths: the attribute covers widget.js auto-init, the option
+         covers our explicit initInlineWidget call below. */
+      box.setAttribute('data-resize','true');
       box.style.minWidth='320px';
-      box.style.height='700px';
+      /* Only the height before Calendly's first page_height message lands. Tall
+         enough that the calendar has never scrolled even in that first beat; the
+         old 700px is what produced the scrollbar. */
+      box.style.height='1100px';
       var slot=host.querySelector('.calendly-slot,.cal-slot');
       if(slot) slot.parentNode.replaceChild(box,slot);
       else { host.innerHTML=''; host.appendChild(box); }
       host.setAttribute('data-cal-state','live');
       if(window.Calendly&&window.Calendly.initInlineWidget){
-        window.Calendly.initInlineWidget({url:calUrl(base),parentElement:box});
+        window.Calendly.initInlineWidget({url:calUrl(base),parentElement:box,resize:true});
       }
       track(null,'rdly_cal_view',{cal_key:key});
     });
