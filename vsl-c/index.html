@@ -340,6 +340,77 @@ html.is-door .door{
   text-decoration:underline;text-underline-offset:3px;
 }
 .door__again button:hover{color:var(--burgundy,#B00C19)}
+
+/* ============ COUNTRY-SPECIFIC PHONE FIELD (door) ============
+   The door used to take a bare <input type="tel"> with a "7+ digits"
+   check, so +1 999 555 0123 and a 9-digit typo both sailed through and
+   landed in AC as a number nobody could ring. The field is now a country
+   pill + national-format input, validated against that country's real
+   numbering plan by ra-phone.js (libphonenumber, area-code accurate).
+   Layout mirrors .book__phone so it reads as the same control the booking
+   form uses. */
+.door__phone{display:flex;gap:.5em}
+.door__flag{
+  flex:none;min-width:84px;padding:0 .6em;
+  display:flex;align-items:center;justify-content:center;gap:.34em;
+  border:1.5px solid var(--line,rgba(42,6,13,.14));border-radius:12px;
+  background:var(--cream,#F8F6F2);color:var(--ink,#2A060D);
+  font:inherit;font-size:.95rem;font-weight:600;cursor:pointer;
+  transition:border-color .18s,background .18s;
+}
+.door__flag:hover,.door__flag:focus-visible{border-color:var(--cherry,#E81420);background:#fff;outline:none}
+.door__flag img{width:20px;height:15px;object-fit:cover;border-radius:2px;flex:none}
+.door__caret{font-style:normal;font-size:.62em;opacity:.6;margin-left:-.1em}
+.door__phone .door__field{flex:1;min-width:0}
+/* Inline reason the number was refused. Never a bare "invalid": it names
+   the country so a UK visitor stuck on a US pill can see why. */
+.door__err{
+  display:flex;align-items:flex-start;gap:.4em;
+  font-size:.76rem;line-height:1.45;color:#C20A18;
+  margin:.5em 0 0;
+}
+.door__err[hidden]{display:none}
+.door__err::before{content:"!";flex:none;width:14px;height:14px;border-radius:50%;background:#C20A18;color:#fff;font-size:.62rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:.12em}
+
+/* The picker sheet. .ccpanel is absolute (it overlays the booking card);
+   on the door it is a fixed sheet so it works from anywhere in the flow
+   and stays usable on a short mobile viewport. */
+.ccpanel--door{
+  position:fixed;inset:0;z-index:120;
+  background:#fff;display:flex;flex-direction:column;
+  max-width:520px;margin:0 auto;
+  box-shadow:0 0 0 100vmax rgba(42,6,13,.55);
+}
+.ccpanel--door[hidden]{display:none}
+.ccpanel--door .ccpanel__list{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 .35em}
+.ccpanel--door .ccpanel__foot{padding:.7em 1.1em calc(.9em + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line,rgba(42,6,13,.14))}
+.ccpanel__search{
+  margin:0 1.1em .6em;width:calc(100% - 2.2em);box-sizing:border-box;
+  font:inherit;font-size:.95rem;padding:.7em .9em;border-radius:10px;
+  border:1.5px solid var(--line,rgba(42,6,13,.14));background:var(--cream,#F8F6F2);color:var(--ink,#2A060D);
+}
+.ccpanel__search:focus{outline:none;border-color:var(--cherry,#E81420);background:#fff}
+.ccpanel__none{padding:1.2em 1.1em;font-size:.88rem;color:var(--ink-soft,#7a3a40)}
+/* styles.css sets .ccrow{display:flex}, which beats the UA rule for the
+   hidden attribute, so a filtered-out row stays painted. The booking
+   picker never filtered, so this only surfaces here. */
+.ccpanel--door .ccrow[hidden],
+.ccpanel--door .ccdivider[hidden]{display:none!important}
+
+/* ============ QUALIFYING STEP BEFORE THE CALENDAR ============
+   Sits between "Book My Free Call" and the Calendly mount. Reuses the
+   .qual* classes already in styles.css so it matches the booking form's
+   questions; only the pieces styles.css has no rule for are added here. */
+.choice__qual{max-width:520px;margin:clamp(18px,2.4vw,26px) auto 0;text-align:left}
+.choice__qual[hidden]{display:none}
+/* .btn is display:inline-flex, which beats the UA rule for the hidden
+   attribute, so the button stayed on screen above the questions. */
+#choiceBook[hidden]{display:none!important}
+.qual__note{font-size:.74rem;line-height:1.45;color:var(--ink-soft,#7a3a40);margin:.15em 0 .1em}
+.qual__err{font-size:.78rem;color:#C20A18;margin:.6em 0 0;min-height:1em}
+.qual__err[hidden]{display:none}
+.qual__opts.is-bad .qual__opt{border-color:#F50C1C}
+.choice__qual .btn{margin-top:1em;width:100%}
 </style>
 <!-- pre-paint bootstrap: decide on the door before the first frame so the
      page never flashes behind it. Mirrors the ?v=gated bootstrap above. -->
@@ -355,6 +426,12 @@ html.is-door .door{
      for the two-way choice. */
   document.documentElement.className+=' is-door';
 })();}catch(e){}</script>
+<!-- Per-country phone validation (libphonenumber, max metadata: real area
+     codes and prefixes, not just digit counts). Self-hosted, no CDN. It is
+     deferred, so it never blocks paint; every consumer below degrades to a
+     length check if it has not arrived, and a real lead is never blocked by
+     a missing script. -->
+<script defer src="ra-phone.js"></script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -386,7 +463,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      Every image here is already on the deploy, so this adds no new
      assets beyond the four files themselves:
        masterclass-poster.jpg     the VSL's own opening frame
-       real/perf-stance.jpg       Steven at the grand, packed hall
+       real/perf-stance.jpg       Stephen at the grand, packed hall
        real/perf-streetpiano.jpg  the street piano crowd
        real/perf-lights.jpg       phone lights at an open-air concert
 
@@ -413,7 +490,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <h1 class="door__h1" id="doorH1">Learn Piano In <span class="fire-text">Weeks, Not Years</span>.</h1>
 
-      <p class="door__sub">Steven Ridley's <b>Transformative Video</b> on the method <b>40,000+ adults</b> used to go from zero to playing the songs they love, on <b>10 minutes a day</b>. No sheet music. No experience needed.</p>
+      <p class="door__sub">Stephen Ridley's <b>Transformative Video</b> on the method <b>40,000+ adults</b> used to go from zero to playing the songs they love, on <b>10 minutes a day</b>. No sheet music. No experience needed.</p>
     </div>
 
     <!-- Everything in here sits directly under the copy on desktop (same
@@ -423,14 +500,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="door__more">
       <ul class="door__list">
         <li><i class="door__tick"></i><span><b>Why you were never the problem.</b> The one shift that makes the piano finally click.</span></li>
-        <li><i class="door__tick"></i><span><b>Understand it, don't memorise it.</b> How Steven plays without reading a note.</span></li>
+        <li><i class="door__tick"></i><span><b>Understand it, don't memorise it.</b> How Stephen plays without reading a note.</span></li>
         <li><i class="door__tick"></i><span><b>Ten minutes, not two hours.</b> The short daily practice that replaces long drills.</span></li>
       </ul>
 
       <div class="door__band">
-        <img src="images/real/perf-stance.jpg" alt="Steven Ridley playing a grand piano in front of a packed concert hall" width="1200" height="1500" loading="eager" decoding="async">
-        <img src="images/real/perf-streetpiano.jpg" alt="Steven Ridley singing on top of a street piano surrounded by a crowd" width="1200" height="1500" loading="eager" decoding="async">
-        <img src="images/real/perf-lights.jpg" alt="Thousands of fans holding up phone lights at a Steven Ridley open-air concert" width="1200" height="1500" loading="eager" decoding="async">
+        <img src="images/real/perf-stance.jpg" alt="Stephen Ridley playing a grand piano in front of a packed concert hall" width="1200" height="1500" loading="eager" decoding="async">
+        <img src="images/real/perf-streetpiano.jpg" alt="Stephen Ridley singing on top of a street piano surrounded by a crowd" width="1200" height="1500" loading="eager" decoding="async">
+        <img src="images/real/perf-lights.jpg" alt="Thousands of fans holding up phone lights at a Stephen Ridley open-air concert" width="1200" height="1500" loading="eager" decoding="async">
       </div>
       <p class="door__hand">He teaches it exactly the way he plays it.</p>
 
@@ -458,7 +535,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- a real button, not a decorative play badge: it sends focus to the
            first empty field, so the affordance does something honest. -->
       <button type="button" class="door__vid" id="doorVid" aria-label="Watch the Transformative Video. Enter your details to start it.">
-        <img src="images/masterclass-poster.jpg" alt="Steven Ridley at the piano in the opening frame of the Transformative Video" width="1280" height="720" loading="eager" decoding="async">
+        <img src="images/masterclass-poster.jpg" alt="Stephen Ridley at the piano in the opening frame of the Transformative Video" width="1280" height="720" loading="eager" decoding="async">
         <span class="door__play" aria-hidden="true"></span>
         <span class="door__vidtag">Transformative Video</span>
       </button>
@@ -470,14 +547,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="door__fields">
           <input class="door__field" type="text" name="name" placeholder="First name" required autocomplete="given-name" autocapitalize="words">
           <input class="door__field" type="email" name="email" placeholder="Email address" required autocomplete="email" inputmode="email">
-          <input class="door__field" type="tel" name="phone" placeholder="Phone number" required autocomplete="tel" inputmode="tel">
+          <!-- Country pill + national-format number. The pill carries the
+               dial code; the input holds the number the way someone in that
+               country would actually write it. ra-phone.js validates the
+               pair against that country's numbering plan, so a wrong area
+               code is refused here rather than in Stephen's call list. -->
+          <div class="door__phone">
+            <button type="button" class="door__flag" id="dccFlag" aria-haspopup="dialog" aria-expanded="false" aria-label="Country code, tap to change">
+              <img id="dccFlagImg" src="https://flagcdn.com/w40/us.png" alt="" width="20" height="15" decoding="async">
+              <span id="dccFlagTxt">+1</span><i class="door__caret" aria-hidden="true">▾</i>
+            </button>
+            <input class="door__field" type="tel" name="phone" id="doorPhone" placeholder="(201) 555-0123" required autocomplete="tel" inputmode="tel" aria-describedby="doorPhoneErr">
+          </div>
+          <p class="door__err" id="doorPhoneErr" role="alert" hidden></p>
         </div>
         <label class="door__consent">
           <input type="checkbox" name="consent" value="1">
           <span>Text me piano tips and any call reminders. Message and data rates may apply. Reply STOP to opt out.</span>
         </label>
         <button type="submit" class="btn btn--fire btn--block" id="doorBtn">Show Me How It Works ›</button>
-        <p class="door__note">🔒 No card needed. Unsubscribe any time.</p>
+        <p class="door__note">🔒 Free. No card needed. Unsubscribe any time.</p>
         <!-- Shown by the handler only to someone who has opted in before.
              The gate is still the first view on every visit, but a returning
              visitor can choose to go straight back in rather than submit
@@ -487,6 +576,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </p>
         <p class="door__fine">By entering your details you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a> and consent to being contacted about your request.</p>
       </form>
+
+      <!-- Country picker for the door's phone field. Rows are built at
+           runtime from ra-phone.js's country list, so there is no second
+           hardcoded country table to drift out of sync with main.js's. -->
+      <div class="ccpanel ccpanel--door" id="dccPanel" role="dialog" aria-modal="true" aria-label="Select country code" hidden>
+        <div class="ccpanel__head">Select country code</div>
+        <input class="ccpanel__search" id="dccSearch" type="search" placeholder="Search countries" autocomplete="off" aria-label="Search countries">
+        <div class="ccpanel__list" id="dccList"></div>
+        <div class="ccpanel__foot"><button type="button" class="ccpanel__close" id="dccClose">Close</button></div>
+      </div>
     </div>
 
   </div>
@@ -531,9 +630,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
              ATTACHES to this live iframe (enablejsapi=1 + origin) for the pill/
              shield/gate wiring. Inline because origin must match whatever domain
              this is served from. -->
-        <script>(function(){try{var m=document.getElementById('ytHeroMount');var f=document.createElement('iframe');f.id='ytHeroFrame';f.src='https://www.youtube-nocookie.com/embed/XO74o7ehyx8?autoplay=1&mute=1&controls=0&rel=0&playsinline=1&disablekb=1&fs=0&iv_load_policy=3&enablejsapi=1&origin='+encodeURIComponent(location.origin);f.allow='autoplay; encrypted-media';f.setAttribute('frameborder','0');f.title='Ridley Academy masterclass';m.parentNode.replaceChild(f,m);}catch(e){}})();</script>
+        <script>(function(){try{var m=document.getElementById('ytHeroMount');var f=document.createElement('iframe');f.id='ytHeroFrame';f.src='https://www.youtube-nocookie.com/embed/XO74o7ehyx8?autoplay=1&mute=1&controls=0&rel=0&playsinline=1&disablekb=1&fs=0&iv_load_policy=3&enablejsapi=1&origin='+encodeURIComponent(location.origin);f.allow='autoplay; encrypted-media';f.setAttribute('frameborder','0');f.title='Ridley Academy Transformative Video';m.parentNode.replaceChild(f,m);}catch(e){}})();</script>
         <div class="ytshield" aria-hidden="true"><i class="ytshield__blk ytshield__blk--top"></i><i class="ytshield__blk ytshield__blk--bot"></i></div>
-        <button type="button" class="vsound" id="vslSound" aria-label="Restart the masterclass from the beginning with sound">
+        <button type="button" class="vsound" id="vslSound" aria-label="Restart the Transformative Video from the beginning with sound">
           <span class="vsound__pill">🔊 Click For Sound</span>
         </button>
       </div>
@@ -552,18 +651,66 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      the door, so they are passed to Calendly as prefill rather than
      re-typed. The soft exit under it goes to the $27 tripwire.
 
-     NO QUALIFICATION IN THIS FLOW. An investment line sat here and was
-     cut by Chris on 7/31. Nothing now filters for fit between the ad and
-     the calendar: no price, no form, no qualifying questions. If call
-     quality needs a filter later, the zero-click place to put it is a
-     required custom question on the Calendly event itself, since that
-     step is already being taken. Do not add one here without a reason.
+     QUALIFICATION, REINSTATED 8/4 (Chris). History, so this does not get
+     flipped a third time: the questions were cut from this flow on 7/31,
+     which left the only copies of them stranded inside #book, a widget
+     this flow replaced and never opens. The result was a page that looked
+     like it asked qualifying questions and in fact asked none.
+
+     They now sit between the button and the calendar, as a step the
+     visitor passes through rather than a form they fill. Same three
+     questions as #book so the two paths stay comparable.
+
+     PIXEL NOTE: Lead still fires on the FIRST tap, before the questions,
+     exactly where it fired before. The live Meta arms bid on Lead, so
+     moving it behind three questions would cut reported Lead volume and
+     disturb their optimisation mid-flight. Qualified completion is a
+     separate dataLayer event instead.
      ============================================ -->
 <div class="choice" id="choice">
   <h2 class="choice__h">Ready to start playing?</h2>
   <p class="choice__sub">Book a free 30-minute call. We'll map your way in, answer your questions, and find which program fits where you are now.</p>
   <button type="button" class="btn btn--fire btn--lg" id="choiceBook">Book My Free Call ›</button>
-  <p class="choice__note">🔒 Free. No card needed. 30 minutes.</p>
+  <p class="choice__note" id="choiceNote">🔒 Free. No card needed. 30 minutes.</p>
+
+  <!-- The step between the button and the calendar. Wording is the same as
+       the #book form's, which is the wording Stephen approved. -->
+  <div class="choice__qual qual" id="choiceQual" hidden>
+    <p class="qual__intro">A few quick questions to make sure it's a fit</p>
+
+    <div class="qual__q">
+      <p class="qual__label">When are you looking to start?</p>
+      <div class="qual__opts" data-q="q1">
+        <button type="button" class="qual__opt" data-val="I'm ready to start right away">I'm ready to start right away</button>
+        <button type="button" class="qual__opt" data-val="Not any time soon">Not any time soon</button>
+      </div>
+    </div>
+
+    <div class="qual__q">
+      <p class="qual__label">How much have you invested in your piano playing so far?</p>
+      <div class="qual__opts" data-q="q2">
+        <button type="button" class="qual__opt" data-val="Just getting started">Just getting started &mdash; little to nothing yet</button>
+        <button type="button" class="qual__opt" data-val="Under $1,000">Under $1,000 &mdash; some apps, books, or a keyboard</button>
+        <button type="button" class="qual__opt" data-val="$1,000-$3,000">$1,000&ndash;$3,000 &mdash; lessons or gear over the years</button>
+        <button type="button" class="qual__opt" data-val="More than $3,000">More than $3,000 &mdash; I've taken this seriously</button>
+      </div>
+    </div>
+
+    <div class="qual__q">
+      <p class="qual__label">If the right option turned out to be the thing that finally worked for you, what would you be comfortable investing in it?</p>
+      <p class="qual__note">We ask so we point you at the right one. There's a self-study route and there's working with Stephen directly, and they're very different numbers.</p>
+      <div class="qual__opts" data-q="q4">
+        <button type="button" class="qual__opt" data-val="Under $1,500">Under $1,500</button>
+        <button type="button" class="qual__opt" data-val="$1,500 to $4,000">$1,500 to $4,000</button>
+        <button type="button" class="qual__opt" data-val="$4,000 to $8,000">$4,000 to $8,000</button>
+        <button type="button" class="qual__opt" data-val="More than $8,000">More than $8,000</button>
+        <button type="button" class="qual__opt" data-val="I'd want to see the options first">I'd want to see the options first</button>
+      </div>
+    </div>
+
+    <p class="qual__err" id="choiceQualErr" role="alert" hidden></p>
+    <button type="button" class="btn btn--fire btn--lg" id="choiceQualGo">See My Times ›</button>
+  </div>
 
   <!-- Calendly mounts here, in place of the button, prefilled from the gate.
        Booking is caught by main.js's existing `calendly.event_scheduled`
@@ -603,7 +750,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <input class="book__field" type="email" name="email" placeholder="Email address *" required autocomplete="email">
           <div class="qual" id="qualBlock" hidden>
             <p class="qual__intro">A few quick questions to make sure it's a fit</p>
-            <!-- NOTE: Steven has the exact approved wording for these two questions;
+            <!-- NOTE: Stephen has the exact approved wording for these two questions;
                  paste it over these labels if it differs. -->
             <div class="qual__q">
               <p class="qual__label">When are you looking to start?</p>
@@ -619,6 +766,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <button type="button" class="qual__opt" data-val="Under $1,000">Under $1,000 &mdash; some apps, books, or a keyboard</button>
                 <button type="button" class="qual__opt" data-val="$1,000-$3,000">$1,000&ndash;$3,000 &mdash; lessons or gear over the years</button>
                 <button type="button" class="qual__opt" data-val="More than $3,000">More than $3,000 &mdash; I've taken this seriously</button>
+              </div>
+            </div>
+            <div class="qual__q">
+              <p class="qual__label">If the right option turned out to be the thing that finally worked for you, what would you be comfortable investing in it?</p>
+              <p class="qual__note">We ask so we point you at the right one. There's a self-study route and there's working with Stephen directly, and they're very different numbers.</p>
+              <div class="qual__opts" data-q="q4">
+                <button type="button" class="qual__opt" data-val="Under $1,500">Under $1,500</button>
+                <button type="button" class="qual__opt" data-val="$1,500 to $4,000">$1,500 to $4,000</button>
+                <button type="button" class="qual__opt" data-val="$4,000 to $8,000">$4,000 to $8,000</button>
+                <button type="button" class="qual__opt" data-val="More than $8,000">More than $8,000</button>
+                <button type="button" class="qual__opt" data-val="I'd want to see the options first">I'd want to see the options first</button>
               </div>
             </div>
           </div>
@@ -753,16 +911,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <div class="sec-intro center reveal">
       <span class="eyebrow eyebrow--center" style="justify-content:center">Introducing your instructor</span>
-      <h2 class="h-xl" style="margin-top:.4em">Steven <span class="fire-text">Ridley</span></h2>
+      <h2 class="h-xl" style="margin-top:.4em">Stephen <span class="fire-text">Ridley</span></h2>
       <p class="lede">A professional pianist for over 10 years. Appeared live on stages in more than 70 countries. Over 1 billion views across social media.</p>
-      <!-- BIO SLOT: Steven is sending a paragraph or two of bio. Drop it in right here, e.g.:
+      <!-- BIO SLOT: Stephen is sending a paragraph or two of bio. Drop it in right here, e.g.:
            <div class="bio reveal"><p>…paragraph one…</p><p>…paragraph two…</p></div> -->
     </div>
     <div class="instrx__grid">
-      <figure class="instrx__ph"><img src="images/real/perf-stance.jpg" alt="Steven Ridley standing at the grand piano commanding a packed concert hall" width="1200" height="1500" loading="lazy" decoding="async"></figure>
-      <figure class="instrx__ph"><img src="images/real/perf-jump.jpg" alt="Steven Ridley leaping into the air beside the piano mid-performance" width="1200" height="1500" loading="lazy" decoding="async"></figure>
-      <figure class="instrx__ph"><img src="images/real/perf-streetpiano.jpg" alt="Steven Ridley singing on top of a street piano surrounded by a huge crowd" width="1200" height="1500" loading="lazy" decoding="async"></figure>
-      <figure class="instrx__ph"><img src="images/real/perf-lights.jpg" alt="Thousands of fans holding up phone lights at a Steven Ridley open-air concert" width="1200" height="1500" loading="lazy" decoding="async"></figure>
+      <figure class="instrx__ph"><img src="images/real/perf-stance.jpg" alt="Stephen Ridley standing at the grand piano commanding a packed concert hall" width="1200" height="1500" loading="lazy" decoding="async"></figure>
+      <figure class="instrx__ph"><img src="images/real/perf-jump.jpg" alt="Stephen Ridley leaping into the air beside the piano mid-performance" width="1200" height="1500" loading="lazy" decoding="async"></figure>
+      <figure class="instrx__ph"><img src="images/real/perf-streetpiano.jpg" alt="Stephen Ridley singing on top of a street piano surrounded by a huge crowd" width="1200" height="1500" loading="lazy" decoding="async"></figure>
+      <figure class="instrx__ph"><img src="images/real/perf-lights.jpg" alt="Thousands of fans holding up phone lights at a Stephen Ridley open-air concert" width="1200" height="1500" loading="lazy" decoding="async"></figure>
     </div>
     <div class="statline reveal" style="margin-top:clamp(28px,3.8vw,46px)">
       <div class="statline__item"><div class="statline__n" data-count="70" data-suffix="+">0</div><div class="statline__l">Countries performed</div></div>
@@ -787,7 +945,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap wrap--narrow reveal">
     <figure class="pquote">
       <span class="pquote__mark" aria-hidden="true">&ldquo;</span>
-      <blockquote class="pquote__text">Steven Ridley is nothing short of a <span class="pquote__em">genius</span>.</blockquote>
+      <blockquote class="pquote__text">Stephen Ridley is nothing short of a <span class="pquote__em">genius</span>.</blockquote>
       <figcaption class="pquote__by">
         <span class="pquote__mast">London Lifestyle Magazine</span>
         <span class="pquote__name">Danny Williams</span>
@@ -840,7 +998,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <figure class="shot mqshot"><img src="images/reviews/mq-yvie.png" width="820" height="266" alt="5-star Trustpilot review by Yvie D'Allaird for Ridley Academy" decoding="async"></figure>
     <figure class="shot mqshot"><img src="images/reviews/mq-mark-neill.png" width="820" height="288" alt="5-star Trustpilot review by Mark Neill for Ridley Academy" decoding="async"></figure>
     <figure class="shot mqshot"><img src="images/reviews/mq-jane-person.png" width="820" height="266" alt="5-star Trustpilot review by Jane P Person for Ridley Academy" decoding="async"></figure>
-    <figure class="shot mqshot"><img src="images/reviews/mq-stephen-anderson.png" width="820" height="244" alt="5-star Trustpilot review by Steven Anderson for Ridley Academy" decoding="async"></figure>
+    <figure class="shot mqshot"><img src="images/reviews/mq-stephen-anderson.png" width="820" height="244" alt="5-star Trustpilot review by Stephen Anderson for Ridley Academy" decoding="async"></figure>
     <figure class="shot mqshot"><img src="images/reviews/mq-debbie-poulin.png" width="820" height="266" alt="5-star Trustpilot review by Debbie Poulin for Ridley Academy" decoding="async"></figure>
     <figure class="shot mqshot"><img src="images/reviews/mq-christopher-story.png" width="820" height="288" alt="5-star Trustpilot review by Christopher Story for Ridley Academy" decoding="async"></figure>
   </div></div>
@@ -922,13 +1080,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="faqx__item">
         <button type="button" class="faqx__q">What if I don't have a piano? <span class="tog">+</span></button>
         <div class="faqx__a"><div class="faqx__a-in">
-          <p>Not a problem, it can even be an advantage. Every program includes Steven personally guiding you to the perfect instrument for your budget, from free pianos on Facebook Marketplace to keyboards at every price point.</p>
+          <p>Not a problem, it can even be an advantage. Every program includes Stephen personally guiding you to the perfect instrument for your budget, from free pianos on Facebook Marketplace to keyboards at every price point.</p>
         </div></div>
       </div>
       <div class="faqx__item">
         <button type="button" class="faqx__q">My hands don't cooperate. Can I still play? <span class="tog">+</span></button>
         <div class="faqx__a"><div class="faqx__a-in">
-          <p>Yes. Steven developed a revolutionary approach called <b>Hand Yoga</b>: simple hand exercises you can do anywhere, any time, that build the coordination and dexterity to play like a pro with just a few minutes a day.</p>
+          <p>Yes. Stephen developed a revolutionary approach called <b>Hand Yoga</b>: simple hand exercises you can do anywhere, any time, that build the coordination and dexterity to play like a pro with just a few minutes a day.</p>
         </div></div>
       </div>
       <div class="faqx__item">
@@ -968,15 +1126,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="button" class="faqx__q">What is the Complete Piano Masterclass? <span class="tog">+</span></button>
         <div class="faqx__a"><div class="faqx__a-in">
           <p>The Complete Piano Masterclass is Ridley Academy's flagship program. Launched over six years ago, this life-changing program takes the student from zero to being able to play the piano with full confidence and understanding. The course was recently awarded <b>Best Online Piano Course</b> by Insider Weekly, and over 40,000 students are now enjoying playing their favorite songs as a result of this revolutionary new approach.</p>
-          <p style="margin-top:.7em">The program was developed by Steven Ridley, a professional artist who has performed all over the world and has been playing piano for over 30 years.</p>
+          <p style="margin-top:.7em">The program was developed by Stephen Ridley, a professional artist who has performed all over the world and has been playing piano for over 30 years.</p>
         </div></div>
       </div>
       <div class="faqx__item">
         <button type="button" class="faqx__q">What if I struggle with motivation and personal discipline? <span class="tog">+</span></button>
         <div class="faqx__a"><div class="faqx__a-in">
           <p>The traditional approach to piano requires enormous personal discipline: years of persevering through enormously complex theory and rigorous practical exercises. “Modern methods” like apps and YouTube learning are all based on simply copying lights going across a screen, with no training and no idea what you're doing. This again results in very long practice sessions, and an enormous amount of persistence is required over a long period of time to get any results whatsoever.</p>
-          <p style="margin-top:.7em">Ridley Academy's approach to piano is based on three key pillars: <b>fun, fast, simple</b>. Rather than requiring hours of daily practice, we encourage our students to practice with just 10 minutes of focused practice per day. Students who had been blocked for decades are playing their favorite songs in just weeks with this highly simplified approach. The Ridley Method, Steven Ridley's unique methodology of learning piano, hugely reduces the complexity of music and hugely reduces the need for enormous personal discipline. Instead, the journey is inspiring, motivating, and deeply rewarding, where the student can enjoy the power of music from day one.</p>
-          <p style="margin-top:.7em">For those students who want that extra layer of accountability and support, we also offer a full coaching program with world-class coaching, one-on-one supervision, group sessions, and direct time with Steven Ridley himself. Ultimately, no matter what style of learning suits you, we have solutions for every kind of student. After getting to know you better on your free consultation call, we can recommend the best program for you, so that you can get the results you want and enjoy playing piano.</p>
+          <p style="margin-top:.7em">Ridley Academy's approach to piano is based on three key pillars: <b>fun, fast, simple</b>. Rather than requiring hours of daily practice, we encourage our students to practice with just 10 minutes of focused practice per day. Students who had been blocked for decades are playing their favorite songs in just weeks with this highly simplified approach. The Ridley Method, Stephen Ridley's unique methodology of learning piano, hugely reduces the complexity of music and hugely reduces the need for enormous personal discipline. Instead, the journey is inspiring, motivating, and deeply rewarding, where the student can enjoy the power of music from day one.</p>
+          <p style="margin-top:.7em">For those students who want that extra layer of accountability and support, we also offer a full coaching program with world-class coaching, one-on-one supervision, group sessions, and direct time with Stephen Ridley himself. Ultimately, no matter what style of learning suits you, we have solutions for every kind of student. After getting to know you better on your free consultation call, we can recommend the best program for you, so that you can get the results you want and enjoy playing piano.</p>
         </div></div>
       </div>
     </div>
@@ -993,7 +1151,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="cards">
       <article class="rcard reveal"><div class="rcard__metric">"It isn't a scam.<br><span class="fire-text">Life-changing."</span></div><p class="rcard__quote">"I was worried that it was a scam. It isn't. The classes have been great. The Facebook group has been life-changing."</p><div class="rcard__foot"><div class="rcard__init">T</div><div class="rcard__name">Tim C.<small><span class="tp-tag">✔ Verified</span> · Trustpilot · Dec 2023</small></div><div class="rcard__stars">★★★★★</div></div></article>
       <article class="rcard reveal d1"><div class="rcard__metric">"Skeptical at first,<br><span class="fire-text">now amazed"</span></div><p class="rcard__quote">"Honestly I was very skeptical at first and it seemed too good to be true, but the Complete Piano Masterclass is amazing!"</p><div class="rcard__foot"><div class="rcard__init">J</div><div class="rcard__name">Julie C.<small><span class="tp-tag">✔ Verified</span> · Ridley Academy</small></div><div class="rcard__stars">★★★★★</div></div></article>
-      <article class="rcard reveal d2"><div class="rcard__metric">Unlike <span class="fire-text">any other teacher</span></div><p class="rcard__quote">"It was a large investment for me to sign up for the course. Steven has a way of teaching music that is different than any other person."</p><div class="rcard__foot"><div class="rcard__init">D</div><div class="rcard__name">Damien<small><span class="tp-tag">✔ Verified</span> · Trustpilot · Dec 2023</small></div><div class="rcard__stars">★★★★★</div></div></article>
+      <article class="rcard reveal d2"><div class="rcard__metric">Unlike <span class="fire-text">any other teacher</span></div><p class="rcard__quote">"It was a large investment for me to sign up for the course. Stephen has a way of teaching music that is different than any other person."</p><div class="rcard__foot"><div class="rcard__init">D</div><div class="rcard__name">Damien<small><span class="tp-tag">✔ Verified</span> · Trustpilot · Dec 2023</small></div><div class="rcard__stars">★★★★★</div></div></article>
     </div>
   </div>
 </section>
@@ -1079,13 +1237,291 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function bad(n) {
     var el = form[n];
     if (!el) return;
+    /* Phone owns its own message (which country, which area code), so let
+       it speak rather than just reddening the border. */
+    if (n === 'phone') { DPHONE.focus(); return; }
     el.classList.add('is-bad');
     el.focus();
   }
+  /* ---- COUNTRY-SPECIFIC PHONE ------------------------------------------
+     Was: `digits.length >= 7`. That accepted a wrong area code, a number
+     short by a digit, and a UK mobile typed while the field assumed +1,
+     all of which reached ActiveCampaign looking real and reached the call
+     list dead. Now the country is explicit and the number is checked
+     against that country's actual numbering plan.
+
+     ra-phone.js is deferred, so it may not have arrived when someone types
+     fast. Every path below falls back to the old length check while it is
+     missing: a slow script must never cost a lead. */
+  var DPHONE = (function () {
+    var pill = document.getElementById('dccFlag');
+    var pillImg = document.getElementById('dccFlagImg');
+    var pillTxt = document.getElementById('dccFlagTxt');
+    var input = document.getElementById('doorPhone');
+    var errEl = document.getElementById('doorPhoneErr');
+    var panel = document.getElementById('dccPanel');
+    var listEl = document.getElementById('dccList');
+    var searchEl = document.getElementById('dccSearch');
+    var closeEl = document.getElementById('dccClose');
+
+    var iso = 'US';
+    var names = {};
+    var built = false;
+
+    function P() { return window.RAPhone || null; }
+    function flag(cc) { return 'https://flagcdn.com/w40/' + String(cc).toLowerCase() + '.png'; }
+
+    /* Where are they? Best available signal, cheapest first. Nothing here
+       is authoritative, so the pill stays one tap from being changed. */
+    var TZ = {
+      'America/New_York':'US','America/Chicago':'US','America/Denver':'US','America/Phoenix':'US',
+      'America/Los_Angeles':'US','America/Anchorage':'US','Pacific/Honolulu':'US','America/Detroit':'US',
+      'America/Toronto':'CA','America/Vancouver':'CA','America/Edmonton':'CA','America/Winnipeg':'CA','America/Halifax':'CA',
+      'Europe/London':'GB','Europe/Belfast':'GB','Europe/Dublin':'IE',
+      'Australia/Sydney':'AU','Australia/Melbourne':'AU','Australia/Brisbane':'AU','Australia/Perth':'AU',
+      'Australia/Adelaide':'AU','Australia/Hobart':'AU','Australia/Darwin':'AU',
+      'Pacific/Auckland':'NZ','Africa/Johannesburg':'ZA','Asia/Kolkata':'IN','Asia/Calcutta':'IN',
+      'Asia/Singapore':'SG','Asia/Dubai':'AE','Europe/Berlin':'DE','Europe/Paris':'FR','Europe/Amsterdam':'NL',
+      'Europe/Madrid':'ES','Europe/Rome':'IT'
+    };
+    function guess(prior) {
+      /* 1. what they chose last time */
+      if (prior && prior.phone_country) return prior.phone_country;
+      /* 2. a number they already gave us in +E.164 form */
+      try {
+        if (prior && prior.phone && P()) {
+          var c = P().countryOf(prior.phone);
+          if (c) return c;
+        }
+      } catch (e) {}
+      /* 3. their timezone */
+      try {
+        var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (tz && TZ[tz]) return TZ[tz];
+      } catch (e) {}
+      /* 4. the region subtag on their locale (en-GB -> GB) */
+      try {
+        var m = String(navigator.language || '').match(/[-_]([A-Za-z]{2})$/);
+        if (m) return m[1].toUpperCase();
+      } catch (e) {}
+      return 'US';
+    }
+
+    function dial() {
+      var p = P();
+      return (p && p.dial(iso)) || '+1';
+    }
+
+    function setCountry(cc, opts) {
+      if (!cc) return;
+      var p = P();
+      /* Refuse a code the metadata does not know, rather than showing a
+         pill that can never validate. */
+      if (p && !p.dial(cc)) return;
+      iso = cc;
+      if (pillImg) pillImg.src = flag(cc);
+      if (pillTxt) pillTxt.textContent = dial();
+      if (pill) pill.setAttribute('aria-label', 'Country code ' + dial() + ', tap to change');
+      if (input && p) input.placeholder = p.sample(cc);
+      if (listEl) {
+        [].forEach.call(listEl.querySelectorAll('.ccrow'), function (r) {
+          r.classList.toggle('is-sel', r.getAttribute('data-iso') === cc);
+        });
+      }
+      if (!(opts && opts.quiet)) check(true);
+    }
+
+    /* --- the picker sheet --- */
+    function build() {
+      if (built || !listEl) return;
+      var p = P();
+      if (!p) return;                 /* try again next time it is opened */
+      var all = p.countries();
+      var PINNED = ['US', 'CA', 'GB', 'AU', 'NZ'];   // where Ridley actually advertises
+      var byIso = {};
+      all.forEach(function (c) { byIso[c.iso] = c; names[c.iso] = c.name; });
+
+      function row(c) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'ccrow' + (c.iso === iso ? ' is-sel' : '');
+        b.setAttribute('data-iso', c.iso);
+        b.setAttribute('data-find', (c.name + ' ' + c.iso + ' ' + c.dial).toLowerCase());
+        b.innerHTML = '<img src="' + flag(c.iso) + '" alt="" loading="lazy" decoding="async">' +
+          '<span class="ccrow__name"></span><span class="ccrow__code"></span>';
+        b.querySelector('.ccrow__name').textContent = c.name;
+        b.querySelector('.ccrow__code').textContent = c.dial;
+        b.addEventListener('click', function () { setCountry(c.iso); close(); if (input) input.focus(); });
+        return b;
+      }
+      PINNED.forEach(function (cc) {
+        if (!byIso[cc]) return;
+        var r = row(byIso[cc]);
+        /* Pinned rows are deliberate duplicates of the A-Z entries below.
+           Fine when browsing, confusing when searching ("United Kingdom"
+           twice reads as a bug), so search hides them. */
+        r.setAttribute('data-pinned', '1');
+        listEl.appendChild(r);
+      });
+      var div = document.createElement('div');
+      div.className = 'ccdivider';
+      listEl.appendChild(div);
+      all.forEach(function (c) { listEl.appendChild(row(c)); });
+
+      var none = document.createElement('p');
+      none.className = 'ccpanel__none';
+      none.id = 'dccNone';
+      none.textContent = 'No countries match that search.';
+      none.hidden = true;
+      listEl.appendChild(none);
+      built = true;
+    }
+
+    function filter(q) {
+      if (!listEl) return;
+      q = String(q || '').trim().toLowerCase();
+      var hits = 0;
+      [].forEach.call(listEl.querySelectorAll('.ccrow'), function (r) {
+        var pinned = r.getAttribute('data-pinned') === '1';
+        var ok = q ? (!pinned && r.getAttribute('data-find').indexOf(q) > -1)
+                   : true;
+        r.hidden = !ok;
+        if (ok) hits++;
+      });
+      var div = listEl.querySelector('.ccdivider');
+      if (div) div.hidden = !!q;
+      var none = document.getElementById('dccNone');
+      if (none) none.hidden = hits > 0;
+    }
+
+    function open() {
+      build();
+      if (!panel) return;
+      panel.hidden = false;
+      if (pill) pill.setAttribute('aria-expanded', 'true');
+      if (searchEl) { searchEl.value = ''; filter(''); }
+      var sel = listEl && listEl.querySelector('.ccrow.is-sel');
+      if (sel && sel.scrollIntoView) { try { sel.scrollIntoView({ block: 'center' }); } catch (e) {} }
+      if (searchEl) { try { searchEl.focus(); } catch (e) {} }
+    }
+    function close() {
+      if (!panel) return;
+      panel.hidden = true;
+      if (pill) pill.setAttribute('aria-expanded', 'false');
+    }
+
+    if (pill) pill.addEventListener('click', open);
+    if (closeEl) closeEl.addEventListener('click', close);
+    if (searchEl) searchEl.addEventListener('input', function () { filter(searchEl.value); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && panel && !panel.hidden) close();
+    });
+
+    /* --- validity --- */
+    function raw() { return (input && input.value || '').trim(); }
+
+    function valid(v) {
+      v = v == null ? raw() : String(v).trim();
+      if (!v) return false;
+      var p = P();
+      if (!p) return v.replace(/\D/g, '').length >= 7;   /* script not in yet */
+      return p.isValid(v, iso);
+    }
+
+    /* Message names the country, because the commonest failure by far is a
+       real number typed against the wrong pill. */
+    function message(v) {
+      var p = P();
+      if (!p) return 'Please enter a valid phone number.';
+      var where = names[iso] || iso;
+      /* Did they paste a full international number for somewhere else? */
+      var other = null;
+      try { if (/^\s*\+/.test(v)) other = p.countryOf(v); } catch (e) {}
+      if (other && other !== iso) {
+        return 'That looks like a ' + (names[other] || other) + ' number. Tap the flag and pick ' + (names[other] || other) + '.';
+      }
+      if (p.isPossible(v, iso)) {
+        return "That isn't a working " + where + ' number. Check the area code and try again.';
+      }
+      return 'Enter your ' + where + ' number, like ' + p.sample(iso) + '.';
+    }
+
+    function showErr(msg) {
+      if (!errEl) return;
+      if (msg) { errEl.textContent = msg; errEl.hidden = false; }
+      else { errEl.textContent = ''; errEl.hidden = true; }
+    }
+
+    /* loud=true is the on-submit / on-blur pass: it is allowed to complain.
+       While they are still typing we only ever go quiet or green. */
+    function check(loud) {
+      if (!input) return false;
+      var v = raw();
+      var ok = valid(v);
+      input.classList.toggle('is-valid', ok);
+      if (ok) { input.classList.remove('is-bad'); showErr(''); return true; }
+      if (loud && v) { input.classList.add('is-bad'); showErr(message(v)); }
+      else if (!v) { showErr(''); }
+      return false;
+    }
+
+    if (input) {
+      /* Format as they type, but only when the caret is at the end. Editing
+         mid-string with reformatting on is how caret-jumping bugs happen. */
+      input.addEventListener('input', function () {
+        var p = P();
+        var atEnd = input.selectionStart === input.value.length;
+        if (p && atEnd && !/^\s*\+/.test(input.value)) {
+          var f = p.format(input.value, iso);
+          if (f && f !== input.value) {
+            input.value = f;
+            try { input.setSelectionRange(f.length, f.length); } catch (e) {}
+          }
+        }
+        /* If they pasted a full +international number, follow it. */
+        if (p && /^\s*\+/.test(input.value)) {
+          var c = p.countryOf(input.value);
+          if (c && c !== iso) setCountry(c, { quiet: true });
+        }
+        check(false);
+      });
+      input.addEventListener('blur', function () { check(true); });
+    }
+
+    return {
+      init: function (prior) {
+        setCountry(guess(prior), { quiet: true });
+        /* The script lands after this runs. Re-apply once it does, so the
+           placeholder and the country guess get the metadata they need. */
+        if (!P()) {
+          var tries = 0;
+          var t = setInterval(function () {
+            if (P()) { clearInterval(t); build(); setCountry(iso, { quiet: true }); }
+            else if (++tries > 100) clearInterval(t);
+          }, 100);
+        }
+      },
+      country: function () { return iso; },
+      setCountryQuiet: function (cc) { setCountry(cc, { quiet: true }); },
+      valid: valid,
+      check: check,
+      focus: function () { if (input) { input.focus(); check(true); } },
+      /* E.164 for AC and Calendly. Falls back to pill + digits only when
+         the validator is genuinely absent. */
+      e164: function () {
+        var v = raw();
+        var p = P();
+        if (p) { var n = p.e164(v, iso); if (n) return n; }
+        var d = v.replace(/\D/g, '');
+        return d ? dial() + d.replace(/^0+/, '') : '';
+      }
+    };
+  })();
+
   var CHECKS = {
     name:  function (v) { return v.length >= 2; },
     email: function (v) { return /\S+@\S+\.\S+/.test(v); },
-    phone: function (v) { return v.replace(/\D/g, '').length >= 7; }
+    phone: function (v) { return DPHONE.valid(v); }
   };
   Object.keys(CHECKS).forEach(function (n) {
     var el = form[n];
@@ -1106,6 +1542,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   try { prior = JSON.parse(localStorage.getItem('ridley_lead_v1') || '{}'); } catch (e) {}
   var known = !!(prior && prior.email);
 
+  /* Pick the starting country before anything is prefilled, so a returning
+     visitor's saved country wins over the timezone guess. */
+  DPHONE.init(prior);
+
   if (known) {
     ['name', 'email', 'phone'].forEach(function (n) {
       var el = form[n];
@@ -1114,6 +1554,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         el.classList.add('is-valid');
       }
     });
+
+    /* The stored number is E.164 (+447400123456). Show it back the way
+       they wrote it, on the right flag, rather than as a raw +string. */
+    if (prior.phone) {
+      try {
+        var p = window.RAPhone;
+        var el = form.phone;
+        if (p && el) {
+          var cc = prior.phone_country || p.countryOf(prior.phone);
+          if (cc) DPHONE.setCountryQuiet(cc);
+          var nat = p.national(prior.phone);
+          if (nat) el.value = nat;
+        }
+      } catch (e) {}
+      DPHONE.check(false);
+    }
 
     /* RE-ENTRY. They are past the gate already, so let them choose to go
        straight back to the video instead of submitting a second time.
@@ -1177,10 +1633,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
          back on top once main.js has finished writing. */
       try {
         var cur = JSON.parse(localStorage.getItem('ridley_lead_v1') || '{}');
-        if (cur.consent !== lead.consent) {
-          cur.consent = lead.consent;
-          localStorage.setItem('ridley_lead_v1', JSON.stringify(cur));
-        }
+        var dirty = false;
+        if (cur.consent !== lead.consent) { cur.consent = lead.consent; dirty = true; }
+        /* main.js also overwrites phone with whatever its own booking-form
+           picker built (+1 by default, since that form was never touched
+           here) and drops phone_country entirely. The door's number is the
+           validated one, so it wins. */
+        if (lead.phone && cur.phone !== lead.phone) { cur.phone = lead.phone; dirty = true; }
+        if (cur.phone_country !== lead.phone_country) { cur.phone_country = lead.phone_country; dirty = true; }
+        if (dirty) localStorage.setItem('ridley_lead_v1', JSON.stringify(cur));
       } catch (e) {}
       try {
         var pill = document.getElementById('vslSound');
@@ -1197,7 +1658,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (!CHECKS.email(email)) return bad('email');
     if (!CHECKS.phone(phone)) return bad('phone');
     var consent = !!(form.consent && form.consent.checked);
-    var lead = { name: name, email: email, phone: phone, consent: consent };
+
+    /* Store the number in E.164, not as typed. Everything downstream wants
+       one unambiguous form: ActiveCampaign, the SMS sender, and Calendly's
+       phone question all read this field, and "0412 345 678" is only a real
+       number if you already know it is Australian. phone_country is kept
+       alongside so the door can show it back correctly next visit. */
+    var lead = {
+      name: name,
+      email: email,
+      phone: DPHONE.e164() || phone,
+      phone_country: DPHONE.country(),
+      consent: consent
+    };
 
     if (btn) { btn.disabled = true; btn.textContent = 'Starting your video…'; }
 
@@ -1268,10 +1741,67 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     return q.length ? '?' + q.join('&') : '';
   }
 
-  if (book) book.addEventListener('click', function () {
+  /* ---- QUALIFYING STEP ---------------------------------------------
+     Tap 1 opens the questions. Tap on "See My Times" opens the calendar.
+     Answers are written into ridley_lead_v1 under `qual`, which is the
+     shape ~/riddley/qual-to-crm already expects, so when that patch ships
+     the answers reach ActiveCampaign with no further change here. */
+  var qualEl = document.getElementById('choiceQual');
+  var qualGo = document.getElementById('choiceQualGo');
+  var qualErr = document.getElementById('choiceQualErr');
+  var note = document.getElementById('choiceNote');
+  var answers = {};
+
+  if (qualEl) qualEl.querySelectorAll('.qual__opts').forEach(function (grp) {
+    var key = grp.getAttribute('data-q');
+    grp.querySelectorAll('.qual__opt').forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        answers[key] = opt.getAttribute('data-val');
+        grp.querySelectorAll('.qual__opt').forEach(function (o) {
+          o.classList.toggle('is-sel', o === opt);
+        });
+        grp.classList.remove('is-bad');
+        if (qualErr) qualErr.hidden = true;
+        /* Persist per answer, so a drop-off mid-questions is still worth
+           something rather than being lost entirely. Flat q1/q2/q4 is the
+           shape main.js already writes and the shape qual-to-crm's
+           /api/optin reads. Do not nest these. */
+        try {
+          var cur = JSON.parse(localStorage.getItem('ridley_lead_v1') || '{}');
+          cur[key] = answers[key];
+          localStorage.setItem('ridley_lead_v1', JSON.stringify(cur));
+        } catch (e) {}
+      });
+    });
+  });
+
+  function qualComplete() {
+    if (!qualEl) return true;
+    var missing = null;
+    qualEl.querySelectorAll('.qual__opts').forEach(function (grp) {
+      var key = grp.getAttribute('data-q');
+      var ok = !!answers[key];
+      grp.classList.toggle('is-bad', !ok);
+      if (!ok && !missing) missing = grp;
+    });
+    if (missing) {
+      if (qualErr) { qualErr.textContent = 'Please answer all three so we can point you at the right option.'; qualErr.hidden = false; }
+      try { missing.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+      return false;
+    }
+    return true;
+  }
+
+  /* Who gets routed to the downsell rather than the main offer. This is the
+     ONLY place the threshold lives, so Chris or Stephen can move it in one
+     line. It tags for routing; it does NOT block the booking. */
+  function isDQ() {
+    return answers.q1 === 'Not any time soon' || answers.q4 === 'Under $1,500';
+  }
+
+  function openCalendar(trigger) {
     var l = lead$();
-    try { if (window.fbq) window.fbq('track', 'Lead', { content_name: 'Free Piano Consultation', content_category: 'post-video-choice' }); } catch (e) {}
-    try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_book_click', source: 'post-video-choice', page_variant: 'vsl-c' }); } catch (e) {}
+    l.q1 = answers.q1 || ''; l.q2 = answers.q2 || ''; l.q4 = answers.q4 || '';
 
     var host = document.getElementById('choiceCalHost');
     var wrap = document.getElementById('choiceCal');
@@ -1304,20 +1834,80 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        The button says so meanwhile, so the tap is never a dead one. */
     if (window.Calendly) { mount(); return; }
 
-    book.disabled = true;
-    var was = book.textContent;
-    book.textContent = 'Opening the calendar…';
+    trigger.disabled = true;
+    var was = trigger.textContent;
+    trigger.textContent = 'Opening the calendar…';
     var waited = 0;
     var poll = setInterval(function () {
       if (window.Calendly) {
         clearInterval(poll);
-        book.disabled = false; book.textContent = was;
+        trigger.disabled = false; trigger.textContent = was;
         mount();
       } else if ((waited += 100) >= 5000) {
         clearInterval(poll);
         window.location.href = CAL + prefillQS(l);
       }
     }, 100);
+  }
+
+  /* Tap 1: Lead fires HERE, unchanged, at the same moment it fired before
+     the questions existed. The live Meta arms optimise on Lead; keeping it
+     on the first tap keeps their signal continuous. */
+  if (book) book.addEventListener('click', function () {
+    try { if (window.fbq) window.fbq('track', 'Lead', { content_name: 'Free Piano Consultation', content_category: 'post-video-choice' }); } catch (e) {}
+    try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_book_click', source: 'post-video-choice', page_variant: 'vsl-c' }); } catch (e) {}
+
+    /* No questions in the DOM (an older cached index.html) must never mean
+       a dead button: fall straight through to the calendar. */
+    if (!qualEl || !qualGo) { openCalendar(book); return; }
+
+    book.hidden = true;
+    if (note) note.hidden = true;
+    qualEl.hidden = false;
+    try { qualEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+    try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_qual_start', source: 'post-video-choice', page_variant: 'vsl-c' }); } catch (e) {}
+  });
+
+  /* Tap 2: all three answered, so open the calendar. */
+  if (qualGo) qualGo.addEventListener('click', function () {
+    if (!qualComplete()) return;
+
+    /* The door's own /api/optin POST fired before these questions existed,
+       so the answers need their own write. source:'application' is the
+       branch qual-to-crm already has for exactly this payload: it upserts
+       the same contact by email (contact/sync), stamps q1/q2/q4, and tags
+       "VSL Application", adding the downsell tags when dq is true.
+       Fire and forget: a dead endpoint must never hold up the calendar.
+       NOTE: this write is silently lost until qual-to-crm is deployed AND
+       AC_KEY is set on vsl-b. Both are still open. */
+    try {
+      var l = lead$();
+      fetch('/api/optin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: l.name || '', email: l.email || '', phone: l.phone || '',
+          consent: !!l.consent, source: 'application',
+          q1: answers.q1 || '', q2: answers.q2 || '', q4: answers.q4 || '',
+          dq: isDQ()
+        }),
+        keepalive: true
+      }).catch(function () {});
+    } catch (e) {}
+
+    try {
+      (window.dataLayer = window.dataLayer || []).push({
+        event: 'rdly_qual_complete',
+        source: 'post-video-choice',
+        page_variant: 'vsl-c',
+        qual_timing: answers.q1 || '',
+        qual_spent: answers.q2 || '',
+        qual_budget: answers.q4 || '',
+        qual_dq: isDQ()
+      });
+    } catch (e) {}
+    qualEl.hidden = true;
+    openCalendar(qualGo);
   });
 
   /* Booking itself is NOT tracked here. main.js already listens for
