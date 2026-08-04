@@ -1318,7 +1318,7 @@
         }
       } catch (e) {}
 
-      // FUNNEL ROUTING (per Steven's brief): leads who can't start soon are sent to the
+      // FUNNEL ROUTING (per Stephen's brief): leads who can't start soon are sent to the
       // $27 tripwire offer instead of the calendar. Same isDisqualified() the pill
       // handler uses, so the two can never disagree. With the beacon above in place
       // this no longer loses the lead, which is what made the hard redirect safe to keep
@@ -2129,7 +2129,7 @@
    cards on the thank-you page. Unlike every other player on the site
    these do NOT autoplay: the card shows its still poster until tapped,
    then a CHROMELESS YouTube player is built in place and plays WITH
-   sound from data-start (the timestamp on the link Steven supplied).
+   sound from data-start (the timestamp on the link Stephen supplied).
    Same no-YouTube-chrome treatment as the FAQ answers (transparent
    shield swallows clicks, iframe cropped 150% so the logo/title bands
    fall outside, rel=0 keeps any end wall on Stephen's own channel and

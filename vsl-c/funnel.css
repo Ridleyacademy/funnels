@@ -180,7 +180,7 @@
 .song.more .a{color:var(--cherry);font-weight:800}
 
 /* ============================================================
-   Steven feedback pass 2 (thank-you + tripwire)
+   Stephen feedback pass 2 (thank-you + tripwire)
    ============================================================ */
 
 /* thank-you: tight hero, title and video close together */
@@ -192,7 +192,7 @@
 .remindx{display:flex;justify-content:center;gap:clamp(14px,2.6vw,32px);flex-wrap:wrap;margin-top:1.1em}
 .remindx span{font-weight:600;font-size:.92rem;color:var(--ink-soft)}
 
-/* thank-you: question blocks, title / video / text (videos from Steven) */
+/* thank-you: question blocks, title / video / text (videos from Stephen) */
 .qblocks{max-width:860px;margin:0 auto;display:grid;gap:clamp(30px,4vw,48px)}
 .qblock{color:var(--cream)}
 .qblock__t{font-family:var(--display);text-transform:uppercase;font-size:clamp(1.4rem,3vw,2rem);line-height:1.05;margin-bottom:.6em;text-align:center}
