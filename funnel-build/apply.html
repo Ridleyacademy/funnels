@@ -12,6 +12,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <link href="https://api.fontshare.com/v2/css?f[]=switzer@400,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<!-- Per-country phone validation (libphonenumber-js, max metadata: real area
+     codes and subscriber ranges, not just a length check). Self-hosted, no CDN,
+     ~57KB gzipped, deferred so it never blocks paint. Every consumer falls back
+     to the old length check while it is missing, so a slow script cannot cost
+     a lead. Rebuild instructions in vslb-qual-gate/DEPLOY.md. -->
+<script defer src="ra-phone.js"></script>
 <!-- GTM CONTAINER HERE -->
 <style>
   /* page-specific: layout mirrors join.warriorbabe.com apply page (captures in scratchpad/wb/apply-a.png, apply-b.png):
@@ -19,7 +25,8 @@
      2-col proof collage below the form, Apply pill at the bottom. */
   .apply-hero{padding:clamp(28px,5vw,52px) 0 clamp(18px,3vw,28px);text-align:center}
   .apply-hero .check-list{max-width:620px;margin:22px auto 0}
-  .form-card{max-width:640px;margin:0 auto;border-radius:var(--radius-lg);padding:clamp(24px,4.5vw,44px);box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+  /* position:relative so the country-code sheet can fill the card */
+  .form-card{position:relative;max-width:640px;margin:0 auto;border-radius:var(--radius-lg);padding:clamp(24px,4.5vw,44px);box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
   /* the form card stays LIGHT on the dark page, exactly like WB's white JotForm on black */
   .theme-dark .form-card{background:var(--paper);color:var(--ink);border-color:var(--line)}
   .theme-dark .form-card p{color:var(--ink)}
@@ -61,6 +68,47 @@
   .dq-screen p{color:var(--ink-soft);font-size:16px;margin-bottom:14px}
   .err{color:var(--cherry);font-size:13.5px;text-align:center;margin-top:10px;display:none}
   .err.on{display:block}
+
+  /* ---- country-code phone field + picker (ported from the vsl-b door) -----
+     Was a bare tel input validated by `phone.length>6`, which accepted a made-up
+     area code, a number short by a digit, and a UK mobile typed while the field
+     assumed +1. All three looked real in ActiveCampaign and were dead on the
+     call list. The number is now checked against the selected country's real
+     numbering plan and stored as E.164, which is also the shape Calendly's a1
+     answer and the AC write both want.
+     The card is LIGHT on this page (see .theme-dark .form-card above), so every
+     rule here is written light, and the .is-bad / .is-valid states carry the
+     .theme-dark .form-card prefix to beat that block's specificity. */
+  .phonerow{display:flex;gap:8px;align-items:stretch}
+  .phonerow .field{flex:1 1 auto;min-width:0}
+  .ccpill{display:flex;align-items:center;gap:7px;flex:0 0 auto;padding:0 13px;background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius-sm);color:var(--ink);font-family:var(--body);font-size:16px;font-weight:600;line-height:1;cursor:pointer;transition:border-color .2s var(--ease)}
+  .ccpill:hover{border-color:var(--ink-soft)}
+  .ccpill:focus-visible{outline:none;border-color:var(--cherry);box-shadow:0 0 0 3px rgba(232,20,32,.12)}
+  .ccpill img{width:22px;height:16px;object-fit:cover;border-radius:3px;display:block}
+  .ccpill i{font-style:normal;font-size:11px;color:var(--ink-soft)}
+  .fielderr{color:var(--cherry);font-size:13.5px;line-height:1.45;margin-top:7px}
+  .fielderr[hidden]{display:none}
+  .fielderr button{background:none;border:0;padding:0;font:inherit;color:var(--cherry);text-decoration:underline;cursor:pointer}
+  .theme-dark .form-card .field.is-bad,.field.is-bad{border-color:var(--cherry)}
+  .theme-dark .form-card .field.is-valid,.field.is-valid{border-color:rgba(30,110,60,.55)}
+  /* the sheet: fills the form card while open */
+  .ccpanel{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;background:var(--paper);border-radius:var(--radius-lg);padding:clamp(18px,3.5vw,26px)}
+  .ccpanel[hidden]{display:none}
+  .ccpanel__head{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:15px;color:var(--ink)}
+  .ccpanel__close{background:none;border:0;color:var(--ink-soft);font-size:24px;line-height:1;cursor:pointer;min-width:44px;min-height:44px}
+  .ccpanel__search{width:100%;margin-top:12px;background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;font-size:16.5px;font-family:var(--body);color:var(--ink)}
+  .ccpanel__search:focus{outline:none;border-color:var(--cherry);box-shadow:0 0 0 3px rgba(232,20,32,.12)}
+  .ccpanel__list{flex:1 1 auto;min-height:220px;overflow-y:auto;-webkit-overflow-scrolling:touch;margin-top:10px}
+  .ccrow{display:flex;align-items:center;gap:10px;width:100%;padding:11px 10px;background:none;border:0;border-radius:10px;font-family:var(--body);font-size:16px;color:var(--ink);text-align:left;cursor:pointer}
+  .ccrow[hidden]{display:none}
+  .ccrow:hover{background:var(--cream)}
+  .ccrow.is-sel{background:#FDF0F0}
+  .ccrow img{width:22px;height:16px;object-fit:cover;border-radius:3px;flex:0 0 auto}
+  .ccrow__name{flex:1 1 auto}
+  .ccrow__code{color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .ccdivider{height:1px;background:var(--line);margin:8px 6px}
+  .ccdivider[hidden]{display:none}
+  .ccpanel__none{color:var(--ink-soft);font-size:14.5px;padding:14px 10px}
 </style>
 </head>
 <body class="theme-dark">
@@ -237,12 +285,32 @@
         <p class="q">Almost done. Where should we send your call details?</p>
         <p class="q-sub">One more question after this, then the calendar opens.</p>
         <div class="contact-fields">
-          <div><label for="f-name">Full name</label><input class="field" type="text" id="f-name" autocomplete="name"></div>
-          <div><label for="f-email">Email</label><input class="field" type="email" id="f-email" autocomplete="email"></div>
-          <div><label for="f-phone">Mobile phone</label><input class="field" type="tel" id="f-phone" autocomplete="tel"></div>
+          <div>
+            <label for="f-name">Full name</label>
+            <input class="field" type="text" id="f-name" autocomplete="name" autocapitalize="words" aria-describedby="name-err">
+            <p class="fielderr" id="name-err" role="alert" hidden></p>
+          </div>
+          <div>
+            <label for="f-email">Email</label>
+            <input class="field" type="email" id="f-email" autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="email-err">
+            <p class="fielderr" id="email-err" role="alert" hidden></p>
+          </div>
+          <div>
+            <label for="f-phone">Mobile phone</label>
+            <!-- The country is explicit: the pill is guessed from their timezone
+                 (then locale) and is always one tap from being changed, and the
+                 input takes the number the way someone in that country would
+                 actually write it. ra-phone.js checks the pair against that
+                 country's numbering plan, so a wrong area code is refused here
+                 instead of on the call list. -->
+            <div class="phonerow">
+              <button type="button" class="ccpill" id="ccFlag" aria-haspopup="dialog" aria-expanded="false" aria-label="Country code, tap to change"><img id="ccFlagImg" src="https://flagcdn.com/w40/us.png" alt="" width="22" height="16" decoding="async"><span id="ccFlagTxt">+1</span><i aria-hidden="true">▾</i></button>
+              <input class="field" type="tel" id="f-phone" inputmode="tel" autocomplete="tel-national" aria-describedby="phone-err">
+            </div>
+            <p class="fielderr" id="phone-err" role="alert" hidden></p>
+          </div>
           <p class="consent">We'll text your Zoom link and appointment reminders to this number. Message and data rates may apply. Reply STOP to opt out, HELP for help.</p>
         </div>
-        <p class="err" id="contact-err">Please add your name, a valid email, and a phone number.</p>
         <div class="form-nav"><button class="btn btn--block" id="contact-next">Continue</button><button class="backlink">Back</button></div>
       </div>
 
@@ -272,6 +340,15 @@
         <p class="q">Opening your calendar...</p>
         <p class="q-sub">One moment. Pick the time that suits you on the next screen.</p>
         <div class="loader" aria-hidden="true"><span></span><span></span><span></span></div>
+      </div>
+
+      <!-- Country-code sheet. Sits outside the steps so it can cover the whole
+           card. Rows are built at runtime from ra-phone.js's own country list,
+           so there is no second hardcoded country table to drift. -->
+      <div class="ccpanel" id="ccPanel" role="dialog" aria-modal="true" aria-label="Select country code" hidden>
+        <div class="ccpanel__head">Select country code<button type="button" class="ccpanel__close" id="ccClose" aria-label="Close">&times;</button></div>
+        <input class="ccpanel__search" id="ccSearch" type="search" placeholder="Search countries" autocomplete="off" aria-label="Search countries">
+        <div class="ccpanel__list" id="ccList"></div>
       </div>
     </div>
   </div>
@@ -436,15 +513,374 @@
     tl.href=tl.getAttribute('href')+window.location.search;
   }
 
-  // contact step validation
+  /* ---- COUNTRY-SPECIFIC PHONE -------------------------------------------
+     Ported from the vsl-b front door (8/4). The old check here was
+     `phone.length>6`, which passed a made-up area code, a number short by a
+     digit, and a UK mobile typed against a +1 field. Now the country is
+     explicit and the number is validated against that country's real
+     numbering plan, then stored as E.164 (+61412345678) for AC and Calendly.
+
+     ra-phone.js is deferred, so it may not have landed when someone types
+     fast. Every path below falls back to the old length check while it is
+     missing: a slow script must never cost a lead. */
+  var PHONE=(function(){
+    var pill=document.getElementById('ccFlag');
+    var pillImg=document.getElementById('ccFlagImg');
+    var pillTxt=document.getElementById('ccFlagTxt');
+    var input=document.getElementById('f-phone');
+    var errEl=document.getElementById('phone-err');
+    var panel=document.getElementById('ccPanel');
+    var listEl=document.getElementById('ccList');
+    var searchEl=document.getElementById('ccSearch');
+    var closeEl=document.getElementById('ccClose');
+
+    var iso='US', names={}, built=false;
+
+    function P(){ return window.RAPhone||null; }
+    function flag(cc){ return 'https://flagcdn.com/w40/'+String(cc).toLowerCase()+'.png'; }
+
+    /* Where are they? Best available signal, cheapest first. None of this is
+       authoritative, which is why the pill stays one tap from being changed. */
+    var TZ={
+      'America/New_York':'US','America/Chicago':'US','America/Denver':'US','America/Phoenix':'US',
+      'America/Los_Angeles':'US','America/Anchorage':'US','Pacific/Honolulu':'US','America/Detroit':'US',
+      'America/Toronto':'CA','America/Vancouver':'CA','America/Edmonton':'CA','America/Winnipeg':'CA','America/Halifax':'CA',
+      'Europe/London':'GB','Europe/Belfast':'GB','Europe/Dublin':'IE',
+      'Australia/Sydney':'AU','Australia/Melbourne':'AU','Australia/Brisbane':'AU','Australia/Perth':'AU',
+      'Australia/Adelaide':'AU','Australia/Hobart':'AU','Australia/Darwin':'AU',
+      'Pacific/Auckland':'NZ','Africa/Johannesburg':'ZA','Asia/Kolkata':'IN','Asia/Calcutta':'IN',
+      'Asia/Singapore':'SG','Asia/Dubai':'AE','Europe/Berlin':'DE','Europe/Paris':'FR','Europe/Amsterdam':'NL',
+      'Europe/Madrid':'ES','Europe/Rome':'IT'
+    };
+    function guess(prior){
+      if(prior && prior.phone_country) return prior.phone_country;      /* what they picked last time */
+      try{ if(prior && prior.phone && P()){ var c=P().countryOf(prior.phone); if(c) return c; } }catch(e){}
+      try{ var tz=Intl.DateTimeFormat().resolvedOptions().timeZone; if(tz&&TZ[tz]) return TZ[tz]; }catch(e){}
+      try{ var m=String(navigator.language||'').match(/[-_]([A-Za-z]{2})$/); if(m) return m[1].toUpperCase(); }catch(e){}
+      return 'US';
+    }
+    /* Dial codes for the handful of countries guess() can return, so that while
+       ra-phone.js is still in flight the pill cannot show "+1" over an iso of
+       "GB" and store a +1 number for a British lead. Once the script lands the
+       real metadata takes over and this is never consulted again. */
+    var FALLBACK_DIAL={US:'+1',CA:'+1',GB:'+44',IE:'+353',AU:'+61',NZ:'+64',ZA:'+27',IN:'+91',
+      SG:'+65',AE:'+971',DE:'+49',FR:'+33',NL:'+31',ES:'+34',IT:'+39'};
+    function dial(){ var p=P(); return (p&&p.dial(iso))||FALLBACK_DIAL[iso]||'+1'; }
+
+    function setCountry(cc,opts){
+      if(!cc) return;
+      var p=P();
+      if(p && !p.dial(cc)) return;   /* refuse a code the metadata cannot validate */
+      /* No metadata yet and no dial code we can vouch for: sit on US rather than
+         display a code that does not belong to the country we are storing. */
+      if(!p && !FALLBACK_DIAL[cc]) cc='US';
+      iso=cc;
+      if(pillImg) pillImg.src=flag(cc);
+      if(pillTxt) pillTxt.textContent=dial();
+      if(pill) pill.setAttribute('aria-label','Country code '+dial()+', tap to change');
+      if(input&&p) input.placeholder=p.sample(cc);
+      if(listEl){ [].forEach.call(listEl.querySelectorAll('.ccrow'),function(r){ r.classList.toggle('is-sel',r.getAttribute('data-iso')===cc); }); }
+      if(!(opts&&opts.quiet)) check(true);
+    }
+
+    /* --- the picker sheet --- */
+    function build(){
+      if(built||!listEl) return;
+      var p=P();
+      if(!p){
+        /* Script still in flight. Say so instead of opening an empty sheet, and
+           give them a way through in the meantime. init()'s poller rebuilds
+           this the moment the metadata lands. */
+        listEl.innerHTML='<p class="ccpanel__none">Country list is still loading. You can also type your number with its country code, like +44 7400 123456.</p>';
+        return;
+      }
+      listEl.innerHTML='';
+      var all=p.countries();
+      var PINNED=['US','CA','GB','AU','NZ'];   // where Ridley actually advertises
+      var byIso={};
+      all.forEach(function(c){ byIso[c.iso]=c; names[c.iso]=c.name; });
+
+      function row(c){
+        var b=document.createElement('button');
+        b.type='button';
+        b.className='ccrow'+(c.iso===iso?' is-sel':'');
+        b.setAttribute('data-iso',c.iso);
+        b.setAttribute('data-find',(c.name+' '+c.iso+' '+c.dial).toLowerCase());
+        b.innerHTML='<img src="'+flag(c.iso)+'" alt="" loading="lazy" decoding="async">'+
+          '<span class="ccrow__name"></span><span class="ccrow__code"></span>';
+        b.querySelector('.ccrow__name').textContent=c.name;
+        b.querySelector('.ccrow__code').textContent=c.dial;
+        b.addEventListener('click',function(){ setCountry(c.iso); close(); if(input) input.focus(); });
+        return b;
+      }
+      PINNED.forEach(function(cc){
+        if(!byIso[cc]) return;
+        var r=row(byIso[cc]);
+        /* Pinned rows duplicate the A-Z entries below. Fine when browsing,
+           confusing when searching, so search hides them. */
+        r.setAttribute('data-pinned','1');
+        listEl.appendChild(r);
+      });
+      var div=document.createElement('div');
+      div.className='ccdivider';
+      listEl.appendChild(div);
+      all.forEach(function(c){ listEl.appendChild(row(c)); });
+
+      var none=document.createElement('p');
+      none.className='ccpanel__none';
+      none.id='ccNone';
+      none.textContent='No countries match that search.';
+      none.hidden=true;
+      listEl.appendChild(none);
+      built=true;
+    }
+
+    function filter(q){
+      if(!listEl) return;
+      q=String(q||'').trim().toLowerCase();
+      var hits=0;
+      [].forEach.call(listEl.querySelectorAll('.ccrow'),function(r){
+        var pinned=r.getAttribute('data-pinned')==='1';
+        var ok=q?(!pinned&&r.getAttribute('data-find').indexOf(q)>-1):true;
+        r.hidden=!ok;
+        if(ok) hits++;
+      });
+      var div=listEl.querySelector('.ccdivider');
+      if(div) div.hidden=!!q;
+      var none=document.getElementById('ccNone');
+      if(none) none.hidden=hits>0;
+    }
+
+    function open(){
+      build();
+      if(!panel) return;
+      panel.hidden=false;
+      if(pill) pill.setAttribute('aria-expanded','true');
+      if(searchEl){ searchEl.value=''; filter(''); }
+      var sel=listEl&&listEl.querySelector('.ccrow.is-sel');
+      if(sel&&sel.scrollIntoView){ try{ sel.scrollIntoView({block:'center'}); }catch(e){} }
+      if(searchEl){ try{ searchEl.focus(); }catch(e){} }
+    }
+    function close(){
+      if(!panel) return;
+      panel.hidden=true;
+      if(pill) pill.setAttribute('aria-expanded','false');
+      if(pill){ try{ pill.focus(); }catch(e){} }
+    }
+
+    if(pill) pill.addEventListener('click',open);
+    if(closeEl) closeEl.addEventListener('click',close);
+    if(searchEl){
+      searchEl.addEventListener('input',function(){ filter(searchEl.value); });
+      /* Enter on a search with one hit picks it, rather than doing nothing. */
+      searchEl.addEventListener('keydown',function(e){
+        if(e.key!=='Enter') return;
+        e.preventDefault();
+        var first=listEl&&listEl.querySelector('.ccrow:not([hidden])');
+        if(first) first.click();
+      });
+    }
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&panel&&!panel.hidden) close(); });
+
+    /* --- validity --- */
+    function raw(){ return (input&&input.value||'').trim(); }
+    function valid(v){
+      v=v==null?raw():String(v).trim();
+      if(!v) return false;
+      var p=P();
+      if(!p) return v.replace(/\D/g,'').length>=7;   /* script not in yet */
+      return p.isValid(v,iso);
+    }
+    /* The message names the country, because the commonest failure by far is a
+       real number typed against the wrong pill. */
+    function message(v){
+      var p=P();
+      if(!p) return 'Please enter a valid phone number.';
+      var where=names[iso]||iso;
+      var other=null;
+      try{ if(/^\s*\+/.test(v)) other=p.countryOf(v); }catch(e){}
+      if(other&&other!==iso) return 'That looks like a '+(names[other]||other)+' number. Tap the flag and pick '+(names[other]||other)+'.';
+      if(p.isPossible(v,iso)) return "That isn't a working "+where+' number. Check the area code and try again.';
+      return 'Enter your '+where+' number, like '+p.sample(iso)+'.';
+    }
+    function showErr(msg){
+      if(!errEl) return;
+      if(msg){ errEl.textContent=msg; errEl.hidden=false; }
+      else{ errEl.textContent=''; errEl.hidden=true; }
+    }
+    /* loud=true is the on-submit / on-blur pass: it is allowed to complain.
+       While they are still typing we only ever go quiet or green. */
+    function check(loud){
+      if(!input) return false;
+      var v=raw(), ok=valid(v);
+      input.classList.toggle('is-valid',ok);
+      if(ok){ input.classList.remove('is-bad'); showErr(''); return true; }
+      if(loud&&v){ input.classList.add('is-bad'); showErr(message(v)); }
+      else if(!v){ input.classList.remove('is-bad'); showErr(loud?'Please add a mobile number so we can text your Zoom link.':''); }
+      return false;
+    }
+
+    if(input){
+      /* Format as they type, but only when the caret is at the end. Editing
+         mid-string with reformatting on is how caret-jumping bugs happen. */
+      input.addEventListener('input',function(){
+        var p=P();
+        var atEnd=input.selectionStart===input.value.length;
+        if(p&&atEnd&&!/^\s*\+/.test(input.value)){
+          var f=p.format(input.value,iso);
+          if(f&&f!==input.value){
+            input.value=f;
+            try{ input.setSelectionRange(f.length,f.length); }catch(e){}
+          }
+        }
+        /* If they pasted a full +international number, follow it. */
+        if(p&&/^\s*\+/.test(input.value)){
+          var c=p.countryOf(input.value);
+          if(c&&c!==iso) setCountry(c,{quiet:true});
+        }
+        check(false);
+      });
+      input.addEventListener('blur',function(){ if(raw()) check(true); });
+    }
+
+    return {
+      init:function(prior){
+        setCountry(guess(prior),{quiet:true});
+        /* ra-phone.js lands after this runs. Re-apply once it does, so the
+           placeholder and the country guess get the metadata they need. */
+        if(!P()){
+          var tries=0;
+          var t=setInterval(function(){
+            if(P()){ clearInterval(t); build(); setCountry(iso,{quiet:true}); }
+            else if(++tries>100) clearInterval(t);
+          },100);
+        }
+      },
+      country:function(){ return iso; },
+      valid:valid,
+      check:check,
+      focus:function(){ if(input){ input.focus(); check(true); } },
+      /* E.164 for AC and Calendly. Falls back to pill + digits only when the
+         validator is genuinely absent. */
+      e164:function(){
+        var v=raw(), p=P();
+        if(p){ var n=p.e164(v,iso); if(n) return n; }
+        var d=v.replace(/\D/g,'');
+        if(!d) return '';
+        /* They typed the country code themselves: keep it rather than stacking
+           the pill's code on top of it (+1 + 447400... reached nobody). */
+        if(/^\s*\+/.test(v)) return '+'+d;
+        return dial()+d.replace(/^0+/,'');
+      }
+    };
+  })();
+
+  /* ---- CONTACT STEP -----------------------------------------------------
+     Email is the key ActiveCampaign dedupes on and the address every nurture
+     email goes to, so a typo here costs the whole lead. The regex is stricter
+     than the old /\S+@\S+\.\S+/ (which passed "a@b.c" and a trailing dot), and
+     the commonest domain typos get an offered one-tap fix rather than a scold. */
+  var nameEl=document.getElementById('f-name');
+  var emailEl=document.getElementById('f-email');
+  var nameErr=document.getElementById('name-err');
+  var emailErr=document.getElementById('email-err');
+
+  var EMAIL_RE=/^[^\s@,;]+@[^\s@,;.]+(\.[^\s@,;.]+)*\.[A-Za-z]{2,}$/;
+  var TYPOS={
+    'gmail.co':'gmail.com','gmail.con':'gmail.com','gmail.cm':'gmail.com','gmai.com':'gmail.com',
+    'gmial.com':'gmail.com','gmaill.com':'gmail.com','gmail.com.com':'gmail.com','gnail.com':'gmail.com',
+    'hotmial.com':'hotmail.com','hotmai.com':'hotmail.com','hotmail.co':'hotmail.com','hotnail.com':'hotmail.com',
+    'yahoo.co':'yahoo.com','yaho.com':'yahoo.com','yahooo.com':'yahoo.com','ymail.co':'ymail.com',
+    'outlok.com':'outlook.com','outllook.com':'outlook.com','outlook.co':'outlook.com',
+    'icloud.co':'icloud.com','iclould.com':'icloud.com','live.co':'live.com','aol.co':'aol.com'
+  };
+  function suggest(email){
+    var at=email.lastIndexOf('@');
+    if(at<0) return null;
+    var dom=email.slice(at+1).toLowerCase();
+    return TYPOS[dom]?email.slice(0,at+1)+TYPOS[dom]:null;
+  }
+  function setErr(el,field,msg){
+    if(!el) return;
+    if(msg){ el.textContent=msg; el.hidden=false; field.classList.add('is-bad'); field.classList.remove('is-valid'); }
+    else{ el.textContent=''; el.hidden=true; field.classList.remove('is-bad'); }
+  }
+  function nameOk(){ return nameEl.value.trim().replace(/\s+/g,' ').length>1; }
+  function emailOk(){ return EMAIL_RE.test(emailEl.value.trim()); }
+
+  function checkName(loud){
+    var ok=nameOk();
+    nameEl.classList.toggle('is-valid',ok);
+    if(ok) setErr(nameErr,nameEl,'');
+    else if(loud) setErr(nameErr,nameEl,'Please add your name so we know who we’re speaking with.');
+    return ok;
+  }
+  function checkEmail(loud){
+    var v=emailEl.value.trim(), ok=EMAIL_RE.test(v);
+    emailEl.classList.toggle('is-valid',ok);
+    if(!ok){
+      if(loud) setErr(emailErr,emailEl,v?'That email doesn’t look right. Check it and try again.':'Please add the email we should send your call details to.');
+      else setErr(emailErr,emailEl,'');
+      return false;
+    }
+    setErr(emailErr,emailEl,'');
+    /* Valid, but the domain is a known typo: offer the fix, never force it. */
+    var s=suggest(v);
+    if(s&&emailErr){
+      emailErr.innerHTML='Did you mean <button type="button" id="email-fix"></button>?';
+      emailErr.querySelector('#email-fix').textContent=s;
+      emailErr.hidden=false;
+      emailErr.querySelector('#email-fix').addEventListener('click',function(){
+        emailEl.value=s; setErr(emailErr,emailEl,''); emailEl.classList.add('is-valid');
+      });
+    }
+    return true;
+  }
+
+  nameEl.addEventListener('input',function(){ checkName(false); });
+  nameEl.addEventListener('blur',function(){ if(nameEl.value.trim()) checkName(true); });
+  emailEl.addEventListener('input',function(){ checkEmail(false); });
+  emailEl.addEventListener('blur',function(){ if(emailEl.value.trim()) checkEmail(true); });
+
+  /* Enter anywhere in the contact step behaves like Continue. */
+  [nameEl,emailEl,document.getElementById('f-phone')].forEach(function(el){
+    if(!el) return;
+    el.addEventListener('keydown',function(e){
+      if(e.key!=='Enter') return;
+      e.preventDefault();
+      document.getElementById('contact-next').click();
+    });
+  });
+
+  /* Prefill from anything the visitor already gave us (the vsl-b door writes
+     the same key), and seed the country pill from it before the timezone guess.
+     Read straight from localStorage: shared.js loads after this script. */
+  (function(){
+    var prior={};
+    try{ prior=JSON.parse(localStorage.getItem('ridley_lead_v1')||'{}')||{}; }catch(e){}
+    if(prior.name&&!nameEl.value) nameEl.value=prior.name;
+    if(prior.email&&!emailEl.value) emailEl.value=prior.email;
+    PHONE.init(prior);
+  })();
+
   document.getElementById('contact-next').addEventListener('click',function(){
-    var name=document.getElementById('f-name').value.trim();
-    var email=document.getElementById('f-email').value.trim();
-    var phone=document.getElementById('f-phone').value.trim();
-    var ok=name.length>1 && /^\S+@\S+\.\S+$/.test(email) && phone.length>6;
-    document.getElementById('contact-err').classList.toggle('on',!ok);
-    if(!ok) return;
-    answers.name=name; answers.email=email; answers.phone=phone;
+    /* Check all three, then focus the first that failed: fixing one error only
+       to be shown the next one is how people quit a form. */
+    var okName=checkName(true), okEmail=checkEmail(true), okPhone=PHONE.check(true);
+    if(!okName){ nameEl.focus(); return; }
+    if(!okEmail){ emailEl.focus(); return; }
+    if(!okPhone){ PHONE.focus(); return; }
+
+    answers.name=nameEl.value.trim().replace(/\s+/g,' ');
+    answers.email=emailEl.value.trim();
+    /* E.164, not what they typed. Calendly's a1 answer and the AC write both
+       read this, which also closes the old bug where a US number short by a
+       digit reached Calendly as +7... and was read as Russia. */
+    answers.phone=PHONE.e164();
+    answers.phone_country=PHONE.country();
+    /* Persist now, so a refresh or a bounce to the booking page keeps it. */
+    try{ if(window.RDLY) window.RDLY.remember({name:answers.name,email:answers.email,phone:answers.phone,phone_country:answers.phone_country}); }catch(e){}
+
     var contactIdx=steps.findIndex(function(s){return s.getAttribute('data-q')==='12';});
     show(contactIdx+1);
   });
@@ -474,7 +910,9 @@
       if(window.RDLY){
         var payload={
           source:'application',
-          name:answers.name,email:answers.email,phone:answers.phone,
+          /* phone is E.164 (+61412345678) and phone_country is its ISO code, so
+             AC and the call list both get a number that can actually be dialled. */
+          name:answers.name,email:answers.email,phone:answers.phone,phone_country:answers.phone_country,
           /* The application's own consent step. The door's SMS checkbox does not
              exist on this path, so this stays explicit rather than assumed. */
           consent:false,
