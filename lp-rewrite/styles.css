@@ -10,7 +10,7 @@
   --cream:    #F8F6F2;
   --cream-2:  #F1EBDF;
   --paper:    #FFFBF4;
-  /* deepened per Steven's note: the old cherry/ruby read slightly pink */
+  /* deepened per Stephen's note: the old cherry/ruby read slightly pink */
   --cherry:   #E81420;
   --ruby:     #E23237;
   --burgundy: #B00C19;
@@ -86,7 +86,7 @@ section{position:relative}
 .btn--fire{background:var(--grad-fire);color:#fff;box-shadow:0 20px 44px -16px rgba(165,28,48,.72)}
 .btn--fire:hover{transform:translateY(-3px);box-shadow:0 28px 58px -16px rgba(165,28,48,.85)}
 .btn--lg{font-size:clamp(1.2rem,2.1vw,1.42rem);padding:1.3em 2.9em}
-/* idle motion on the big fire CTAs (Steven: "some motion before you touch it") */
+/* idle motion on the big fire CTAs (Stephen: "some motion before you touch it") */
 .btn--fire.btn--lg{animation:bookGlow 2.6s infinite}
 @media(prefers-reduced-motion:reduce){.btn--fire.btn--lg{animation:none}}
 .btn--block{display:flex;width:100%}
@@ -363,7 +363,7 @@ section{position:relative}
 
 /* "click for sound" overlay on muted-autoplay videos: catches the first
    click anywhere on the player and hands back an unmuted restart.
-   Dead-CENTER and huge per Steven: impossible to ignore. */
+   Dead-CENTER and huge per Stephen: impossible to ignore. */
 .vsound{position:absolute;inset:0;z-index:5;background:none;border:0;cursor:pointer;
   display:flex;align-items:center;justify-content:center;transition:opacity .45s}
 .vsound.is-off{opacity:0;pointer-events:none}
