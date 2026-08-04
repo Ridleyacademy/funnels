@@ -65,7 +65,12 @@
         <input type="email" id="ctEmail" name="email" autocomplete="email" required>
 
         <label for="ctPhone">Phone (optional, for faster scheduling)</label>
-        <input type="tel" id="ctPhone" name="phone" autocomplete="tel">
+        <!-- Same country-code field as the apply flow: the pill is guessed from
+             their timezone (then locale) and is always one tap from being
+             changed, and the number is validated against that country's real
+             numbering plan before it reaches the call list. Optional here, so a
+             blank value passes; a number that IS typed still has to be right. -->
+        <input type="tel" id="ctPhone" name="phone" data-ra-phone data-ra-phone-optional>
 
         <label for="ctTz">Your time zone</label>
         <select id="ctTz" name="timezone">
@@ -141,11 +146,17 @@
       (!name?document.getElementById('ctName'):document.getElementById('ctEmail')).focus();
       return;
     }
+    /* Phone is optional, so blank passes. A number that IS given has to be a
+       real one for its country, or the scheduler calls a dead line. */
+    var phoneEl=document.getElementById('ctPhone');
+    if(phoneEl._raPhone && !phoneEl._raPhone.check()){ phoneEl.focus(); return; }
     var days=[].slice.call(form.querySelectorAll('input[name=days]:checked')).map(function(c){return c.value});
     var params=new URLSearchParams(window.location.search);
     var payload={
       name:name,email:email,
-      phone:document.getElementById('ctPhone').value.trim(),
+      /* E.164, so the country survives the handoff. Storing the national string
+         makes a UK mobile indistinguishable from a US one downstream. */
+      phone:(phoneEl._raPhone?phoneEl._raPhone.e164():phoneEl.value.trim())||'',
       timezone:document.getElementById('ctTz').value,
       days:days.join(','),
       notes:document.getElementById('ctNotes').value.trim(),
@@ -179,6 +190,8 @@
   });
 })();
 </script>
+<script defer src="ra-phone.js"></script>
+<script defer src="ra-phone-ui.js"></script>
 <script src="shared.js"></script>
 </body>
 </html>
