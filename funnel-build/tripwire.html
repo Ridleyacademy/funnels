@@ -46,18 +46,7 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
      at the bottom of the body. On a cold visit it is the slowest thing on the
      page and it gates the iframe the visitor actually pays through. -->
 <link rel="preload" href="https://tinder.thrivecart.com/embed/v1/thrivecart.js" as="script">
-<!-- Meta Pixel base (id 2032449947451129). If GTM ships later with its own
-     pixel tag, remove this block so PageView does not double-fire. -->
-<script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','2032449947451129');
-fbq('track','PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"/></noscript>
+<!-- Meta pixel + GTM load at the top of head. Do not add another base here. -->
 <!--
   RIDLEY 4MC TRIPWIRE PAGE, cloned into the funnel-build design system from the live page at
   ridley-funnel-a.pages.dev/tripwire (fetched 2026-07-30). Copy ported; two deliberate changes:
