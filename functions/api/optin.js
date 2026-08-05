@@ -46,7 +46,15 @@ const QUIZ = [
 async function axl(env, lead) {
   const url = env.ACCEL_PROXY_URL || DEFAULT_PROXY_URL;
   const scenarioId = env.ACCEL_SCENARIO_ID || DEFAULT_SCENARIO_ID;
-  if (!env.ACCEL_PROXY_KEY) return 'axl:no_proxy_key';
+  if (!env.ACCEL_PROXY_KEY) {
+    // Diagnostic: names only, never values. JSON.stringify makes a name with a
+    // stray space or invisible character show itself in quotes. This tells us
+    // which project/environment the runtime is actually reading when the key
+    // "exists in the dashboard" but not here.
+    let names = [];
+    try { names = Object.keys(env).sort(); } catch (e) {}
+    return 'axl:no_proxy_key visible_env=' + JSON.stringify(names);
+  }
 
   const contactData = { email: lead.email };
   if (lead.firstName) contactData.firstName = lead.firstName;
