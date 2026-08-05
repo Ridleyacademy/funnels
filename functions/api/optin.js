@@ -18,7 +18,7 @@
 // pick it up; until then the handler says so instead of failing quietly.
 const DEFAULT_PROXY_URL = 'https://accel-proxy.system-2f6.workers.dev/api/run';
 // AXL scenario "Outside Registration", confirmed by name against the AXL API.
-const DEFAULT_SCENARIO_ID = 'INRywfcMbUS2YYjGpjuyEQ';
+const DEFAULT_SCENARIO_ID = 'h7YOCA0HikKRerkqkXgoOA';
 
 // The quiz, in the order the visitor answers it. apply.html posts these as q1..q13
 // (multi-selects already flattened to comma strings), and the team wants them on
