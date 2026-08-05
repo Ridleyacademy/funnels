@@ -43,10 +43,25 @@ const QUIZ = [
 // Registers the lead in AXL via the accel-proxy worker. Server-to-server, so the
 // proxy key never reaches the browser and the worker's lack of CORS headers is
 // irrelevant (a browser-side call would die on the OPTIONS preflight).
+// Dashboard-pasted variable names arrive with invisible whitespace more often
+// than anyone would like — this exact handler once sat dead for an evening
+// because the secret was saved as " ACCEL_PROXY_KEY" with a leading space.
+// Exact name wins; otherwise any name that trims to a match counts.
+function envVar(env, name) {
+  if (env[name]) return env[name];
+  try {
+    const k = Object.keys(env).find((x) => x.trim() === name);
+    return k ? env[k] : undefined;
+  } catch (e) {
+    return undefined;
+  }
+}
+
 async function axl(env, lead) {
-  const url = env.ACCEL_PROXY_URL || DEFAULT_PROXY_URL;
-  const scenarioId = env.ACCEL_SCENARIO_ID || DEFAULT_SCENARIO_ID;
-  if (!env.ACCEL_PROXY_KEY) {
+  const url = envVar(env, 'ACCEL_PROXY_URL') || DEFAULT_PROXY_URL;
+  const scenarioId = envVar(env, 'ACCEL_SCENARIO_ID') || DEFAULT_SCENARIO_ID;
+  const proxyKey = envVar(env, 'ACCEL_PROXY_KEY');
+  if (!proxyKey) {
     // Diagnostic: names only, never values. JSON.stringify makes a name with a
     // stray space or invisible character show itself in quotes. This tells us
     // which project/environment the runtime is actually reading when the key
@@ -110,7 +125,7 @@ async function axl(env, lead) {
 
   const res = await fetch(url, {
     method: 'POST',
-    headers: { 'X-Proxy-Key': env.ACCEL_PROXY_KEY, 'Content-Type': 'application/json' },
+    headers: { 'X-Proxy-Key': proxyKey, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       scenarioId,
       contactData,
