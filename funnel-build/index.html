@@ -17,6 +17,15 @@
   window.dataLayer = window.dataLayer || [];
   dataLayer.push({ event: "rdly_site_view", page: "home" });
 </script>
+<script>
+  /* Watch-gate boot (see vsl-gate.js). The class goes on <html> before the first
+     paint so a locked page never flashes its booking CTAs. No JS means no class
+     means no gate, which is the safe way for this to fail. */
+  (function(){
+    try{ if(localStorage.getItem('rdly_home_vsl_unlocked')==='1') return; }catch(e){}
+    document.documentElement.className += ' rdly-gated';
+  })();
+</script>
 <style>
   /* page-specific: layout mirrors warriorbabe.com homepage (capture in scratchpad/wb/home.png) */
   .hero{padding:clamp(28px,4vw,52px) 0 clamp(36px,5vw,64px);text-align:center}
@@ -32,6 +41,46 @@
   @media(max-width:720px){.collage{grid-template-columns:repeat(2,1fr)}}
   .collage img{border-radius:12px;border:1.5px solid rgba(252,244,234,.12);background:#fff;width:100%}
   .reviews-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+
+  /* ---------- watch gate (vsl-gate.js) ----------
+     Every rule here is keyed to .rdly-gated on <html>, so with JS off none of it
+     applies and the page is the page. Clipping #gate-lock is what stops the
+     scroll: the document is simply short until the video hits its mark. */
+  .rdly-gated [data-gate-cta]{display:none !important}
+  .rdly-gated .sitefoot{display:none}
+  /* nav is gated too, so the only way off the page is the browser's back button.
+     Logotype stays, and the legal links live in the gate panel while it is shut. */
+  .rdly-gated .nav-inner{justify-content:center}
+  #gate-lock{position:relative}
+  .rdly-gated #gate-lock{max-height:min(44vh,360px);overflow:hidden}
+  .rdly-gated #gate-lock::after{content:"";position:absolute;left:0;right:0;bottom:0;height:100%;background:linear-gradient(to bottom,rgba(23,4,6,0) 0%,rgba(23,4,6,.55) 34%,rgba(23,4,6,.92) 72%,#170406 100%);pointer-events:none}
+  #gate{display:none}
+  .rdly-gated #gate{display:block}
+  .gate-panel{max-width:620px;margin:0 auto;padding:4px var(--gut) clamp(52px,7vw,88px);text-align:center}
+  .gate-lockline{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);text-transform:uppercase;letter-spacing:.16em;font-size:12.5px;color:var(--gold-acc)}
+  .gate-lockline svg{width:14px;height:14px;flex:none}
+  .gate-h{font-family:var(--display);text-transform:uppercase;font-size:clamp(22px,3.8vw,34px);line-height:1.06;color:var(--paper);margin:12px 0 0}
+  .gate-sub{margin:10px auto 0;max-width:46ch;font-size:15.5px;color:rgba(252,244,234,.72)}
+  .gate-track{height:5px;border-radius:999px;background:rgba(252,244,234,.16);overflow:hidden;max-width:320px;margin:22px auto 0}
+  .gate-track i{display:block;height:100%;width:0;background:var(--gold);border-radius:999px;transition:width .4s linear}
+  .gate-count{margin-top:10px;font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--paper);font-variant-numeric:tabular-nums}
+  .gate-legal{margin-top:26px;font-size:13px;color:rgba(252,244,234,.45)}
+  .gate-legal a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+  .gate-legal a:hover{color:var(--gold-acc)}
+
+  /* tap-for-sound scrim: muted autoplay is the only autoplay browsers allow, so
+     the frame has to carry the ask */
+  .vframe .vsl-poster{position:absolute;inset:0;z-index:0;opacity:.55}
+  .vframe.is-started .vsl-poster{display:none}
+  .vframe .vsl-sound{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center;background:rgba(23,4,6,.6);cursor:pointer}
+  .vframe.has-sound .vsl-sound{display:none}
+  .vsl-sound-note{font-size:14px;color:rgba(252,244,234,.8);margin:0}
+  @media(max-width:520px){.vsl-sound-note{font-size:12.5px}}
+
+  /* CTAs fade in on unlock rather than snapping into the layout */
+  [data-gate-cta]{animation:gateIn .5s var(--ease) both}
+  @keyframes gateIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){[data-gate-cta]{animation:none}}
 </style>
 </head>
 <body class="theme-dark">
@@ -40,13 +89,13 @@
 <nav class="nav">
   <div class="nav-inner">
     <a class="logotype" href="index.html">Ridley <b>Academy</b></a>
-    <button class="nav-burger" aria-expanded="false" aria-controls="navlinks" onclick="this.setAttribute('aria-expanded',document.getElementById('navlinks').classList.toggle('open'));">Menu</button>
-    <div class="nav-links" id="navlinks">
+    <button class="nav-burger" data-gate-cta aria-expanded="false" aria-controls="navlinks" onclick="this.setAttribute('aria-expanded',document.getElementById('navlinks').classList.toggle('open'));">Menu</button>
+    <div class="nav-links" id="navlinks" data-gate-cta>
       <a href="how-it-works.html">How It Works</a>
       <a href="success.html">Success Stories</a>
       <a href="about.html">About</a>
       <a href="mentors.html">Mentors</a>
-      <a class="btn" href="apply.html?el=site-nav">Book a Free Call</a>
+      <a class="btn" href="apply.html?el=site-nav" data-gate-cta>Book a Free Call</a>
     </div>
   </div>
 </nav>
@@ -59,10 +108,15 @@
     <h1 class="rv" style="--d:.06s">Everything you need to finally play piano, <span class="hl">all in one place</span></h1>
     <p class="sub lede rv" style="--d:.12s">We help adults play the music they love at every stage of life, starting with a real song, with the Ridley Method.</p>
 
-    <div class="vframe rv" data-vsl data-yt="XO74o7ehyx8" data-poster="images/masterclass-poster.jpg" data-vsl-cta="apply.html?el=vsl-home" style="max-width:880px;margin:30px auto 0;--d:.18s">
+    <div class="vframe rv" data-gate-video data-gate-at="558" data-vsl-yt="XO74o7ehyx8" data-poster="images/masterclass-poster.jpg" data-vsl-cta="apply.html?el=vsl-home" style="max-width:880px;margin:30px auto 0;--d:.18s">
       <!-- VSL: SELF-HOSTED (videos/vsl-main.mp4, transcoded from RAVSL_v8). Moved off YouTube
            7/31 because YouTube draws its title bar / channel name for the first seconds of
-           playback and no parameter suppresses it. Locked player via shared.js: no seeking. -->
+           playback and no parameter suppresses it. Locked player via shared.js: no seeking.
+           8/4: the file was never deployed here, so this slot is still the YouTube cut and is
+           now owned by vsl-gate.js instead of shared.js (hence data-vsl-yt, not data-yt: the
+           two must not both mount a player). vsl-gate.js autoplays it muted, keeps the same
+           locked shell, and holds the page shut until data-gate-at. When vsl-main.mp4 does
+           get deployed, point vsl-gate.js at a <video> and the gate is unchanged. -->
       <img src="images/masterclass-poster.jpg" alt="Play: the Ridley Academy masterclass video" width="1280" height="720">
       <div class="playbtn"></div>
       <div class="vpill">The method behind 40,000+ students</div>
@@ -81,12 +135,16 @@
       </div>
     </div>
 
-    <div class="rv" style="margin-top:26px">
+    <div class="rv" style="margin-top:26px" data-gate-cta>
       <a class="btn" href="apply.html?el=site-hero">Book My Free Session</a>
       <p class="btn-note">Free 30-minute Breakthrough Session. A conversation, not a checkout.</p>
     </div>
   </div>
 </section>
+
+<!-- Everything from here down is clipped while the watch gate is on. Keep new
+     sections inside #gate-lock or they will show above the fade. -->
+<div id="gate-lock">
 
 <!-- ============ CREDIBILITY: H2 + 4 stat cards (mirrors WB "#1 rated" block) ============ -->
 <section class="section--tight">
@@ -287,6 +345,23 @@
     </div>
   </div>
 </section>
+</div><!-- /#gate-lock -->
+
+<!-- The gate itself: sits under the fade, counts down, and carries the legal
+     links the hidden footer would otherwise be holding. -->
+<div id="gate">
+  <div class="gate-panel">
+    <p class="gate-lockline">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="4" y="10.5" width="16" height="11" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+      The rest of this page unlocks at 9:18
+    </p>
+    <p class="gate-h">Keep watching</p>
+    <p class="gate-sub">Stephen walks through the method first. Booking, the student stories, and the rest of the page open up once you get there.</p>
+    <div class="gate-track" aria-hidden="true"><i id="gate-fill"></i></div>
+    <p class="gate-count" id="gate-count" aria-live="polite">Starting the video</p>
+    <p class="gate-legal">&copy; 2026 Ridley Academy &middot; <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a> &middot; <a href="support.html">Contact</a></p>
+  </div>
+</div>
 
 </main>
 <!-- ============ FOOTER ============ -->
@@ -331,6 +406,7 @@
 </footer>
 
 <script src="shared.js"></script>
+<script src="vsl-gate.js"></script>
 <script>
   // journeys tabs
   (function(){
