@@ -1,30 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TLVK9SK8');</script>
-<!-- End Google Tag Manager -->
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '2032449947451129');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
@@ -95,19 +71,30 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
   .skiplink{position:absolute;left:-9999px;top:0;z-index:100;background:var(--ink);color:var(--paper);padding:12px 20px;text-decoration:none;font-size:15px}
   .skiplink:focus{left:0}
   .fineprint{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:26px}
+  .lead label{display:block;text-align:left;font-size:14px;color:var(--ink-soft);margin:14px 0 6px}
+  .lead input{width:100%;padding:14px 16px;font-size:16px;font-family:inherit;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius)}
+  .lead input:focus{outline:2px solid var(--cherry);outline-offset:1px}
+  .lead .err{display:none;color:var(--cherry);font-size:13px;text-align:left;margin-top:6px}
 </style>
+<!-- Meta Pixel base (id 2032449947451129). Keep in sync with funnel-build pages. -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2032449947451129');
+fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLVK9SK8"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 <!--
   RIDLEY QUIZ FUNNEL v1 (prototype), built 2026-07-28 from the WarriorBabe teardown
   (~/riddley/warriorbabe-hack). Architecture notes:
   - Questions are persuasion-first (belief-priming, no wrong answers), segmentation on
     age + past-attempts, micro-commitment closer. Mirrors WB /quiz + /quiz-7.
-  - No email gate (their current generation): redirect carries segments as params.
+  - Email gate added 8/5 before the results screen: RDLY.capture(source:"quiz") + CompleteRegistration.
   - dataLayer events mirror their wb_quiz_* naming for GTM.
   - Proof numbers are real (40,000+ students, 60+ countries, ages 5 to 96) per
     funnel-build/FACTS.md. No invented counters, no fake scarcity.
@@ -119,7 +106,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="topbar">Hi. This should take less than a minute.</div>
 <h1 class="sr-only">The Ridley Academy 60-second piano quiz</h1>
 <header>
-  <a href="../index.html" style="font-family:var(--display);font-size:22px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-decoration:none">Ridley <span style="color:var(--cherry)">Academy</span></a>
+  <a href="../funnel-build/index.html" style="font-family:var(--display);font-size:22px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-decoration:none">Ridley <span style="color:var(--cherry)">Academy</span></a>
 </header>
 <main class="wrap" id="main" aria-live="polite">
   <div class="dots" id="dots"></div>
@@ -219,8 +206,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <button class="back">Back</button>
   </section>
 
+  <!-- STEP 9: email gate. Capture happens here, before the calc screen, so every
+       finisher becomes an AXL contact and a CompleteRegistration whether or not
+       they go on to apply. Same endpoint/contract as apply.html (shared.js). -->
+  <section class="step lead" data-step="9">
+    <h2>Where should we send your results?</h2>
+    <p class="sub">Your personalized path, plus how the free Breakthrough Session works</p>
+    <label for="qz-name">First name</label>
+    <input id="qz-name" type="text" autocomplete="given-name" placeholder="First name">
+    <label for="qz-email">Email</label>
+    <input id="qz-email" type="email" autocomplete="email" placeholder="you@example.com">
+    <p class="err" id="qz-err">That email doesn't look right. Mind checking it?</p>
+    <button class="go">See my results</button>
+    <button class="back">Back</button>
+  </section>
+
   <!-- CALC / RESULTS -->
-  <section class="step calc" data-step="9">
+  <section class="step calc" data-step="10">
     <h2>Building your personalized path...</h2>
     <p class="sub">Next: pick the time for your free 30-minute Breakthrough Session.</p>
     <div class="barlabel">Your goals</div><div class="bar"><i></i></div>
@@ -232,6 +234,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p class="fineprint">Ridley Academy · This quiz personalizes your recommendation. No spam, ever.</p>
 </main>
 
+<script src="../funnel-build/shared.js"></script>
 <script>
 (function(){
   var QUIZ_ID='RDLY-quiz-v1';
@@ -289,6 +292,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
     if(next) next.addEventListener('click',function(){show(idx+1);});
     if(back) back.addEventListener('click',function(){show(idx-1);});
+
+    /* Email gate: validate, capture, then advance. Distinct .go button so the
+       generic .next wiring above cannot skip validation. */
+    var go=step.querySelector('.go');
+    if(go) go.addEventListener('click',function(){
+      var name=(document.getElementById('qz-name').value||'').trim();
+      var email=(document.getElementById('qz-email').value||'').trim();
+      var err=document.getElementById('qz-err');
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){err.style.display='block';return;}
+      err.style.display='none';
+      answers.name=name; answers.email=email;
+      try{
+        if(window.RDLY){
+          var payload={source:'quiz',name:name,email:email,consent:false,quiz_id:QUIZ_ID};
+          for(var k in answers){
+            if(k==='name'||k==='email') continue;
+            var v=answers[k];
+            payload['quiz_'+k]=Object.prototype.toString.call(v)==='[object Array]'?v.join(', '):v;
+          }
+          window.RDLY.capture(payload);
+          /* CompleteRegistration = quiz email captured. Lead stays reserved for the
+             completed application (apply.html), Schedule for the booked call. */
+          window.RDLY.track('CompleteRegistration','rdly_quiz_captured',{quiz_id:QUIZ_ID});
+        }
+      }catch(e){}
+      show(idx+1);
+    });
   });
 
   function finish(){
@@ -301,10 +331,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     // booking page inherit them. Swap 45+/55+ to a second-presenter page when one exists.
     // A/B on the bench: route through the VSL first (index.html) before the booking flow.
     var REDIRECT_MAP={
-      'Under 35':'../apply.html','35-44':'../apply.html',
-      '45-54':'../apply.html','55+':'../apply.html'
+      'Under 35':'../funnel-build/apply.html','35-44':'../funnel-build/apply.html',
+      '45-54':'../funnel-build/apply.html','55+':'../funnel-build/apply.html'
     };
-    var dest=(REDIRECT_MAP[answers.age]||'../apply.html');
+    var dest=(REDIRECT_MAP[answers.age]||'../funnel-build/apply.html');
     var params=new URLSearchParams({el:'quiz',quiz:QUIZ_ID,age:answers.age||'',tried:(answers.tried||[]).join('|').slice(0,120)});
     setTimeout(function(){window.location.href=dest+'?'+params.toString();},3200);
   }
