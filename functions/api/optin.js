@@ -20,6 +20,26 @@ const DEFAULT_PROXY_URL = 'https://accel-proxy.system-2f6.workers.dev/api/run';
 // AXL scenario "Outside Registration", confirmed by name against the AXL API.
 const DEFAULT_SCENARIO_ID = 'INRywfcMbUS2YYjGpjuyEQ';
 
+// The quiz, in the order the visitor answers it. apply.html posts these as q1..q13
+// (multi-selects already flattened to comma strings), and the team wants them on
+// the contact so they can read the lead before they dial.
+//
+// Each entry maps a posted key to the label used in the readable dump and to an
+// AXL field name. The worker forwards anything Quiz_-prefixed, so adding a field
+// in AXL and adding a line here is the whole job — no worker change needed.
+const QUIZ = [
+  ['q1',  'Play real music',  'Quiz_Play_Music'],
+  ['q2',  'Move forward',     'Quiz_Move_Forward'],
+  ['q3',  'Age',              'Quiz_Age'],
+  ['q4',  'I want to',        'Quiz_Want_To'],
+  ['q5',  "I can't seem to",  'Quiz_Cant_Seem_To'],
+  ['q6',  'Afraid of',        'Quiz_Afraid_Of'],
+  ['q7',  'Tried',            'Quiz_Tried'],
+  ['q10', 'Ready to invest',  'Quiz_Investment'],
+  ['q11', 'Committed',        'Quiz_Commitment'],
+  ['q13', 'Will show up',     'Quiz_Will_Attend'],
+];
+
 // Registers the lead in AXL via the accel-proxy worker. Server-to-server, so the
 // proxy key never reaches the browser and the worker's lack of CORS headers is
 // irrelevant (a browser-side call would die on the OPTIONS preflight).
@@ -51,6 +71,33 @@ async function axl(env, lead) {
   // Pass-through fields the worker whitelists; only sent when the page supplies them.
   for (const k of ['timezoneId', 'Last_Webinar_Registered', 'webinarjam_url']) {
     if (lead[k]) contactData[k] = lead[k];
+  }
+
+  // Quiz answers, both ways: one field per answer for anything the team wants to
+  // segment on, and a single readable dump for call prep. Only fields that
+  // actually exist in AXL will stick, so sending both costs nothing and means
+  // creating a field there is the only step to switch one on.
+  const readable = [];
+  for (const [key, label, field] of QUIZ) {
+    const v = lead.quiz && lead.quiz[key];
+    if (!v) continue;
+    contactData[field] = v;
+    readable.push(label + ': ' + v);
+  }
+  if (lead.route) {
+    contactData.Quiz_Route = lead.route;
+    readable.push('Route: ' + lead.route);
+  }
+  if (readable.length) contactData.Quiz_Answers = readable.join('\n');
+
+  // State tags, confirmed against Scenario.Run's contract (tags is an array of
+  // tag NAMES; unknown names are created on the fly). "VSL quiz completed"
+  // without "VSL booked call" is the abandon list — the whole reason to capture
+  // before Calendly. Tagged on the call itself rather than via the scenario's
+  // comment-substring conditions, which our traffic doesn't cleanly fit.
+  if (readable.length) {
+    contactData.tags = ['VSL quiz completed'];
+    if (lead.route === 'dq') contactData.tags.push('VSL quiz disqualified');
   }
 
   const res = await fetch(url, {
@@ -99,6 +146,9 @@ export async function onRequest(context) {
     utm_source: d.utm_source,
     source: d.source,
     product: d.product,
+    route: typeof d.route === 'string' ? d.route.slice(0, 40) : '',
+    // apply.html posts answers as top-level q1..q13 alongside everything else.
+    quiz: d,
   };
 
   let report;
