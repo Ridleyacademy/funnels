@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Google Ads: base tag only. The Call Booked conversion fires from
      /ra-ads.js on a completed Calendly booking, never on page load. -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-631436705"></script>
@@ -21,24 +22,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-TLVK9SK8');</script>
 <!-- End Google Tag Manager -->
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '2032449947451129');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Book Your Free Breakthrough Session | Ridley Academy</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E81420'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' fill='%23FFFBF4' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
@@ -102,6 +85,13 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
   .dq-screen{text-align:center}
   .dq-screen h3{font-family:var(--display);text-transform:uppercase;font-size:clamp(20px,4vw,26px);margin-bottom:12px}
   .dq-screen p{color:var(--ink-soft);font-size:16px;margin-bottom:14px}
+  /* soft-landing additions: the ask is a form, so it needs left-aligned labels
+     inside an otherwise centred screen, and the $27 offer sits under a rule so it
+     reads as a separate thought rather than the punchline of the rejection. */
+  .dq-fields{text-align:left;margin:20px 0 2px}
+  .dq-offer{margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+  .dq-offer .dq-offer__lead{font-size:15.5px;margin-bottom:16px}
+  .theme-dark .form-card .dq-offer p{color:var(--ink-soft)}
   .err{color:var(--cherry);font-size:13.5px;text-align:center;margin-top:10px;display:none}
   .err.on{display:block}
 
@@ -157,11 +147,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   Built 2026-07-28 from the teardown in ~/riddley/warriorbabe-hack/03-VSL-BOOKING.md
 
   ROUTING RULES (for Ange), implemented in finish() below:
-    1. HARD DQ: Q1 = No OR Q2 = No
-       -> in-form screen suggesting the $27 4 Magic Chords Mini Course, link to /tripwire.
-       -> fires dataLayer event rdly_apply_dq {dq_type:'hard'}. No booking page.
-       (Mirrors WB's in-form kill screen + /next-steps downsell, but polite.)
-    2. SOFT DQ: (Q10 = "Less than $500" AND Q11 = "5/10") OR Q13 = No
+    1. HARD DQ: Q1 = No OR Q2 = No  (rebuilt 2026-08-06 as a two-screen soft landing)
+       -> screen 1 (#dq-catch): acknowledges the specific answer, then asks for an email
+          on its own. Capture posts source "application-dq" + route "dq", so this cohort
+          reaches AXL and AC even though contact details are Q12 and were never reached.
+          Skipped entirely when we already hold an email (quiz traffic).
+       -> screen 2 (#dq-exits): the $27 4 Magic Chords Mini Course, link to /tripwire.
+       -> fires rdly_apply_dq {dq_type:'hard', dq_trigger:'q1'|'q2'}, then
+          rdly_apply_dq_exits {mode:'captured'|'declined'|'known'}, and
+          CompleteRegistration on capture (Lead stays reserved for a finished application).
+       -> No booking page, and deliberately no link back into the quiz or this form:
+          offramp.html is NOT a destination here, every one of its CTAs returns to
+          apply.html and would loop a "not right now" straight back into the same ask.
+    1b. BUDGET GATE (added 2026-08-06): Q11 = 9/10 or 10/10 AND Q10 = "Under $1,000".
+       -> in-form screen (#budget-gate) that mirrors both answers back, states the floor
+          (PROGRAM_FLOOR in the script, printed to the applicant), and asks one question.
+       -> "I could make that work" = continue, qualified. "Not right now but I still want
+          the call" = continue, forced onto the soft-DQ calendar. "Out of reach" = the
+          soft landing and the $27 course, no call slot burned.
+       -> fires rdly_apply_budget_gate then rdly_apply_budget_answer {answer}.
+       -> "I could make that work" also clears the Q10 soft-DQ rule below. Everything
+          else about that rule is unchanged, so an under-$1,000 answer at 5/10 or 7/10
+          commitment still routes to the DQ calendar without ever seeing the gate.
+    2. SOFT DQ: Q10 = "Under $1,000" (uncleared) OR Q13 = No OR budget gate "later"
        -> route to booking-b.html (the DQ twin; identical copy, different Calendly event).
        -> fires rdly_apply_complete {route:'dq'} + rdly_apply_dq {dq_type:'soft'}.
     3. QUALIFIED: everyone else -> booking.html. Fires rdly_apply_complete {route:'qualified'}.
@@ -174,7 +182,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   dataLayer events on this page:
     rdly_apply_start (load), rdly_apply_step (each step view, with step number),
-    rdly_apply_complete (route decided), rdly_apply_dq (hard or soft).
+    rdly_apply_complete (route decided), rdly_apply_dq (hard or soft),
+    rdly_apply_dq_exits (soft-landing offer screen), rdly_apply_dq_captured (email taken).
 -->
 <a class="skiplink" href="#main">Skip to content</a>
 
@@ -293,7 +302,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            per Chris. data-q numbering intentionally skips 8 and 9 so the remaining keys
            (q10, q11, q13) still match the routing rules above and the CRM payload. -->
 
-      <!-- Q10: money qualifier -->
+      <!-- Q10: money qualifier. Synced 2026-08-06 with what is actually live in
+           funnels-clean: this asks what they are ready to invest going FORWARD, not
+           what they have already spent. The budget gate below keys off these exact
+           bracket strings, so they and LOW_BUDGET have to stay in step. -->
       <div class="form-step" data-q="10">
         <p class="q">You're closer to playing the piano you've always heard in your head than you think. How much are you ready to invest in making it real?</p>
         <p class="q-sub">We ask because we build a plan around your answer. Knowing what you're working with lets us map the fastest realistic path for you, not a one-size-fits-all program.</p>
@@ -365,14 +377,67 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="form-nav"><button class="backlink">Back</button></div>
       </div>
 
-      <!-- HARD DQ screen (Q1 or Q2 = No). Not part of the normal step order. -->
-      <div class="form-step dq-screen" id="hard-dq">
-        <h3>No hard feelings</h3>
-        <p>Based on your answer, a call probably isn't the right next step today, and we'd rather be straight with you than book a conversation you don't want.</p>
-        <p>If you'd like a low-pressure way to start anyway, the <b>4 Magic Chords Mini Course</b> is $27 and comes with the 100+ Song Workbook free. It has a 30-day money-back guarantee, and you keep the workbook either way.</p>
-        <!-- Tripwire destination: /tripwire (ThriveCart product-1168). Carry query params through. -->
-        <a class="btn btn--gold" id="tripwire-link" href="tripwire.html">See the $27 Mini Course</a>
-        <div class="form-nav"><button class="backlink" id="dq-back">I misclicked, take me back</button></div>
+      <!-- BUDGET GATE. Fires between Q11 and Q12 when the two answers contradict each
+           other: high commitment (9/10 or 10/10) with the lowest budget bracket. Nobody
+           is rejected here. It names the gap, asks one honest question, and sorts the
+           answer into three different destinations, so a lukewarm lead stops eating a
+           call slot without being thrown away.
+           The figure is set once in PROGRAM_FLOOR below and written in at runtime.
+           $3,000 is the confirmed floor (Chris, 2026-08-06). -->
+      <div class="form-step dq-screen" id="budget-gate">
+        <h3>One thing worth naming</h3>
+        <p id="bg-mirror"></p>
+        <p>We'd rather you hear that now than at the end of a call. So, honestly:</p>
+        <div class="opts" data-key="qbudget" id="bg-opts">
+          <button class="opt" data-val="can">If the plan was right, I could make that work.</button>
+          <button class="opt" data-val="later">Not right now, but I still want the call.</button>
+          <button class="opt" data-val="no">No, that's out of reach for me.</button>
+        </div>
+        <div class="form-nav"><button class="backlink" id="bg-back">Back</button></div>
+      </div>
+
+      <!-- SOFT LANDING, screen 1 of 2 (Q1 or Q2 = No). Not part of the normal step order.
+           Replaces the old single-screen hard DQ, which rejected and pitched $27 in the
+           same breath and, worse, took no email: contact details are Q12, so anyone who
+           answered honestly at Q1/Q2 left no trace at all. Ad traffic landing straight
+           on this page was simply lost. Now the answer is acknowledged, the email is
+           asked for on its own screen, and the offer comes after.
+           Nothing here links back into the application or the quiz: a "not right now"
+           that gets looped into the same form is how you turn a soft no into a hard one. -->
+      <div class="form-step dq-screen" id="dq-catch">
+        <h3 id="dq-catch-h">That's a fair answer</h3>
+        <p id="dq-catch-p">Most people click yes to be polite and then don't show up. Telling us straight is more useful. There's no call booked and nobody will chase you.</p>
+        <p>If you'd still like something from us, leave your email below. We'll send the occasional lesson and song walkthrough, no calls, and you can stop them in one click.</p>
+        <div class="contact-fields dq-fields">
+          <div>
+            <label for="dq-name">First name</label>
+            <input class="field" type="text" id="dq-name" autocomplete="given-name" autocapitalize="words">
+          </div>
+          <div>
+            <label for="dq-email">Email</label>
+            <input class="field" type="email" id="dq-email" autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="dq-email-err">
+            <p class="fielderr" id="dq-email-err" role="alert" hidden></p>
+          </div>
+        </div>
+        <div class="form-nav">
+          <button class="btn btn--block" id="dq-send">Send me those</button>
+          <button class="backlink" id="dq-skip">No thanks, I'll pass on the emails</button>
+          <button class="backlink" id="dq-back">I misclicked, take me back</button>
+        </div>
+      </div>
+
+      <!-- SOFT LANDING, screen 2 of 2. The offer, on its own, after the acknowledgement
+           has landed. Reached from the ask screen whether or not they left an email, and
+           reached directly when we already hold one (quiz traffic captured at step 9). -->
+      <div class="form-step dq-screen" id="dq-exits">
+        <h3 id="dq-exits-h">That's set</h3>
+        <p id="dq-exits-p">Nothing else to do. Watch your inbox.</p>
+        <div class="dq-offer">
+          <p class="dq-offer__lead">If you'd rather just start playing today, the <b>4 Magic Chords Mini Course</b> is $27. It's 25 minutes, the 100+ Song Workbook comes free with it, and there's a 30-day money-back guarantee. You keep the workbook either way.</p>
+          <!-- Tripwire destination: /tripwire (ThriveCart product-1168). Carry query params through. -->
+          <a class="btn btn--gold" id="tripwire-link" href="tripwire.html">See the $27 mini course</a>
+        </div>
+        <div class="form-nav"><button class="backlink" id="dq-back-2">I misclicked, take me back</button></div>
       </div>
 
       <!-- Submitting screen -->
@@ -462,10 +527,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function dl(ev,extra){var o={event:ev,app_id:APP_ID};for(var k in (extra||{}))o[k]=extra[k];dataLayer.push(o);}
 
   // Ordered question steps (excludes hard-dq + submitting screens)
+  /* ---- BUDGET GATE ------------------------------------------------------
+     PROGRAM_FLOOR is the only place the number lives. It is printed to the
+     applicant, so it has to be a number the call can actually stand behind.
+
+     $3,000 confirmed as the real floor by Chris, 2026-08-06. This is the ONE
+     price the funnel prints on purpose. The rest of the ladder stays off the
+     pages and is discussed on the call (FACTS.md). If the floor moves, move it
+     here and nowhere else. */
+  var PROGRAM_FLOOR='$3,000';
+  /* Which Q10 bracket counts as "below the floor", paired with 9/10 or 10/10 on Q11.
+     Must match the data-val strings on Q10 exactly. */
+  var LOW_BUDGET=['Under $1,000'];
+  var HIGH_COMMIT=['9/10','10/10'];
+
   var steps=[].slice.call(document.querySelectorAll('.form-step[data-q]'));
-  var hardDQ=document.getElementById('hard-dq');
+  var budgetGate=document.getElementById('budget-gate');
+  var forceSoftDQ=false;
+  var dqCatch=document.getElementById('dq-catch');
+  var dqExits=document.getElementById('dq-exits');
   var submitting=document.getElementById('submitting');
-  var cur=0, dqReturn=0;
+  var cur=0, dqReturn=0, dqTrigger='';
 
   // progress bar
   var progEl=document.getElementById('progress');
@@ -497,12 +579,106 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     focusHeading(steps[cur]);
     dl('rdly_apply_step',{step:cur+1});
   }
-  function showHardDQ(){
+  /* ---- SOFT LANDING (was: the hard DQ screen) ---------------------------
+     Two screens. Screen 1 acknowledges the answer they actually gave and asks
+     for an email on its own. Screen 2 makes the $27 offer. The progress bar is
+     hidden on both: leaving it stalled at 2 of 13 made an intentional answer
+     look like a broken form. */
+  var DQ_COPY={
+    /* Q1 = "No, that's not really my goal." Genuinely the wrong fit, and almost
+       always a misclick, so the way back stays visible. */
+    q1:{h:"Then we're not your people",
+        p:"We teach one thing: sitting down and playing music you actually love. If that's not what you're after, we'd rather say so than talk you into a call."},
+    /* Q2 = "No, I'm not ready for a call." Timing, not fit. This is the answer
+       the old screen punished hardest, and it's the one worth keeping warm. */
+    q2:{h:"That's a fair answer",
+        p:"Most people click yes to be polite and then don't show up. Telling us straight is more useful. There's no call booked and nobody will chase you."},
+    /* Reached from the budget gate, not from Q1/Q2. Same two screens, and the $27
+       course on screen 2 is the whole point: this person wants it and can't reach
+       the program today, which is exactly who the tripwire exists for. */
+    budget:{h:"Then a call isn't the right thing",
+        p:"We'd only be talking about something that's out of reach today, and that's not a good use of your evening or ours. There is a smaller way in, and it's a real one."}
+  };
+  function showDQ(trigger){
+    dqTrigger=trigger||dqTrigger;
     dqReturn=cur;
+    var copy=DQ_COPY[dqTrigger]||DQ_COPY.q2;
+    document.getElementById('dq-catch-h').textContent=copy.h;
+    document.getElementById('dq-catch-p').textContent=copy.p;
     hideAll();
-    hardDQ.classList.add('on');
-    focusHeading(hardDQ);
-    dl('rdly_apply_dq',{dq_type:'hard',step:cur+1});
+    progEl.style.visibility='hidden';
+    /* Already have an email (quiz traffic captures at its step 9, and the door
+       writes the same key), so asking again is a worse experience than just
+       using it. Capture on their behalf and go straight to the offer. */
+    var have=(function(){ try{ return (window.RDLY&&window.RDLY.known())||{}; }catch(e){ return {}; } })();
+    if(have.email){
+      dqCapture(have.name||'',have.email);
+      showDQExits('known');
+    }else{
+      dqCatch.classList.add('on');
+      focusHeading(dqCatch);
+    }
+    dl('rdly_apply_dq',{dq_type:'hard',dq_trigger:dqTrigger,step:cur+1});
+  }
+  function showDQExits(mode){
+    var h=document.getElementById('dq-exits-h');
+    var p=document.getElementById('dq-exits-p');
+    if(mode==='declined'){
+      h.textContent='Understood';
+      p.textContent="We won't email you. One last thing worth knowing about, then we'll leave you to it.";
+    }else if(mode==='known'){
+      h.textContent="We've already got your email";
+      p.textContent="So there's nothing to fill in. We'll send the occasional lesson and song walkthrough, and you can stop them in one click.";
+    }else{
+      h.textContent="That's set";
+      p.textContent='Nothing else to do. Watch your inbox.';
+    }
+    hideAll();
+    progEl.style.visibility='hidden';
+    dqExits.classList.add('on');
+    focusHeading(dqExits);
+    dl('rdly_apply_dq_exits',{dq_trigger:dqTrigger,mode:mode});
+  }
+  function dqBack(){
+    progEl.style.visibility='';
+    show(dqReturn);
+  }
+
+  /* The gap the gate exists to name: they told us they're ready AND that they're
+     below the floor. Both answers are honest, they just can't both be acted on. */
+  var bgReturn=0;
+  function budgetMismatch(){
+    return HIGH_COMMIT.indexOf(answers.q11)>-1 && LOW_BUDGET.indexOf(answers.q10)>-1;
+  }
+  function showBudgetGate(){
+    bgReturn=cur;
+    document.getElementById('bg-mirror').textContent=
+      'You said '+answers.q11+', done waiting, and that you\'re ready to invest '+
+      String(answers.q10||'').toLowerCase()+'. Our coached programs start around '+
+      PROGRAM_FLOOR+'.';
+    hideAll();
+    progEl.style.visibility='hidden';
+    budgetGate.classList.add('on');
+    focusHeading(budgetGate);
+    dl('rdly_apply_budget_gate',{commitment:answers.q11,budget:answers.q10});
+  }
+  /* Same endpoint and payload contract as the completed application (see finish()),
+     with source "application-dq" so this cohort is separable in AXL and AC, and
+     route "dq" because that is the value the optin worker already tags on
+     ("VSL quiz disqualified" in AXL, tag 641 in AC). CompleteRegistration rather
+     than Lead: an email is not an application, and the campaigns bid on Lead. */
+  function dqCapture(name,email){
+    try{
+      if(!window.RDLY) return;
+      var payload={source:'application-dq',name:name,email:email,consent:false,route:'dq',dq:true,dq_trigger:dqTrigger};
+      for(var k in answers){
+        if(k.charAt(0)!=='q') continue;
+        var v=answers[k];
+        payload[k]=Object.prototype.toString.call(v)==='[object Array]'?v.join(', '):v;
+      }
+      window.RDLY.capture(payload);
+      window.RDLY.track('CompleteRegistration','rdly_apply_dq_captured',{dq_trigger:dqTrigger});
+    }catch(e){}
   }
 
   steps.forEach(function(step,idx){
@@ -526,8 +702,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           opts.forEach(function(x){x.classList.remove('sel');});
           o.classList.add('sel');
           answers[key]=o.getAttribute('data-val');
-          // Q1 / Q2 "No" = hard DQ. Q13 answered = submit. Otherwise auto-advance.
-          if((q==='1'||q==='2')&&o.getAttribute('data-val')==='No'){setTimeout(showHardDQ,220);return;}
+          // Q1 / Q2 "No" = soft landing. Q13 answered = submit. Otherwise auto-advance.
+          if((q==='1'||q==='2')&&o.getAttribute('data-val')==='No'){setTimeout(function(){showDQ('q'+q);},220);return;}
+          // Q11 answered: if commitment and budget contradict each other, name it first.
+          if(q==='11'&&budgetMismatch()){setTimeout(showBudgetGate,220);return;}
           if(q==='13'){setTimeout(finish,220);return;}
           setTimeout(function(){show(idx+1);},220);
         }
@@ -545,8 +723,50 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if(back) back.addEventListener('click',function(){show(idx-1);});
   });
 
-  // hard DQ screen: back out
-  document.getElementById('dq-back').addEventListener('click',function(){show(dqReturn);});
+  /* Budget gate answers. Three destinations, none of them a dead end:
+       can   -> straight on to Q12, qualified as normal.
+       later -> on to Q12, but forced down the soft-DQ route, so they still get a
+                real call on the DQ calendar instead of a closer's prime slot.
+       no    -> the soft landing, where the $27 course is the honest next step. */
+  [].slice.call(document.querySelectorAll('#bg-opts .opt')).forEach(function(o){
+    o.addEventListener('click',function(){
+      var v=o.getAttribute('data-val');
+      [].slice.call(document.querySelectorAll('#bg-opts .opt')).forEach(function(x){x.classList.remove('sel');});
+      o.classList.add('sel');
+      answers.qbudget=v;
+      dl('rdly_apply_budget_answer',{answer:v});
+      if(v==='no'){setTimeout(function(){showDQ('budget');},220);return;}
+      forceSoftDQ=(v==='later');
+      progEl.style.visibility='';
+      setTimeout(function(){show(bgReturn+1);},220);
+    });
+  });
+  document.getElementById('bg-back').addEventListener('click',function(){
+    progEl.style.visibility='';
+    show(bgReturn);
+  });
+
+  // soft landing: the email ask, the pass, and the two ways back
+  document.getElementById('dq-send').addEventListener('click',function(){
+    var name=(document.getElementById('dq-name').value||'').trim();
+    var email=(document.getElementById('dq-email').value||'').trim();
+    var field=document.getElementById('dq-email');
+    var err=document.getElementById('dq-email-err');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
+      field.classList.add('is-bad');
+      err.textContent="That email doesn't look right. Mind checking it?";
+      err.hidden=false;
+      field.focus();
+      return;
+    }
+    field.classList.remove('is-bad');
+    err.hidden=true;
+    dqCapture(name,email);
+    showDQExits('captured');
+  });
+  document.getElementById('dq-skip').addEventListener('click',function(){showDQExits('declined');});
+  document.getElementById('dq-back').addEventListener('click',dqBack);
+  document.getElementById('dq-back-2').addEventListener('click',dqBack);
   // carry source params onto the tripwire link
   if(window.location.search){
     var tl=document.getElementById('tripwire-link');
@@ -932,7 +1152,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function finish(){
     hideAll();
     submitting.classList.add('on');
-    var softDQ=answers.q10==='Under $1,000' || answers.q13==='No';
+    /* forceSoftDQ is the budget gate's "not right now, but I still want the call":
+       a real call, on the DQ calendar, rather than a closer's prime slot.
+       A "yes I could make that work" clears the low-bracket rule, because they have
+       just told us the bracket was not the real ceiling. Without that, the gate would
+       ask the question and then ignore the answer. */
+    var budgetCleared=answers.qbudget==='can';
+    var softDQ=forceSoftDQ || (!budgetCleared && answers.q10==='Under $1,000') || answers.q13==='No';
     var dest=softDQ?'booking-b.html':'booking.html';
     dl('rdly_apply_complete',{route:softDQ?'dq':'qualified'});
     if(softDQ) dl('rdly_apply_dq',{dq_type:'soft'});

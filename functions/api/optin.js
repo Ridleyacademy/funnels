@@ -36,6 +36,10 @@ const QUIZ = [
   ['q6',  'Afraid of',        'Quiz_Afraid_Of'],
   ['q7',  'Tried',            'Quiz_Tried'],
   ['q10', 'Ready to invest',  'Quiz_Investment'],
+  // Added 2026-08-06 with apply.html's budget gate: their answer once the gate names
+  // the floor (can / later / no). Needs Quiz_Budget_Gate created in AXL before it
+  // sticks to the contact; until then it still rides in the readable dump.
+  ['qbudget', 'Budget gate',    'Quiz_Budget_Gate'],
   ['q11', 'Committed',        'Quiz_Commitment'],
   ['q13', 'Will show up',     'Quiz_Will_Attend'],
 ];
@@ -55,6 +59,46 @@ function envVar(env, name) {
   } catch (e) {
     return undefined;
   }
+}
+
+// Which apply.html cohort this lead belongs to, as tag NAMES. One function so the AXL
+// write and the AC write can never drift apart. Order matters only for readability.
+//
+// The four cohorts, and why they are separate:
+//   Not Ready       - said No on Q1/Q2 and left an email. Wants nothing pushed at them.
+//   Budget Below    - the budget gate's "out of reach". The $27 course is the offer here,
+//                     never another call invitation.
+//   Budget Deferred - "not right now, but I still want the call". Booked, DQ calendar.
+//                     A real lead on a longer clock, not a dead one.
+//   Budget Cleared  - said they could reach the floor after all. Qualified, and the closer
+//                     should know the low bracket was answered and then revised.
+// What the budget gate's three codes mean, in the words the closer needs. The floor
+// the applicant was shown is $3,000 (PROGRAM_FLOOR in apply.html), so "reach the floor"
+// here means that number and nothing else.
+const QBUDGET_LABELS = {
+  can: 'Could reach $3,000 after all',
+  later: 'Not right now, still wanted the call',
+  no: 'Out of reach today',
+};
+
+const COHORT_TAGS = {
+  notReady: 'VSL Application - Not Ready',
+  budgetBelow: 'VSL Application - Budget Below',
+  budgetDeferred: 'VSL Application - Budget Deferred',
+  budgetCleared: 'VSL Application - Budget Cleared',
+};
+
+function cohortTags(lead) {
+  const out = [];
+  // The soft landing fires from Q1/Q2 and from the budget gate. Only the first is
+  // "not ready"; the budget path gets its own tag below instead.
+  if (lead.source === 'application-dq' && lead.dqTrigger !== 'budget') {
+    out.push(COHORT_TAGS.notReady);
+  }
+  if (lead.qbudget === 'no') out.push(COHORT_TAGS.budgetBelow);
+  else if (lead.qbudget === 'later') out.push(COHORT_TAGS.budgetDeferred);
+  else if (lead.qbudget === 'can') out.push(COHORT_TAGS.budgetCleared);
+  return out;
 }
 
 async function axl(env, lead) {
@@ -102,8 +146,12 @@ async function axl(env, lead) {
   // creating a field there is the only step to switch one on.
   const readable = [];
   for (const [key, label, field] of QUIZ) {
-    const v = lead.quiz && lead.quiz[key];
-    if (!v) continue;
+    const raw = lead.quiz && lead.quiz[key];
+    if (!raw) continue;
+    // Every other answer is already the sentence the applicant read. The budget gate
+    // posts a three-letter code, so it gets translated here rather than leaving
+    // "no" sitting on a contact card for the closer to guess at.
+    const v = key === 'qbudget' ? QBUDGET_LABELS[raw] || raw : raw;
     contactData[field] = v;
     readable.push(label + ': ' + v);
   }
@@ -121,6 +169,10 @@ async function axl(env, lead) {
   if (readable.length) {
     contactData.tags = ['VSL quiz completed'];
     if (lead.route === 'dq') contactData.tags.push('VSL quiz disqualified');
+    // Cohort tags, added 2026-08-06 with the apply.html soft landing and budget gate.
+    // Names mirror the AC tags below one for one, so a segment built on either side
+    // means the same thing. AXL creates an unknown tag name on the fly.
+    for (const name of cohortTags(lead)) contactData.tags.push(name);
   }
 
   const res = await fetch(url, {
@@ -187,10 +239,24 @@ async function ac(env, lead) {
   // live ids in creatorsecretsads, checked 2026-08-06. `VSL Opt-in` is what
   // automation 599 triggers on; the quiz tags mirror the AXL ones so the same
   // segmentation is available on both sides.
-  const TAGS = { optin: 634, quizDone: 640, quizDq: 641 };
+  // 642-645 created 2026-08-06, ids read back from the API at creation. Their names are
+  // COHORT_TAGS above, character for character, so the AXL and AC sides stay one taxonomy.
+  const TAGS = {
+    optin: 634, quizDone: 640, quizDq: 641,
+    'VSL Application - Not Ready': 642,
+    'VSL Application - Budget Below': 643,
+    'VSL Application - Budget Deferred': 644,
+    'VSL Application - Budget Cleared': 645,
+  };
   const wanted = [TAGS.optin];
+  // 641 is a suppression signal as well as a label: it takes them out of the Front Gate
+  // Nurture (599), which exists to push a booking. Someone who just declined a call
+  // should not receive it, so every dq route keeps this tag.
   if (lead.route === 'dq') wanted.push(TAGS.quizDq);
   else if (lead.quizAnswered) wanted.push(TAGS.quizDone);
+  for (const name of cohortTags(lead)) {
+    if (TAGS[name]) wanted.push(TAGS[name]);
+  }
 
   const results = [];
   for (const tagId of wanted) {
@@ -232,6 +298,11 @@ export async function onRequest(context) {
     source: d.source,
     product: d.product,
     route: typeof d.route === 'string' ? d.route.slice(0, 40) : '',
+    // apply.html cohort signals. dq_trigger says which answer opened the soft landing
+    // ('q1' | 'q2' | 'budget'); qbudget is the budget gate's answer ('can'|'later'|'no').
+    // Both are read by cohortTags() and neither is ever trusted beyond an exact match.
+    dqTrigger: typeof d.dq_trigger === 'string' ? d.dq_trigger.slice(0, 20) : '',
+    qbudget: typeof d.qbudget === 'string' ? d.qbudget.slice(0, 20) : '',
     // apply.html posts answers as top-level q1..q13 alongside everything else.
     quiz: d,
   };
