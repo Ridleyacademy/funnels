@@ -248,6 +248,11 @@
     body.page_path=location.pathname;
 
     remember({name:payload.name,email:payload.email,phone:payload.phone});
+    /* Hand the address to enhanced conversions the moment we have it, so a
+       page that captures and books in one visit (the thank-you pages) has the
+       hash ready rather than waiting for the next page load to read it back
+       out of localStorage. */
+    if(window.RA_ADS && window.RA_ADS.identify) window.RA_ADS.identify(payload.email);
 
     var dedupe='rdly_sent_'+src;
     var already=false;
@@ -309,6 +314,12 @@
     if(phone) u+='&a1='+encodeURIComponent(phone);
     var att=attribution();
     for(var k in att) u+='&'+k+'='+encodeURIComponent(att[k]);
+    /* The Google Ads click ID, as salesforce_uuid. This is what makes the
+       offline upload possible later: it puts gclid on the booking record, so
+       when we learn which calls actually showed up and bought we can hand that
+       back to Google and let bidding chase buyers instead of bookers. Empty
+       string when there is no click ID, so organic bookings are unaffected. */
+    if(window.RA_ADS && window.RA_ADS.calendlyParams) u+=window.RA_ADS.calendlyParams();
     return u;
   }
 
@@ -353,6 +364,11 @@
 
   var booked=false;
   window.addEventListener('message',function(e){
+    /* Only Calendly gets to fire a booking. Without this, any page that can
+       postMessage to us could trip the Schedule pixel and bounce the visitor to
+       booked.html. Kept deliberately loose (substring, not equality) because
+       Calendly serves embeds from more than one calendly.com host. */
+    if(typeof e.origin!=='string'||e.origin.indexOf('calendly.com')===-1) return;
     if(!e.data||typeof e.data!=='object') return;
     if(e.data.event!=='calendly.event_scheduled') return;
     if(booked) return;

@@ -1,0 +1,14 @@
+# The funnel home page is now served flat at the root (see tools/build-root-index.py).
+# These two paths are its old location. Anything that still points there - nurture
+# emails, older ads, bookmarks, the in-site nav links - lands on the root instead of
+# serving a second copy of the same page at a second URL.
+#
+# Only the home page moved. Every other /funnel-build/ path (booking, apply, the SEO
+# pages, images, shared.css, shared.js) is untouched and still served from where it
+# has always been, so nothing else on the site changes.
+#
+# Cloudflare Pages carries the query string across a redirect: verified 8/6 against
+# the live host, /funnel-build/booking.html?gclid=... kept its gclid through the 308.
+
+/funnel-build/index.html    /    301
+/funnel-build/              /    301

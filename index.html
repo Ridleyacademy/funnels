@@ -1,6 +1,28 @@
 <!DOCTYPE html>
+<!-- GENERATED FILE - DO NOT EDIT BY HAND.
+     Built from funnel-build/index.html by tools/build-root-index.py.
+     Edit that file, then re-run the script. Any change made directly here is
+     lost on the next build.
+
+     This is the page every Google Ads click lands on. It is served flat at the
+     root: no redirect, no meta refresh, so the gclid query string survives the
+     landing intact. -->
+
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<!-- Google Ads: base tag only. The Call Booked conversion fires from
+     /ra-ads.js on a completed Calendly booking, never on page load. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-631436705"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-631436705', {'allow_enhanced_conversions': true});
+</script>
+<script src="/ra-ads.js"></script>
+<!-- End Google Ads -->
+
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -25,14 +47,428 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
-<meta charset="UTF-8">
-<meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="0; url=/funnel-build/index.html">
-<title>Ridley funnels</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ridley Academy: Learn Piano With Real Songs, Not Scales</title>
+<meta name="description" content="Stephen Ridley's method has taught 40,000+ adults in 60+ countries to play real music, starting with their first song. Take the 60-second quiz or book a free Breakthrough Session.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E81420'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' fill='%23FFFBF4' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- NOTE for Ange: self-host these three fonts at deploy (font-display: swap). -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/funnel-build/shared.css">
+<!-- Meta pixel + GTM load at the top of head. Do not add another base here. -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  dataLayer.push({ event: "rdly_site_view", page: "home" });
+</script>
+<script>
+  /* Watch-gate boot (see vsl-gate.js). The class goes on <html> before the first
+     paint so a locked page never flashes its booking CTAs. No JS means no class
+     means no gate, which is the safe way for this to fail. */
+  (function(){
+    try{ if(localStorage.getItem('rdly_home_vsl_unlocked')==='1') return; }catch(e){}
+    document.documentElement.className += ' rdly-gated';
+  })();
+</script>
+<style>
+  /* page-specific: layout mirrors warriorbabe.com homepage (capture in scratchpad/wb/home.png) */
+  .hero{padding:clamp(28px,4vw,52px) 0 clamp(36px,5vw,64px);text-align:center}
+  .hero h1{font-size:clamp(34px,5.8vw,62px);max-width:1000px;margin:14px auto 0}
+  .hero .sub{margin:16px auto 0;max-width:62ch}
+  .statcards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:960px){.statcards{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.statcards{grid-template-columns:1fr}}
+  .statcard{background:#221014;border:1.5px solid rgba(252,244,234,.1);border-radius:var(--radius);padding:22px;text-align:left}
+  .statcard b{display:block;font-family:var(--display);font-weight:600;font-size:clamp(28px,3.6vw,40px);color:var(--paper);line-height:1.05}
+  .statcard span{display:block;margin-top:6px;font-size:13.5px;color:rgba(252,244,234,.6)}
+  .collage{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:720px){.collage{grid-template-columns:repeat(2,1fr)}}
+  .collage img{border-radius:12px;border:1.5px solid rgba(252,244,234,.12);background:#fff;width:100%}
+  .reviews-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+
+  /* ---------- watch gate (vsl-gate.js) ----------
+     Every rule here is keyed to .rdly-gated on <html>, so with JS off none of it
+     applies and the page is the page. Clipping #gate-lock is what stops the
+     scroll: the document is simply short until the video hits its mark. */
+  .rdly-gated [data-gate-cta]{display:none !important}
+  .rdly-gated .sitefoot{display:none}
+  /* nav is gated too, so the only way off the page is the browser's back button.
+     Logotype stays, and the legal links live in the gate panel while it is shut. */
+  .rdly-gated .nav-inner{justify-content:center}
+  #gate-lock{position:relative}
+  .rdly-gated #gate-lock{max-height:min(44vh,360px);overflow:hidden}
+  .rdly-gated #gate-lock::after{content:"";position:absolute;left:0;right:0;bottom:0;height:100%;background:linear-gradient(to bottom,rgba(23,4,6,0) 0%,rgba(23,4,6,.55) 34%,rgba(23,4,6,.92) 72%,#170406 100%);pointer-events:none}
+  #gate{display:none}
+  .rdly-gated #gate{display:block}
+  .gate-panel{max-width:620px;margin:0 auto;padding:4px var(--gut) clamp(52px,7vw,88px);text-align:center}
+  .gate-lockline{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);text-transform:uppercase;letter-spacing:.16em;font-size:12.5px;color:var(--gold-acc)}
+  .gate-lockline svg{width:14px;height:14px;flex:none}
+  .gate-h{font-family:var(--display);text-transform:uppercase;font-size:clamp(22px,3.8vw,34px);line-height:1.06;color:var(--paper);margin:12px 0 0}
+  .gate-sub{margin:10px auto 0;max-width:46ch;font-size:15.5px;color:rgba(252,244,234,.72)}
+  .gate-track{height:5px;border-radius:999px;background:rgba(252,244,234,.16);overflow:hidden;max-width:320px;margin:22px auto 0}
+  .gate-track i{display:block;height:100%;width:0;background:var(--gold);border-radius:999px;transition:width .4s linear}
+  .gate-count{margin-top:10px;font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--paper);font-variant-numeric:tabular-nums}
+  .gate-legal{margin-top:26px;font-size:13px;color:rgba(252,244,234,.45)}
+  .gate-legal a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+  .gate-legal a:hover{color:var(--gold-acc)}
+
+  /* tap-for-sound scrim: muted autoplay is the only autoplay browsers allow, so
+     the frame has to carry the ask */
+  .vframe .vsl-poster{position:absolute;inset:0;z-index:0;opacity:.55}
+  .vframe.is-started .vsl-poster{display:none}
+  .vframe .vsl-sound{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center;background:rgba(23,4,6,.6);cursor:pointer}
+  .vframe.has-sound .vsl-sound{display:none}
+  .vsl-sound-note{font-size:14px;color:rgba(252,244,234,.8);margin:0}
+  @media(max-width:520px){.vsl-sound-note{font-size:12.5px}}
+
+  /* CTAs fade in on unlock rather than snapping into the layout */
+  [data-gate-cta]{animation:gateIn .5s var(--ease) both}
+  @keyframes gateIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){[data-gate-cta]{animation:none}}
+</style>
 </head>
-<body>
+<body class="theme-dark">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLVK9SK8"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) --><p><a href="/funnel-build/index.html">Continue</a></p></body>
+<!-- End Google Tag Manager (noscript) -->
+<a class="skiplink" href="#main">Skip to content</a>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logotype" href="/funnel-build/index.html">Ridley <b>Academy</b></a>
+    <button class="nav-burger" data-gate-cta aria-expanded="false" aria-controls="navlinks" onclick="this.setAttribute('aria-expanded',document.getElementById('navlinks').classList.toggle('open'));">Menu</button>
+    <div class="nav-links" id="navlinks" data-gate-cta>
+      <a href="/funnel-build/how-it-works.html">How It Works</a>
+      <a href="/funnel-build/success.html">Success Stories</a>
+      <a href="/funnel-build/about.html">About</a>
+      <a href="/funnel-build/mentors.html">Mentors</a>
+      <a class="btn" href="/funnel-build/apply.html?el=site-nav" data-gate-cta>Book a Free Call</a>
+    </div>
+  </div>
+</nav>
+<main id="main">
+
+<!-- ============ HERO: proof line, centered H1, VSL, laurels, CTA (mirrors WB) ============ -->
+<section class="hero">
+  <div class="wrap">
+    <p class="proofline rv"><span class="stars">★★★★★</span> Based on 1,300+ five-star reviews · 40,000+ students</p>
+    <h1 class="rv" style="--d:.06s">Everything you need to finally play piano, <span class="hl">all in one place</span></h1>
+    <p class="sub lede rv" style="--d:.12s">We help adults play the music they love at every stage of life, starting with a real song, with the Ridley Method.</p>
+
+    <div class="vframe rv" data-gate-video data-gate-at="558" data-vsl-yt="XO74o7ehyx8" data-poster="/funnel-build/images/masterclass-poster.jpg" data-vsl-cta="apply.html?el=vsl-home" style="max-width:880px;margin:30px auto 0;--d:.18s">
+      <!-- VSL: SELF-HOSTED (videos/vsl-main.mp4, transcoded from RAVSL_v8). Moved off YouTube
+           7/31 because YouTube draws its title bar / channel name for the first seconds of
+           playback and no parameter suppresses it. Locked player via shared.js: no seeking.
+           8/4: the file was never deployed here, so this slot is still the YouTube cut and is
+           now owned by vsl-gate.js instead of shared.js (hence data-vsl-yt, not data-yt: the
+           two must not both mount a player). vsl-gate.js autoplays it muted, keeps the same
+           locked shell, and holds the page shut until data-gate-at. When vsl-main.mp4 does
+           get deployed, point vsl-gate.js at a <video> and the gate is unchanged. -->
+      <img src="/funnel-build/images/masterclass-poster.jpg" alt="Play: the Ridley Academy masterclass video" width="1280" height="720">
+      <div class="playbtn"></div>
+      <div class="vpill">The method behind 40,000+ students</div>
+    </div>
+
+    <div class="grid-2 rv" style="max-width:880px;margin:22px auto 0;--d:.1s">
+      <div class="laurel">
+        <span class="stars">★★★★★</span>
+        "I've had eight piano teachers, and I learned more from the Ridley Academy than all the others combined."
+        <div class="who">David Clarke</div>
+      </div>
+      <div class="laurel">
+        <span class="stars">★★★★★</span>
+        A professional musician with a music education degree calls the method "streamlined, effective and exciting."
+        <div class="who">Alice Saddler</div>
+      </div>
+    </div>
+
+    <div class="rv" style="margin-top:26px" data-gate-cta>
+      <a class="btn" href="/funnel-build/apply.html?el=site-hero">Book My Free Session</a>
+      <p class="btn-note">Free 30-minute Breakthrough Session. A conversation, not a checkout.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Everything from here down is clipped while the watch gate is on. Keep new
+     sections inside #gate-lock or they will show above the fade. -->
+<div id="gate-lock">
+
+<!-- ============ CREDIBILITY: H2 + 4 stat cards (mirrors WB "#1 rated" block) ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:26px">
+      <h2 class="h-xl rv">The <span class="hl">songs-first</span> piano method for adults</h2>
+      <p class="sub rv" style="margin:12px auto 0">Why adults who tried lessons, apps, and YouTube end up here.</p>
+    </div>
+    <div class="statcards">
+      <div class="statcard rv"><b>40,000+</b><span>Students taught with the Ridley Method</span></div>
+      <div class="statcard rv" style="--d:.07s"><b>1,300+</b><span>Verified five-star reviews</span></div>
+      <div class="statcard rv" style="--d:.14s"><b>60+</b><span>Countries with playing students</span></div>
+      <div class="statcard rv" style="--d:.21s"><b>5 to 96</b><span>Ages of students, most over 50</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STICKY FEATURE STACK (mirrors WB Personalization/Implementation stack) ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sticky-split">
+      <div class="sticky-head">
+        <h2 class="h-xl rv">Built for adults who are <span class="hl">done</span> <span class="hl-gold">starting over</span></h2>
+        <p class="sub rv" style="margin-top:14px">For decades, piano teaching has sold adults a lie: that music must be earned with years of scales first. The Ridley Method flips the order. The music comes first, and everything else is learned through it.</p>
+      </div>
+      <div>
+        <div class="cat-card rv">
+          <h3>Phase 1 · First Song</h3>
+          <p>You play a real song from the very beginning. Not an exercise. A song.</p>
+          <div class="subs">
+            <div><h4>Music on day one</h4><p>The pull of a song you can actually play replaces the grind of drills.</p></div>
+            <div><h4>No theory gate</h4><p>Nothing stands between you and the instrument. You start by playing.</p></div>
+          </div>
+        </div>
+        <div class="cat-card rv">
+          <h3>Phase 2 · Real Repertoire</h3>
+          <p>One song becomes a set: pieces you can sit down and play, anywhere.</p>
+          <div class="subs">
+            <div><h4>A growing setlist</h4><p>Songs you chose, not grade-book pieces nobody asked for.</p></div>
+            <div><h4>Concepts connect</h4><p>The patterns inside your songs start explaining each other.</p></div>
+          </div>
+        </div>
+        <div class="cat-card rv">
+          <h3>Phase 3 · Musical Fluency</h3>
+          <p>Reading, theory, and technique come together through the music itself.</p>
+          <div class="subs">
+            <div><h4>Theory through music</h4><p>You learn why it works because you can already hear it working.</p></div>
+            <div><h4>Nothing collapses</h4><p>Slip mid-piece and recover, because you understand what your hands are doing.</p></div>
+          </div>
+        </div>
+        <div class="cat-card rv">
+          <h3>Phase 4 · Your Sound</h3>
+          <p>You stop reproducing and start expressing. The piano becomes yours.</p>
+          <div class="subs">
+            <div><h4>Interpretation</h4><p>Your taste and your feel, not a note-for-note copy.</p></div>
+            <div><h4>For life</h4><p>A skill that's yours at any piano, in any room, forever.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REAL STUDENTS + REVIEW COLLAGE (mirrors WB Real Women / collage) ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="split" style="align-items:start">
+      <div class="sticky-head" style="position:static">
+        <h2 class="h-xl rv">Real students. <span class="hl">Real playing.</span></h2>
+        <p class="sub rv" style="margin-top:12px">Retirees. Professionals. App-quitters and lesson survivors, in their 40s, 50s, 60s and beyond. They came to play the songs they love, and they do.</p>
+        <a class="btn rv" style="margin-top:20px" href="/funnel-build/success.html">See all success stories</a>
+      </div>
+      <div class="collage rv">
+        <img src="/funnel-build/images/reviews/mq-becky-cawley.png" alt="Five-star Trustpilot review from Becky Cawley" loading="lazy">
+        <img src="/funnel-build/images/reviews/mq-chip-ross.png" alt="Five-star Trustpilot review from Chip Ross" loading="lazy">
+        <img src="/funnel-build/images/reviews/mq-elaine-white.png" alt="Five-star Trustpilot review from Elaine White" loading="lazy">
+        <img src="/funnel-build/images/reviews/mq-karen-hayes.png" alt="Five-star Trustpilot review from Karen Hayes" loading="lazy">
+        <img src="/funnel-build/images/reviews/mq-luis-ortiz.png" alt="Five-star Trustpilot review from Luis Ortiz" loading="lazy">
+        <img src="/funnel-build/images/reviews/mq-john-thierry.png" alt="Five-star Trustpilot review from John Thierry" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ XL PULL QUOTES (mirrors WB giant highlighted quotes) ============ -->
+<section class="section">
+  <div class="wrap">
+    <p class="quote-xl rv">"At 68, Glenwood learned to play with both hands and read music, <span class="hl">in one year.</span>"</p>
+    <p class="quote-attrib rv">Glenwood Clark · Verified Trustpilot review</p>
+    <p class="quote-xl rv" style="margin-top:44px">Carlos reached his goal to play piano in less than 6 months. His verdict: <span class="hl-gold">"worth it."</span></p>
+    <p class="quote-attrib rv">Carlos Rodriguez · Verified Trustpilot review</p>
+    <div class="center rv" style="margin-top:30px"><a class="btn btn--gold" href="/funnel-build/success.html">More reviews</a></div>
+  </div>
+</section>
+
+<!-- ============ JOURNEYS: tabbed grid (mirrors WB WarriorBabe Journeys) ============ -->
+<section class="section--tight">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:18px">
+      <h2 class="h-xl rv">Ridley <span class="hl">journeys</span></h2>
+      <p class="sub rv" style="margin:12px auto 0">Real stories from adults who stopped saying "someday" and started playing.</p>
+    </div>
+    <div class="jtabs rv" role="tablist">
+      <button class="jtab on" role="tab" aria-selected="true" data-tab="interviews">Student interviews</button>
+      <button class="jtab" role="tab" aria-selected="false" data-tab="reviews">Trustpilot reviews</button>
+    </div>
+    <div class="jgrid" id="tab-interviews">
+      <!-- [STUDENT-INTERVIEW-PLACEHOLDER 1-3: swap posters + names for real student interview videos] -->
+      <div class="jcard rv"><div class="playbtn"></div><div class="jname"><b>Student interview</b>Video coming soon</div></div>
+      <div class="jcard rv" style="--d:.08s"><div class="playbtn"></div><div class="jname"><b>Student interview</b>Video coming soon</div></div>
+      <div class="jcard rv" style="--d:.16s"><div class="playbtn"></div><div class="jname"><b>Student interview</b>Video coming soon</div></div>
+    </div>
+    <div class="jgrid" id="tab-reviews" hidden>
+      <img class="rv" style="border-radius:var(--radius);border:1.5px solid rgba(252,244,234,.12);background:#fff" src="/funnel-build/images/reviews/tp-david-clarke.png" alt="David Clarke's five-star Trustpilot review" loading="lazy">
+      <img class="rv" style="border-radius:var(--radius);border:1.5px solid rgba(252,244,234,.12);background:#fff" src="/funnel-build/images/reviews/tp-glenwood-clark.png" alt="Glenwood Clark's five-star Trustpilot review" loading="lazy">
+      <img class="rv" style="border-radius:var(--radius);border:1.5px solid rgba(252,244,234,.12);background:#fff" src="/funnel-build/images/reviews/tp-carlos-rodriguez.png" alt="Carlos Rodriguez's five-star Trustpilot review" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ============ MANIFESTO (mirrors WB "years of diet culture" block) ============ -->
+<section class="section">
+  <div class="wrap center">
+    <h2 class="h-xl rv" style="max-width:900px;margin:0 auto">Years of lessons taught you to earn the music. <span class="hl">We start with it.</span></h2>
+    <p class="sub rv" style="margin:16px auto 0;max-width:64ch">We're the academy for adults who were told to wait: for the scales, for the theory, for "someday." The Ridley Method is the system Stephen built to hand you the music first, and teach everything else through it.</p>
+  </div>
+</section>
+
+<!-- ============ FULL-BLEED PHOTO BAND (their cinematic break) ============ -->
+<div class="bleed rv">
+  <img src="/funnel-build/images/perf-lights.jpg" srcset="/funnel-build/images/perf-lights-640.jpg 640w, /funnel-build/images/perf-lights.jpg 1200w" sizes="100vw" alt="A crowd holding up phone lights at a Stephen Ridley performance" loading="lazy">
+</div>
+
+<!-- ============ MEET THE FOUNDER (mirrors WB founder block) ============ -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="h-xl rv" style="margin-bottom:26px">Meet <span class="hl">the founder</span></h2>
+    <div class="founder">
+      <div class="bio rv">
+        <h3>Stephen Ridley</h3>
+        <span class="role">Creator of the Ridley Method</span>
+        <p style="margin-bottom:12px">Stephen learned on a beat-up street piano, not in a conservatory. With no method book in sight, he had to find the structure inside real songs, and that accident became the method.</p>
+        <p style="margin-bottom:12px">Ten years of teaching and performing worldwide later, the Ridley Method has carried 40,000+ adults in 60+ countries from "someday" to actually playing: real songs first, theory through the music, mentorship for follow-through.</p>
+        <p><a class="btn" style="margin-top:8px" href="/funnel-build/about.html">Read Stephen's story</a></p>
+      </div>
+      <div class="photo rv" style="--d:.1s"><img src="/funnel-build/images/perf-stance.jpg" srcset="/funnel-build/images/perf-stance-640.jpg 640w, /funnel-build/images/perf-stance.jpg 1200w" sizes="(max-width: 860px) 92vw, 42vw" alt="Stephen Ridley playing a grand piano mid-performance" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section--tight">
+  <div class="wrap-narrow">
+    <div class="center" style="margin-bottom:24px">
+      <h2 class="h-lg rv">Questions adults ask before starting</h2>
+    </div>
+    <div class="faq rv">
+      <details>
+        <summary>Am I too old to learn?</summary>
+        <p class="faq-body">Most of our students are over 50, and our students range from 5 to 96. Adults often progress faster than kids: more patience, more discipline, and a lifetime of songs they already love.</p>
+      </details>
+      <details>
+        <summary>Do I need to read music first?</summary>
+        <p class="faq-body">No. You'll play real songs first and learn reading and theory through the music, where it actually makes sense. That order is the whole method.</p>
+      </details>
+      <details>
+        <summary>What does coaching cost?</summary>
+        <p class="faq-body">The mini course is $27. Coached programs are matched to your goals on a free Breakthrough Session, where we walk through exactly what's included and what it costs. For context, two years of weekly private lessons runs $5,200 to $10,400.</p>
+      </details>
+      <details>
+        <summary>Do I need a piano at home?</summary>
+        <p class="faq-body">A piano or a keyboard works. If you're not sure whether yours is suitable, ask us on your Breakthrough Session and we'll tell you straight.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRESS + FINAL CTA ============ -->
+<section class="section--tight">
+  <div class="wrap center">
+    <p style="font-size:14px;color:rgba(252,244,234,.55);margin-bottom:16px">As featured &amp; trusted across</p>
+    <div class="press">
+      <img src="/funnel-build/images/press/gq.svg" alt="GQ" loading="lazy">
+      <img src="/funnel-build/images/press/vogue.svg" alt="Vogue" loading="lazy">
+      <img src="/funnel-build/images/press/lofficiel.svg" alt="L'Officiel" loading="lazy">
+      <img src="/funnel-build/images/press/omega.svg" alt="Omega" loading="lazy">
+      <img src="/funnel-build/images/press/google.svg" alt="Google" loading="lazy">
+      <img src="/funnel-build/images/press/youtube.svg" alt="YouTube" loading="lazy">
+      <img src="/funnel-build/images/press/instagram.svg" alt="Instagram" loading="lazy">
+      <img src="/funnel-build/images/press/trustpilot.svg" alt="Trustpilot" loading="lazy">
+      <img src="/funnel-build/images/press/sitejabber.png" alt="Sitejabber" loading="lazy">
+    </div>
+    <div style="margin-top:44px">
+      <h2 class="h-xl rv">There's a song you've waited <span class="hl-gold">years to play.</span></h2>
+      <p class="sub rv" style="margin:14px auto 24px">You didn't have to think about which one. Start there.</p>
+      <a class="btn rv" href="/funnel-build/quiz-funnel/index.html?el=site-final">Take the 60-second quiz</a>
+      <p class="rv" style="margin-top:16px;font-size:15px"><a href="/funnel-build/apply.html?el=site-final" style="color:var(--gold-acc)">Or book your free Breakthrough Session now</a></p>
+    </div>
+  </div>
+</section>
+</div><!-- /#gate-lock -->
+
+<!-- The gate itself: sits under the fade, counts down, and carries the legal
+     links the hidden footer would otherwise be holding. -->
+<div id="gate">
+  <div class="gate-panel">
+    <p class="gate-lockline">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="4" y="10.5" width="16" height="11" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+      The rest of this page unlocks at 9:18
+    </p>
+    <p class="gate-h">Keep watching</p>
+    <p class="gate-sub">Stephen walks through the method first. Booking, the student stories, and the rest of the page open up once you get there.</p>
+    <div class="gate-track" aria-hidden="true"><i id="gate-fill"></i></div>
+    <p class="gate-count" id="gate-count" aria-live="polite">Starting the video</p>
+    <p class="gate-legal">&copy; 2026 Ridley Academy &middot; <a href="/funnel-build/privacy.html">Privacy</a> &middot; <a href="/funnel-build/terms.html">Terms</a> &middot; <a href="/funnel-build/support.html">Contact</a></p>
+  </div>
+</div>
+
+</main>
+<!-- ============ FOOTER ============ -->
+<footer class="sitefoot">
+  <div class="cols">
+    <div>
+      <a class="logotype" href="/funnel-build/index.html" style="color:var(--paper)">Ridley <b>Academy</b></a>
+      <p style="margin-top:12px;max-width:34ch">Piano for adults. Real songs first, theory through the music, and a path that ends with the piano being yours.</p>
+    </div>
+    <div>
+      <h5>Learn</h5>
+      <a href="/funnel-build/how-it-works.html">How It Works</a>
+      <a href="/funnel-build/quiz-funnel/index.html">The 60-Second Quiz</a>
+      <a href="/funnel-build/tripwire.html">4 Magic Chords ($27)</a>
+      <a href="/funnel-build/apply.html?el=site-footer">Book a Free Call</a>
+    </div>
+    <div>
+      <h5>Academy</h5>
+      <a href="/funnel-build/about.html">About</a>
+      <a href="/funnel-build/mentors.html">Mentors</a>
+      <a href="/funnel-build/success.html">Success Stories</a>
+      <h5 style="margin-top:18px">Guides</h5>
+      <a href="/funnel-build/learn-piano-after-50.html">Piano After 50</a>
+      <a href="/funnel-build/online-piano-lessons-adults.html">Lessons for Adults</a>
+      <a href="/funnel-build/online-piano-course.html">Online Piano Course</a>
+      <a href="/funnel-build/piano-teacher-cost.html">Piano Lesson Costs</a>
+      <a href="/funnel-build/learn-piano-without-sheet-music.html">Play Without Sheet Music</a>
+      <a href="/funnel-build/how-much-does-ridley-academy-cost.html">Ridley Academy Cost</a>
+      <a href="/funnel-build/best-ways-to-learn-piano.html">Best Ways to Learn</a>
+      <a href="/funnel-build/ridley-academy-review.html">Ridley Academy Review</a>
+    </div>
+    <div>
+      <h5>Support</h5>
+      <a href="/funnel-build/support.html">Contact Us</a>
+      <a href="/funnel-build/privacy.html">Privacy Policy</a>
+      <a href="/funnel-build/terms.html">Terms of Service</a>
+    </div>
+  </div>
+  <div class="legal">
+    <p>&copy; 2026 Ridley Academy. All rights reserved. Results vary by student and depend on practice and participation. Testimonials reflect individual experiences.</p>
+  </div>
+</footer>
+
+<script src="/funnel-build/shared.js"></script>
+<script src="/funnel-build/vsl-gate.js"></script>
+<script>
+  // journeys tabs
+  (function(){
+    var tabs=document.querySelectorAll('.jtab');
+    tabs.forEach(function(t){
+      t.addEventListener('click',function(){
+        tabs.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-selected','false');});
+        t.classList.add('on');t.setAttribute('aria-selected','true');
+        document.getElementById('tab-interviews').hidden = t.dataset.tab!=='interviews';
+        document.getElementById('tab-reviews').hidden = t.dataset.tab!=='reviews';
+      });
+    });
+  })();
+</script>
+</body>
 </html>

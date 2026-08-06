@@ -667,7 +667,11 @@
     // every red in the booking experience is the same: our day numbers, slot pills, and the
     // Calendly-themed accents incl. the Schedule Event button fill on the confirm step.
     var CAL_URL = BASE + '?hide_gdpr_banner=1&hide_event_type_details=1' +
-      '&background_color=fffbf4&text_color=000000&primary_color=AC1818';
+      '&background_color=fffbf4&text_color=000000&primary_color=AC1818' +
+      /* Google Ads click ID as salesforce_uuid, so the booking record carries the
+         gclid that paid for it and sales outcomes can be uploaded back later.
+         Empty string when there is no click ID. */
+      ((window.RA_ADS && window.RA_ADS.calendlyParams) ? window.RA_ADS.calendlyParams() : '');
 
     /* ================= CUSTOM BRANDED CALENDAR =================
        Our own fully brand-styled day/time picker (bold red day numbers, no circles) that
