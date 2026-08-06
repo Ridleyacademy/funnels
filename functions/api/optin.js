@@ -143,6 +143,68 @@ async function axl(env, lead) {
   return 'axl:ok';
 }
 
+// Mirror the opt-in into ActiveCampaign as a tag, so the nurture side of the
+// funnel has something to trigger on. AXL stays the system of record: this
+// writes a contact and a tag, nothing else.
+//
+// Why this exists: bookings reach AC (Calendly writes `consultation-booked` and
+// `VSL Booked a Call`), but since the 2026-08-04 AXL cutover nothing told AC an
+// opt-in had happened. So AC knew who booked and had no idea who didn't, and
+// automation 599 (Front Gate Nurture - Opt-in No Booking) had no trigger.
+//
+// Failures here are swallowed on purpose. AXL is the record; if AC is down or
+// misconfigured, the lead must still register. The return string says which
+// half worked so `curl` on /api/optin remains the diagnosis.
+async function ac(env, lead) {
+  const base = envVar(env, 'AC_URL');
+  const key = envVar(env, 'AC_KEY');
+  if (!base || !key) return 'ac:skipped_no_config';
+
+  const root = base.replace(/\/+$/, '');
+  const headers = { 'Api-Token': key, 'Content-Type': 'application/json' };
+
+  // contact/sync upserts on email, so a repeat opt-in updates rather than dupes.
+  // Singular `contact`, not `contacts`: the plural path is the list endpoint and
+  // 404s on POST, which would silently cost every lead its AC tag.
+  const sync = await fetch(root + '/api/3/contact/sync', {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      contact: {
+        email: lead.email,
+        firstName: lead.firstName || '',
+        phone: lead.phone || '',
+      },
+    }),
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!sync.ok) return 'ac:sync_' + sync.status;
+
+  const contactId = ((await sync.json().catch(() => ({}))).contact || {}).id;
+  if (!contactId) return 'ac:no_contact_id';
+
+  // Tag ids, not names: AC's contactTags endpoint takes an id. These are the
+  // live ids in creatorsecretsads, checked 2026-08-06. `VSL Opt-in` is what
+  // automation 599 triggers on; the quiz tags mirror the AXL ones so the same
+  // segmentation is available on both sides.
+  const TAGS = { optin: 634, quizDone: 640, quizDq: 641 };
+  const wanted = [TAGS.optin];
+  if (lead.route === 'dq') wanted.push(TAGS.quizDq);
+  else if (lead.quizAnswered) wanted.push(TAGS.quizDone);
+
+  const results = [];
+  for (const tagId of wanted) {
+    const r = await fetch(root + '/api/3/contactTags', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ contactTag: { contact: contactId, tag: tagId } }),
+      signal: AbortSignal.timeout(10000),
+    });
+    results.push(tagId + ':' + (r.ok ? 'ok' : r.status));
+  }
+  return 'ac:' + results.join(',');
+}
+
 export async function onRequest(context) {
   const { request, env } = context;
   if (request.method !== 'POST') return new Response('ok', { status: 200 }); // health check
@@ -173,6 +235,7 @@ export async function onRequest(context) {
     // apply.html posts answers as top-level q1..q13 alongside everything else.
     quiz: d,
   };
+  lead.quizAnswered = QUIZ.some(([key]) => d[key]);
 
   let report;
   try {
@@ -182,6 +245,17 @@ export async function onRequest(context) {
     report = 'axl:FAIL ' + e.message;
     console.error('optin ' + email + ' -> ' + report);
   }
+
+  // Second write, after AXL and never in front of it. A dead AC must not cost
+  // us the registration, so this only ever appends to the report.
+  let acReport;
+  try {
+    acReport = await ac(env, lead);
+  } catch (e) {
+    acReport = 'ac:FAIL ' + e.message;
+  }
+  console.log('optin ' + email + ' -> ' + acReport);
+  report = report + ' ' + acReport;
 
   // Always 200 so the beacon never retries, but the body states what actually
   // happened. A silent 200 is how every vsl-b opt-in got dropped unnoticed.
