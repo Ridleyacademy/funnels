@@ -190,10 +190,14 @@
     if (sent) return;
     sent = true;
 
+    /* No value or currency sent on purpose. A value on the tag OVERRIDES the
+       conversion action's own default, so hardcoding 1.0 here would silently
+       cancel out the real per-booking value set in the Google Ads UI and keep
+       reporting every booked call as worth a dollar. Leaving it off means the
+       value lives in exactly one place, the conversion action, and changing it
+       is a UI edit rather than a site deploy. */
     gtag('event', 'conversion', {
-      'send_to': CONVERSION,
-      'value': 1.0,
-      'currency': 'USD'
+      'send_to': CONVERSION
     });
   }
 
