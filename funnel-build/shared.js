@@ -305,7 +305,10 @@
     var lead=known(), p=qp();
     var u=base+(base.indexOf('?')>-1?'&':'?')+'hide_gdpr_banner=1';
     var name=lead.name||p.get('name')||'';
-    var email=lead.email||p.get('email')||'';
+    /* Trimmed because whatever we prefill is what ends up on the booking record,
+       and that record is what a later offline conversion upload is matched on.
+       A stray space is enough to make the same person look like two. */
+    var email=(lead.email||p.get('email')||'').replace(/^\s+|\s+$/g,'');
     var phone=lead.phone||p.get('phone')||'';
     if(name)  u+='&name='+encodeURIComponent(name);
     if(email) u+='&email='+encodeURIComponent(email);
