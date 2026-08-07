@@ -1,7 +1,7 @@
 /* Ridley home page: VSL watch-gate.  Added 8/4.
 
    The page stays locked to the hero until the sales video reaches its unlock mark
-   (data-gate-at on the video frame, 283s = 4:43). Locked means two things: every
+   (data-gate-at on the video frame, 305s = 5:05). Locked means two things: every
    booking CTA is hidden, and everything below the video is clipped behind a
    gradient, so there is no page under the fold to scroll to in the first place.
    A live countdown in the gradient says when it opens, so the fade reads as
@@ -33,7 +33,7 @@
   var gateFill = document.getElementById('gate-fill');
 
   var KEY = 'rdly_home_vsl_unlocked';
-  var GATE_AT = parseInt(frame.getAttribute('data-gate-at'), 10) || 283;
+  var GATE_AT = parseInt(frame.getAttribute('data-gate-at'), 10) || 305;
   var videoId = frame.getAttribute('data-vsl-yt');
   var poster = frame.getAttribute('data-poster') || '';
   var ctaHref = frame.getAttribute('data-vsl-cta') || 'apply.html';
