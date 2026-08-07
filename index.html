@@ -294,6 +294,41 @@ html.is-door .door{
   .door__consent{margin-top:var(--d-3)}
 }
 
+/* ---- SHORT PHONES: the fold, not the width, is the constraint ----
+   Measured 8/6: the submit button sat at y=852 on 390x844 (8px below the
+   fold) and 40px short on 375x812, an iPhone SE/mini. The 7/31 block above
+   already tightened this page once and is still doing its job; what grew
+   since is copy, not chrome. So this trims spacing only and cuts nothing
+   anyone reads: the poster loses 20px it was spending on being decorative,
+   and the rest is padding. Field padding stops at .72em, which keeps every
+   tap target above 44px.
+
+   Gated on height as well as width, so a tall phone (Pro Max, 932) keeps
+   the roomier layout rather than being punished for having the space. */
+@media(max-width:899px) and (max-height:900px){
+  .door__in{padding-top:12px}
+  .door__vid{max-height:64px;margin-bottom:var(--d-3)}
+  .door__cardsub{margin:2px 0 var(--d-3);line-height:1.35}
+  .door__fields{gap:10px;margin-top:var(--d-4)}
+  .door__field{padding:.72em 1em}
+  .door__consent{margin:10px 0 var(--d-4)}
+}
+
+/* ---- VERY SHORT VIEWPORTS ----
+   375x667 is the iPhone SE, and it is also roughly what a 390x844 phone is
+   left with inside the Instagram and Facebook in-app browsers, which is
+   where paid traffic actually lands. Measured 8/6: the button was still
+   112px below the fold there even after the block above.
+
+   At this height the trade is a decorative poster against a visible button,
+   so the poster goes and the reassurance line with it. The h2 "Watch it
+   now" and the button itself still say a video is waiting, and the poster
+   was never the video. Everything that makes the promise stays. */
+@media(max-width:899px) and (max-height:700px){
+  .door__vid{display:none}
+  .door__cardsub{display:none}
+}
+
 /* ---- POST-VIDEO CHOICE ----------------------------------------------
    Shown only to a visitor who has already opted in (html.is-opted), in
    place of the page's own "Book My Free Piano Consultation" CTA. We have
@@ -409,11 +444,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span>Ridley Academy</span>
       </div>
 
-      <span class="eyebrow">Transformative Video</span>
+      <span class="eyebrow">The Ridley Method</span>
 
       <h1 class="door__h1" id="doorH1">Learn Piano In <span class="fire-text">Weeks, Not Years</span>.</h1>
 
-      <p class="door__sub">Stephen Ridley's <b>Transformative Video</b> on the method <b>40,000+ adults</b> used to go from zero to playing the songs they love, on <b>10 minutes a day</b>. No sheet music. No experience needed.</p>
+      <p class="door__sub">Stephen Ridley's true story, and the method <b>40,000+ adults</b> use to play the songs they love on <b>10 minutes a day</b>. No theory drills. No experience needed.</p>
     </div>
 
     <!-- Everything in here sits directly under the copy on desktop (same
@@ -422,9 +457,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
          a scroll, so the supporting detail waits its turn. -->
     <div class="door__more">
       <ul class="door__list">
-        <li><i class="door__tick"></i><span><b>Why you were never the problem.</b> The one shift that makes the piano finally click.</span></li>
-        <li><i class="door__tick"></i><span><b>Understand it, don't memorise it.</b> How Stephen plays without reading a note.</span></li>
-        <li><i class="door__tick"></i><span><b>Ten minutes, not two hours.</b> The short daily practice that replaces long drills.</span></li>
+        <li><i class="door__tick"></i><span><b>Why you were never the problem.</b> The method was built wrong, not you.</span></li>
+        <li><i class="door__tick"></i><span><b>The path is the good part.</b> Stephen stopped thinking and started feeling, and everything opened up.</span></li>
+        <li><i class="door__tick"></i><span><b>Ten minutes, not two hours.</b> Four notes on day one. Both hands by day three.</span></li>
       </ul>
 
       <div class="door__band">
@@ -476,8 +511,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <input type="checkbox" name="consent" value="1">
           <span>Text me piano tips and any call reminders. Message and data rates may apply. Reply STOP to opt out.</span>
         </label>
-        <button type="submit" class="btn btn--fire btn--block" id="doorBtn">Show Me How It Works ›</button>
-        <p class="door__note">🔒 No card needed. Unsubscribe any time.</p>
+        <button type="submit" class="btn btn--fire btn--block" id="doorBtn">Show Me The Method ›</button>
+        <p class="door__note">🔒 Your details stay private. Unsubscribe any time.</p>
         <!-- Shown by the handler only to someone who has opted in before.
              The gate is still the first view on every visit, but a returning
              visitor can choose to go straight back in rather than submit
