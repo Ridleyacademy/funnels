@@ -88,10 +88,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* soft-landing additions: the ask is a form, so it needs left-aligned labels
      inside an otherwise centred screen, and the $27 offer sits under a rule so it
      reads as a separate thought rather than the punchline of the rejection. */
-  .dq-fields{text-align:left;margin:20px 0 2px}
+  .dq-fields{text-align:left;margin:14px 0 2px}
   .dq-offer{margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
   .dq-offer .dq-offer__lead{font-size:15.5px;margin-bottom:16px}
   .theme-dark .form-card .dq-offer p{color:var(--ink-soft)}
+  /* The email fallback sits quieter than the offer above it on purpose: the $27 course
+     is the next step we actually want, this is the net under it. */
+  .dq-keep{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+  .dq-keep .dq-keep__lead{font-size:14.5px}
+  .theme-dark .form-card .dq-keep p{color:var(--ink-soft)}
+  .btn--quiet{background:none;border:1.5px solid var(--line);color:var(--ink);margin-top:12px}
+  .btn--quiet:hover{border-color:var(--cherry)}
+  .dq-done{margin-top:12px;font-size:14.5px}
+  .dq-done[hidden]{display:none}
   .err{color:var(--cherry);font-size:13.5px;text-align:center;margin-top:10px;display:none}
   .err.on{display:block}
 
@@ -148,14 +157,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   ROUTING RULES (for Ange), implemented in finish() below:
     1. HARD DQ: Q1 = No OR Q2 = No  (rebuilt 2026-08-06 as a two-screen soft landing)
-       -> screen 1 (#dq-catch): acknowledges the specific answer, then asks for an email
-          on its own. Capture posts source "application-dq" + route "dq", so this cohort
-          reaches AXL and AC even though contact details are Q12 and were never reached.
-          Skipped entirely when we already hold an email (quiz traffic).
-       -> screen 2 (#dq-exits): the $27 4 Magic Chords Mini Course, link to /tripwire.
+       -> one screen (#dq-catch): acknowledges the specific answer, then leads with the
+          $27 4 Magic Chords Mini Course (link to /tripwire), which is the next step we
+          actually want (Chris, 2026-08-06). Under it, a quieter email row for the ones
+          who take neither the call nor the course. Capture posts source "application-dq"
+          + route "dq", so this cohort reaches AXL and AC even though contact details are
+          Q12 and were never reached. The email row collapses to a confirmation, and is
+          pre-collapsed when we already hold an address (quiz traffic).
        -> fires rdly_apply_dq {dq_type:'hard', dq_trigger:'q1'|'q2'}, then
-          rdly_apply_dq_exits {mode:'captured'|'declined'|'known'}, and
-          CompleteRegistration on capture (Lead stays reserved for a finished application).
+          rdly_apply_dq_kept {mode:'captured'|'known'} and CompleteRegistration on
+          capture (Lead stays reserved for a finished application).
        -> No booking page, and deliberately no link back into the quiz or this form:
           offramp.html is NOT a destination here, every one of its CTAs returns to
           apply.html and would loop a "not right now" straight back into the same ask.
@@ -407,37 +418,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="form-step dq-screen" id="dq-catch">
         <h3 id="dq-catch-h">That's a fair answer</h3>
         <p id="dq-catch-p">Most people click yes to be polite and then don't show up. Telling us straight is more useful. There's no call booked and nobody will chase you.</p>
-        <p>If you'd still like something from us, leave your email below. We'll send the occasional lesson and song walkthrough, no calls, and you can stop them in one click.</p>
-        <div class="contact-fields dq-fields">
-          <div>
-            <label for="dq-name">First name</label>
-            <input class="field" type="text" id="dq-name" autocomplete="given-name" autocapitalize="words">
-          </div>
-          <div>
-            <label for="dq-email">Email</label>
-            <input class="field" type="email" id="dq-email" autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="dq-email-err">
-            <p class="fielderr" id="dq-email-err" role="alert" hidden></p>
-          </div>
-        </div>
-        <div class="form-nav">
-          <button class="btn btn--block" id="dq-send">Send me those</button>
-          <button class="backlink" id="dq-skip">No thanks, I'll pass on the emails</button>
-          <button class="backlink" id="dq-back">I misclicked, take me back</button>
-        </div>
-      </div>
-
-      <!-- SOFT LANDING, screen 2 of 2. The offer, on its own, after the acknowledgement
-           has landed. Reached from the ask screen whether or not they left an email, and
-           reached directly when we already hold one (quiz traffic captured at step 9). -->
-      <div class="form-step dq-screen" id="dq-exits">
-        <h3 id="dq-exits-h">That's set</h3>
-        <p id="dq-exits-p">Nothing else to do. Watch your inbox.</p>
         <div class="dq-offer">
           <p class="dq-offer__lead">If you'd rather just start playing today, the <b>4 Magic Chords Mini Course</b> is $27. It's 25 minutes, the 100+ Song Workbook comes free with it, and there's a 30-day money-back guarantee. You keep the workbook either way.</p>
           <!-- Tripwire destination: /tripwire (ThriveCart product-1168). Carry query params through. -->
           <a class="btn btn--gold" id="tripwire-link" href="tripwire.html">See the $27 mini course</a>
         </div>
-        <div class="form-nav"><button class="backlink" id="dq-back-2">I misclicked, take me back</button></div>
+        <!-- The email row is the fallback for the ones who take neither the call nor the
+             course. Deliberately understated and deliberately vague about what arrives:
+             there is no sequence behind it yet, so it promises contact, not content.
+             Tighten the wording the day something actually sends. -->
+        <div class="dq-keep">
+          <p class="dq-keep__lead">Not that either? Leave your email and we'll be in touch when there's something worth your time.</p>
+          <div class="contact-fields dq-fields">
+            <div>
+              <label for="dq-name">First name</label>
+              <input class="field" type="text" id="dq-name" autocomplete="given-name" autocapitalize="words">
+            </div>
+            <div>
+              <label for="dq-email">Email</label>
+              <input class="field" type="email" id="dq-email" autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="dq-email-err">
+              <p class="fielderr" id="dq-email-err" role="alert" hidden></p>
+            </div>
+          </div>
+          <button class="btn btn--block btn--quiet" id="dq-send">Keep me posted</button>
+          <p class="dq-done" id="dq-done" hidden>That's set. Nothing else to do.</p>
+        </div>
+        <div class="form-nav"><button class="backlink" id="dq-back">I misclicked, take me back</button></div>
       </div>
 
       <!-- Submitting screen -->
@@ -545,7 +551,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var budgetGate=document.getElementById('budget-gate');
   var forceSoftDQ=false;
   var dqCatch=document.getElementById('dq-catch');
-  var dqExits=document.getElementById('dq-exits');
   var submitting=document.getElementById('submitting');
   var cur=0, dqReturn=0, dqTrigger='';
 
@@ -607,37 +612,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.getElementById('dq-catch-p').textContent=copy.p;
     hideAll();
     progEl.style.visibility='hidden';
-    /* Already have an email (quiz traffic captures at its step 9, and the door
-       writes the same key), so asking again is a worse experience than just
-       using it. Capture on their behalf and go straight to the offer. */
+    dqCatch.classList.add('on');
+    focusHeading(dqCatch);
+    /* Already have an email (quiz traffic captures at its step 9, and the door writes
+       the same key), so asking again is a worse experience than just using it: capture
+       silently and collapse the email row to its confirmation. The $27 offer above it
+       is untouched, because that is the step we actually want them to take. */
     var have=(function(){ try{ return (window.RDLY&&window.RDLY.known())||{}; }catch(e){ return {}; } })();
     if(have.email){
       dqCapture(have.name||'',have.email);
-      showDQExits('known');
-    }else{
-      dqCatch.classList.add('on');
-      focusHeading(dqCatch);
+      markKept('known');
     }
     dl('rdly_apply_dq',{dq_type:'hard',dq_trigger:dqTrigger,step:cur+1});
   }
-  function showDQExits(mode){
-    var h=document.getElementById('dq-exits-h');
-    var p=document.getElementById('dq-exits-p');
-    if(mode==='declined'){
-      h.textContent='Understood';
-      p.textContent="We won't email you. One last thing worth knowing about, then we'll leave you to it.";
-    }else if(mode==='known'){
-      h.textContent="We've already got your email";
-      p.textContent="So there's nothing to fill in. We'll send the occasional lesson and song walkthrough, and you can stop them in one click.";
-    }else{
-      h.textContent="That's set";
-      p.textContent='Nothing else to do. Watch your inbox.';
+  /* Swap the email row for its confirmation. Two wordings: one for someone who just
+     typed an address, one for someone we already had. */
+  function markKept(mode){
+    var lead=document.querySelector('.dq-keep__lead');
+    var fields=document.querySelector('.dq-keep .dq-fields');
+    var send=document.getElementById('dq-send');
+    var done=document.getElementById('dq-done');
+    if(fields) fields.hidden=true;
+    if(send) send.hidden=true;
+    if(lead) lead.hidden=true;
+    if(done){
+      done.textContent=(mode==='known')
+        ? "We've already got your email, so there's nothing to fill in."
+        : "That's set. Nothing else to do.";
+      done.hidden=false;
     }
-    hideAll();
-    progEl.style.visibility='hidden';
-    dqExits.classList.add('on');
-    focusHeading(dqExits);
-    dl('rdly_apply_dq_exits',{dq_trigger:dqTrigger,mode:mode});
+    dl('rdly_apply_dq_kept',{dq_trigger:dqTrigger,mode:mode});
   }
   function dqBack(){
     progEl.style.visibility='';
@@ -762,11 +766,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     field.classList.remove('is-bad');
     err.hidden=true;
     dqCapture(name,email);
-    showDQExits('captured');
+    markKept('captured');
   });
-  document.getElementById('dq-skip').addEventListener('click',function(){showDQExits('declined');});
   document.getElementById('dq-back').addEventListener('click',dqBack);
-  document.getElementById('dq-back-2').addEventListener('click',dqBack);
   // carry source params onto the tripwire link
   if(window.location.search){
     var tl=document.getElementById('tripwire-link');

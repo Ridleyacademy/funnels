@@ -187,12 +187,16 @@
   var CAL={
     /* Live qualified event, confirmed by Chris 7/31. Same event the vsl-b door books. */
     qualified:'https://calendly.com/d/dv25-nhh-w9v/free-piano-consultation',
-    /* Soft-DQ event does not exist yet. Left empty ON PURPOSE: an unset value keeps
-       booking-b.html on its request-a-time fallback rather than quietly dropping
-       soft-DQ applicants into the qualified calendar, which would corrupt both the
-       call tiering and the booking read. Paste the second event URL here to switch
-       it on. Nothing else needs to change. */
-    dq:''
+    /* TEMPORARY, Chris 2026-08-06: soft-DQ applicants go to the qualified calendar
+       until a real second event exists. The request-a-time fallback was the worse
+       of the two evils once the budget gate started routing people here, so this
+       trades call tiering for a booking that actually happens.
+       What it costs while it stands: a deferred lead and a ready-to-buy one compete
+       for the same slot, and the booking read cannot tell them apart from the
+       calendar alone. The AC/AXL tags still can (VSL Application - Budget Deferred),
+       so tier off the tag, not the event.
+       To undo: duplicate the qualified team event in Calendly and paste its URL here. */
+    dq:'https://calendly.com/d/dv25-nhh-w9v/free-piano-consultation'
   };
 
   var LEAD_KEY='ridley_lead_v1';
