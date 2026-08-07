@@ -62,6 +62,32 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
 <link rel="prefetch" href="images/masterclass-poster.jpg" as="image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='4' y='22' width='6' height='14' rx='2' fill='%23C52233'/%3E%3Crect x='13' y='14' width='6' height='22' rx='2' fill='%23A51C30'/%3E%3Crect x='22' y='7' width='6' height='29' rx='2' fill='%23FF2230'/%3E%3Crect x='31' y='2' width='6' height='34' rx='2' fill='%2374121D'/%3E%3C/svg%3E">
 <!-- ============================================================
+     GOOGLE ADS (vsl-b). Base tag only; nothing fires from here.
+
+     vsl-b had no gtag at all, only the GTM container, so this is added
+     directly rather than through GTM: it lives in the repo where the rest of
+     the page does, and it does not wait on container access.
+
+     A NOTE ON WHY THIS EXISTS, because funnels' ra-ads.js argues the
+     opposite. That file says page views, video plays and form starts are
+     noise at this price point and would train the bidder toward the wrong
+     person, and it counts booked calls only. That was right for funnels and
+     for a cost-per-call objective. This arm is deliberately running a
+     cost-per-LEAD objective instead, on the 8/6 finding that the email list
+     closes 2 to 2.5x paid traffic while paid itself was marginal in 2023 and
+     underwater by 2024. So the opt-in IS the conversion here. That is a
+     considered reversal, not an oversight, and if the objective ever moves
+     back to calls this tag should come out with it.
+     ============================================================ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-631436705"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'AW-631436705', { 'allow_enhanced_conversions': true });
+</script>
+
+<!-- ============================================================
      FRONT DOOR (vsl-b): Transformative Video opt-in before the VSL.
      Injected by optin-front-door/build.sh. Three blocks total, all
      inline so the door paints on the first frame with no extra
@@ -1258,6 +1284,44 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }, 60);
   }
 
+  /* ---- Google Ads: the opt-in conversion --------------------------------
+     GADS_LEAD_LABEL is the conversion action's label inside AW-631436705.
+     The Ads API is still refusing writes with DEVELOPER_TOKEN_NOT_APPROVED
+     (Basic Access pending), so the action has to be made in the Ads UI and
+     its label pasted in below.
+
+     Until that happens this fires NOTHING. That is deliberate. A conversion
+     sent to a placeholder or a wrong id is strictly worse than no conversion,
+     because it teaches the bidder something false and looks healthy while
+     doing it. That exact failure is already live in this account as GTM tag
+     19, a page-load Ads conversion on a doubled id. */
+  var GADS_LEAD_LABEL = '';   /* paste the label only, e.g. AbC-D_efGhIjKlMnOp */
+
+  function gadsLead(email) {
+    if (!GADS_LEAD_LABEL || typeof window.gtag !== 'function') return;
+    var done = false;
+    function fire() {
+      if (done) return;
+      done = true;
+      try { window.gtag('event', 'conversion', { send_to: 'AW-631436705/' + GADS_LEAD_LABEL }); } catch (e) {}
+    }
+    /* Enhanced conversions. Hashing the address lets Google match the lead to
+       the click without a raw email ever leaving the page. The timeout is the
+       point: if crypto is slow, unavailable, or the promise never settles, the
+       conversion still goes. Measurement must never cost us the event. */
+    setTimeout(fire, 600);
+    try {
+      var enc = new TextEncoder().encode(String(email).trim().toLowerCase());
+      crypto.subtle.digest('SHA-256', enc).then(function (buf) {
+        var hex = Array.prototype.map.call(new Uint8Array(buf), function (b) {
+          return ('0' + b.toString(16)).slice(-2);
+        }).join('');
+        try { window.gtag('set', 'user_data', { sha256_email_address: hex }); } catch (e) {}
+        fire();
+      }, fire);
+    } catch (e) { fire(); }
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var name = val('name'), email = val('email'), phone = val('phone');
@@ -1307,6 +1371,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       /* CompleteRegistration, NOT Lead. Lead stays on the booking path so
          vsl-a and vsl-b keep optimising toward the same event. */
       try { if (window.fbq) window.fbq('track', 'CompleteRegistration', { content_name: 'Transformative Video', content_category: 'front-door' }); } catch (err) {}
+      /* Same moment, the Google side. Deduped by the same `already` guard, so
+         a returning visitor re-watching cannot inflate either platform. */
+      try { gadsLead(email); } catch (err) {}
       try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_optin', optin_source: 'front-door', page_variant: 'vsl-b' }); } catch (err) {}
     } else {
       /* Re-watch by a known lead. Worth seeing in GA, worth keeping out of
