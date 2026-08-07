@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're Booked | Ridley Academy</title>
+<meta name="description" content="Your free piano consultation is booked. Watch this short video and set your reminders so you don't miss it.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2A060D">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2032449947451129');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<!-- CONVERSION EVENT. The pixel base code now runs on EVERY page (Ori 7/27),
+     but Schedule fires ONLY here: a visitor only reaches "Your Call Is Booked"
+     after Calendly has actually scheduled the call, so landing here IS the
+     conversion. The booking handler in main.js deliberately does NOT fire it,
+     so each booking counts exactly once.
+     Optimize ad campaigns against the "Schedule" standard event. -->
+<script>try{fbq('track','Schedule',{content_name:'Free piano consultation'});}catch(e){}</script>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<!-- every video on this page is a chromeless YouTube embed: open those
+     connections before the parser reaches them, and fetch the welcome video's
+     thumbnail at high priority so its frame paints while the player boots -->
+<link rel="preconnect" href="https://www.youtube-nocookie.com">
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="preconnect" href="https://i.ytimg.com">
+<link rel="preload" href="https://i.ytimg.com/vi/-bxw1Tqipts/hqdefault.jpg" as="image" fetchpriority="high">
+<!-- the player API is injected as a classic script by main.js; preloading it
+     here shaves its network time off every player boot on this page -->
+<link rel="preload" href="https://www.youtube.com/iframe_api" as="script">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=124">
+<link rel="stylesheet" href="funnel.css?v=27">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='4' y='22' width='6' height='14' rx='2' fill='%23C52233'/%3E%3Crect x='13' y='14' width='6' height='22' rx='2' fill='%23A51C30'/%3E%3Crect x='22' y='7' width='6' height='29' rx='2' fill='%23FF2230'/%3E%3Crect x='31' y='2' width='6' height='34' rx='2' fill='%2374121D'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="sitelogo" id="sitelogo" href="index.html">
+  <svg class="sitelogo__mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <rect x="4" y="22" width="5.5" height="14" rx="2.5" fill="currentColor"/><rect x="12" y="15" width="5.5" height="21" rx="2.5" fill="currentColor"/><rect x="20" y="8" width="5.5" height="28" rx="2.5" fill="currentColor"/><rect x="28" y="3" width="5.5" height="33" rx="2.5" fill="currentColor"/>
+  </svg>
+  <span>Ridley Academy</span>
+</a>
+<a id="top"></a>
+
+<!-- ============ CONFIRMATION HERO ============ -->
+<section class="pagehero pagehero--tight">
+  <div class="wrap wrap--narrow">
+    <div class="confirmx"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+    <span class="eyebrow eyebrow--center" style="justify-content:center">Step 1 of 2 complete</span>
+    <h1 style="margin-top:.25em">Your Call Is <span class="fire-text">Booked!</span></h1>
+    <p class="lede" style="max-width:620px;margin:.6em auto 0"><b>Watch this short video right now.</b> It makes your call far more valuable.</p>
+  </div>
+</section>
+
+<!-- ============ WATCH THIS VIDEO ============ -->
+<section class="section--tight" style="padding-top:clamp(10px,1.6vh,18px);padding-bottom:clamp(4px,1vh,12px)">
+  <div class="wrap" style="max-width:1060px">
+    <div class="vwrap reveal" style="max-width:none">
+      <div class="vbar">▶ Important · Watch This Before Your Call</div>
+      <!-- vembed--frame keeps this 16:9 at EVERY width. The default .vembed goes
+           4:3 under 760px (a deliberate choice for the taller mobile reels), which
+           would letterbox this 1920x1080 video with ~120px of dead black bars on a
+           phone. Same fix the index hero VSL uses. -->
+      <!-- Stephen's "Welcome and thank you!" pre-call video, hosted on the Ridley
+           YOUTUBE channel and rendered CHROMELESS (see the note on the FAQ block
+           below: IFrame-API player + transparent .ytshield = no YouTube UI to
+           click, no way out to YouTube, no clickable recommendations). Muted
+           autoplay on arrival; the pill restarts it from 0 WITH sound in one tap,
+           exactly like the testimonials video. It stays above the calendar section
+           because the narration walks the visitor down this page in order. -->
+      <div class="vembed vembed--frame vembed--yt" id="vembed" data-yt="-bxw1Tqipts" style="background:#000 url('https://i.ytimg.com/vi/-bxw1Tqipts/hqdefault.jpg') center/cover">
+        <div class="ytv"></div>
+        <div class="ytshield" aria-hidden="true"><i class="ytshield__blk ytshield__blk--top"></i><i class="ytshield__blk ytshield__blk--bot"></i></div>
+        <button type="button" class="vsound" id="vslSound" aria-label="Restart the welcome video from the beginning with sound">
+          <span class="vsound__pill">🔊 Click For Sound</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REMINDERS ============ -->
+<section class="section--tight center" style="padding-top:clamp(16px,2.6vw,30px)">
+  <div class="wrap wrap--narrow reveal">
+    <span class="eyebrow eyebrow--center" style="justify-content:center">Don't miss your slot</span>
+    <h2 class="h-lg" style="margin-top:.35em">Add It To Your Calendar <span class="fire-text">In One Tap</span></h2>
+    <p class="lede" style="margin-top:.6em">We'll remind you 1 hour before and 5 minutes before your call.</p>
+    <div class="calbtns">
+      <button type="button" class="calbtn" data-cal="google">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span data-cal-label>Google Calendar</span>
+      </button>
+      <button type="button" class="calbtn" data-cal="ics">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span data-cal-label>Apple / Outlook</span>
+      </button>
+      <button type="button" class="calbtn calbtn--wa" data-cal="wa" title="WhatsApp reminders (integration point)">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.7 15l-1.3 4.9 5-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1112 20z"/></svg>
+        Remind Me On WhatsApp
+      </button>
+    </div>
+    <div class="remindx">
+      <span>📅 Put it in your calendar</span>
+      <span>⏰ Set an alarm on your phone</span>
+      <span>🛡️ Protect the time like a doctor's appointment</span>
+    </div>
+    <p class="cta-note cta-note--dark" style="margin-top:1.1em">One tap · 1-hour and 5-minute reminders set automatically</p>
+  </div>
+</section>
+
+<!-- ============ FAQ (come informed) ============ -->
+<section class="section band-dark">
+  <div class="wrap">
+    <div class="sec-intro center reveal">
+      <span class="eyebrow eyebrow--center" style="justify-content:center">Come to the call informed</span>
+      <h2 class="h-lg" style="margin-top:.4em">The Questions <span class="fire-text">Everyone Asks</span></h2>
+      <p class="lede" style="color:rgba(252,244,234,.75)">Stephen answers each one on video, watch them before we speak.</p>
+    </div>
+    <!-- The 5 video answers are hosted on the Ridley YOUTUBE channel but rendered
+         CHROMELESS: each is an IFrame-API player (controls=0, rel=0, nocookie
+         host) sitting UNDER a transparent .ytshield that swallows every click, so
+         there is no YouTube logo/title to click, no way out to YouTube, and any
+         related-video overlay (limited to Stephen's own channel by rel=0) is not
+         clickable. The player is driven ONLY by our own UI: muted autoplay
+         preview, the Click For Sound pill (restarts from 0 WITH sound), then
+         tap-to-pause/resume on the shield. Identical visitor behavior to the
+         testimonials video. Wiring lives in main.js "CHROMELESS YOUTUBE EMBEDS".
+         The two text-only answers ("no piano" / "hands") have no video by design. -->
+    <div class="qblocks reveal">
+      <article class="qblock">
+        <h3 class="qblock__t">What is the Piano Masterclass?</h3>
+        <div class="qblock__vid vembed vembed--frame vembed--yt" data-yt="16O98sK2-Mo" style="background:#000 url('https://i.ytimg.com/vi/16O98sK2-Mo/hqdefault.jpg') center/cover">
+          <div class="ytv"></div>
+          <div class="ytshield" aria-hidden="true"><i class="ytshield__blk ytshield__blk--top"></i><i class="ytshield__blk ytshield__blk--bot"></i></div>
+          <button type="button" class="vsound" aria-label="Restart this answer from the beginning with sound">
+            <span class="vsound__pill">🔊 Click For Sound</span>
+          </button>
+        </div>
+        <p>The <b>Piano Masterclass</b> is Stephen's flagship self-study program, the one more than <b>40,000 adults</b> have used to go from zero to playing the songs they love. In this short answer he walks you through exactly what's inside, how the method works, and why it gets complete beginners playing real music in days, not years.</p>
+      </article>
+      <article class="qblock">
+        <h3 class="qblock__t">How much does it cost?</h3>
+        <div class="qblock__vid vembed vembed--frame vembed--yt" data-yt="yKUhowGRyZc" style="background:#000 url('https://i.ytimg.com/vi/yKUhowGRyZc/hqdefault.jpg') center/cover">
+          <div class="ytv"></div>
+          <div class="ytshield" aria-hidden="true"><i class="ytshield__blk ytshield__blk--top"></i><i class="ytshield__blk ytshield__blk--bot"></i></div>
+          <button type="button" class="vsound" aria-label="Restart this answer from the beginning with sound">
+            <span class="vsound__pill">🔊 Click For Sound</span>
+          </button>
+        </div>
+        <p>Most people are shocked when they learn what it costs to learn piano <b>for real</b> the traditional way. Weekly lessons year after year, or a conservatory like Berklee or the Royal School of Music, can run $50,000 to $150,000 over 10 to 20 years.</p>
+        <p style="margin-top:.7em">Our programs are a <b>fraction</b> of that, starting at just $3,000. Stephen breaks down exactly how the pricing works in this answer, and on your call we'll find the right fit for your goals and budget.</p>
+      </article>
+      <article class="qblock">
+        <h3 class="qblock__t">Is this program for adults?</h3>
+        <div class="qblock__vid vembed vembed--frame vembed--yt" data-yt="sk_rptdXxgs" style="background:#000 url('https://i.ytimg.com/vi/sk_rptdXxgs/hqdefault.jpg') center/cover">
+          <div class="ytv"></div>
+          <div class="ytshield" aria-hidden="true"><i class="ytshield__blk ytshield__blk--top"></i><i class="ytshield__blk ytshield__blk--bot"></i></div>
+          <button type="button" class="vsound" aria-label="Restart this answer from the beginning with sound">
+            <span class="vsound__pill">🔊 Click For Sound</span>
+          </button>
+        </div>
+        <p>Yes. Everything here was built <b>for adults</b>. Most of our students are over 50, we teach players from 8 to 96, and we've found adult learners often progress <b>faster</b>: more time, more patience, and a lifetime of songs they've always wanted to play.</p>
+      </article>
+      <article class="qblock">
+        <h3 class="qblock__t">How long does it take?</h3>
+        <div class="qblock__vid vembed vembed--frame vembed--yt" data-yt="rrBxtVK_bhE" style="background:#000 url('https://i.ytimg.com/vi/rrBxtVK_bhE/hqdefault.jpg') center/cover">
+          <div class="ytv"></div>
+          <div class="ytshield" aria-hidden="true"><i class="ytshield__blk ytshield__blk--top"></i><i class="ytshield__blk ytshield__blk--bot"></i></div>
+          <button type="button" class="vsound" aria-label="Restart this answer from the beginning with sound">
+            <span class="vsound__pill">🔊 Click For Sound</span>
+          </button>
+        </div>
+        <p>The question everyone asks, and the one Stephen says <b>we really excel at</b>. He walks you through how quickly you can expect to be playing songs you actually love, rather than scales and exercises for years first.</p>
+      </article>
+      <article class="qblock">
+        <h3 class="qblock__t">The different programs we offer</h3>
+        <div class="qblock__vid vembed vembed--frame vembed--yt" data-yt="HilWGNLjv2I" style="background:#000 url('https://i.ytimg.com/vi/HilWGNLjv2I/hqdefault.jpg') center/cover">
+          <div class="ytv"></div>
+          <div class="ytshield" aria-hidden="true"><i class="ytshield__blk ytshield__blk--top"></i><i class="ytshield__blk ytshield__blk--bot"></i></div>
+          <button type="button" class="vsound" aria-label="Restart this answer from the beginning with sound">
+            <span class="vsound__pill">🔊 Click For Sound</span>
+          </button>
+        </div>
+        <p>From the self-study <b>Piano Masterclass</b>, the flagship more than <b>40,000 students</b> have taken, all the way up to personal coaching with a world-class artist guiding you step by step. Stephen walks through each path here, and on your call we'll find the one that fits your goals and budget.</p>
+      </article>
+      <article class="qblock">
+        <h3 class="qblock__t">What if I don't have a piano?</h3>
+        <p>Not a problem, it's actually not a bad thing. Every program includes Stephen personally guiding you to the perfect instrument for your budget, from free pianos on Facebook Marketplace to keyboards at every price point. We've thought of every single step.</p>
+      </article>
+      <article class="qblock">
+        <h3 class="qblock__t">My hands don't cooperate. Can I still play?</h3>
+        <p>Yes. Stephen developed a revolutionary approach called <b>Hand Yoga</b>: a series of hand exercises you can do anywhere, any time, that build the coordination and dexterity to play like a pro with just a few minutes of practice a day.</p>
+      </article>
+    </div>
+    </div>
+</section>
+
+<!-- ============ WHO IS STEPHEN ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="storyx reveal">
+      <div class="storyx__img"><img src="images/real/real-hall.jpg" alt="Stephen Ridley performing in a packed concert hall"></div>
+      <div>
+        <span class="eyebrow">Who is Stephen Ridley</span>
+        <h2 class="h-lg" style="margin-top:.35em">More Than A Musician. <span class="fire-text">An Artist On A Mission.</span></h2>
+        <p>A professional pianist for over 10 years, Stephen has performed in <b>over 70 countries</b> at iconic events including the <b>Monaco Grand Prix</b>. With over <b>a million followers</b> and more than <b>a billion views</b> across social media, his central passion is simple: helping everyone access the joy and freedom of music, the same freedom that took him from a little boy in a village to stages around the world.</p>
+        <p>"Stephen Ridley is nothing short of a genius." <b>Danny Williams, London Lifestyle Magazine</b></p>
+      </div>
+    </div>
+    <div style="margin-top:clamp(30px,4vw,50px)">
+      <p class="center" style="font-weight:700;color:var(--ink-soft);margin-bottom:1em">Three Short Films About Stephen</p>
+      <!-- CLICK-TO-PLAY FILMS. Unlike the FAQ/testimonial embeds these do NOT
+           autoplay: each card shows its still as the poster until tapped, then
+           builds a CHROMELESS YouTube player in place (no YT logo, no rel wall,
+           no way out to YouTube) and plays WITH sound from the BEGINNING.
+           Starting one pauses any other playing video via the shared solo bus.
+           Wiring: main.js "SHORT FILMS (click-to-play)". data-start stays 0 for
+           every film so the first press always starts at 0:00; pause/resume
+           still keeps the visitor's place. -->
+      <div class="docu reveal">
+        <button type="button" class="docu__card docu__card--film" data-yt="MYQuW22qGtI" data-start="0" aria-label="Play the film: Being A Deaf Musician">
+          <img src="images/real/real-bench.jpg" alt="Stephen Ridley at the piano">
+          <span class="docu__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="docu__t">Being A Deaf Musician</span>
+        </button>
+        <button type="button" class="docu__card docu__card--film" data-yt="rCHYoJz7vG4" data-start="0" aria-label="Play the film: Why I Do This">
+          <img src="images/real/real-joy.jpg" alt="Stephen Ridley with his audience">
+          <span class="docu__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="docu__t">Why I Do This</span>
+        </button>
+        <button type="button" class="docu__card docu__card--film" data-yt="bSPBGGmy4ug" data-start="0" aria-label="Play the film: The Life Of An Artist">
+          <img src="images/real/real-crowd.jpg" alt="Stephen Ridley performing live">
+          <span class="docu__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="docu__t">The Life Of An Artist</span>
+        </button>
+      </div>
+      <div class="center" style="margin-top:clamp(18px,2.4vw,28px)">
+        <a class="iglink" href="https://www.instagram.com/stephenridley?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Follow Stephen Ridley on Instagram">
+          <svg class="iglink__glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2Zm0 1.62c-3.15 0-3.52.01-4.76.07-.98.04-1.51.21-1.86.35-.47.18-.8.4-1.15.75-.35.35-.57.68-.75 1.15-.14.35-.31.88-.35 1.86-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.04.98.21 1.51.35 1.86.18.47.4.8.75 1.15.35.35.68.57 1.15.75.35.14.88.31 1.86.35 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c.98-.04 1.51-.21 1.86-.35.47-.18.8-.4 1.15-.75.35-.35.57-.68.75-1.15.14-.35.31-.88.35-1.86.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.04-.98-.21-1.51-.35-1.86-.18-.47-.4-.8-.75-1.15-.35-.35-.68-.57-1.15-.75-.35-.14-.88-.31-1.86-.35-1.24-.06-1.61-.07-4.76-.07Zm0 2.76a5.42 5.42 0 1 1 0 10.84 5.42 5.42 0 0 1 0-10.84Zm0 1.62a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Zm5.6-2.9a1.27 1.27 0 1 1 0 2.54 1.27 1.27 0 0 1 0-2.54Z"/></svg>
+          <span class="iglink__txt">@stephenridley</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOCIAL PROOF ============ -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-intro center reveal">
+      <span class="eyebrow eyebrow--center" style="justify-content:center">You're in good company</span>
+      <h2 class="h-lg" style="margin-top:.4em">40,000+ Students <span class="fire-text">Already Playing</span></h2>
+    </div>
+    <div class="shots">
+      <figure class="shot reveal"><picture><source media="(max-width:640px)" srcset="images/reviews/shotm-david-clarke.png" width="728" height="676"><img src="images/reviews/tp-david-clarke.png" alt="5-star Trustpilot review by David Clarke for Ridley Academy" loading="lazy" decoding="async" width="820" height="266"></picture></figure>
+      <figure class="shot reveal d1"><picture><source media="(max-width:640px)" srcset="images/reviews/shotm-glenwood-clark.png" width="728" height="988"><img src="images/reviews/tp-glenwood-clark.png" alt="5-star Trustpilot review by Glenwood Clark for Ridley Academy" loading="lazy" decoding="async" width="820" height="310"></picture></figure>
+      <figure class="shot reveal d2"><picture><source media="(max-width:640px)" srcset="images/reviews/shotm-patric.png" width="728" height="900"><img src="images/reviews/tp-patric.png" alt="5-star Trustpilot review by Patric for Ridley Academy" loading="lazy" decoding="async" width="820" height="288"></picture></figure>
+      <figure class="shot reveal"><picture><source media="(max-width:640px)" srcset="images/reviews/shotm-andrea-kenney.png" width="728" height="1252"><img src="images/reviews/tp-andrea-kenney.png" alt="5-star Trustpilot review by Andrea Kenney for Ridley Academy" loading="lazy" decoding="async" width="820" height="376"></picture></figure>
+    </div>
+
+    <!-- the "what our students say" testimonial reel, per the brief -->
+    <div style="margin-top:clamp(30px,4vw,50px)">
+      <div class="ytvid reveal" id="ytembed">
+        <button type="button" class="ytfacade" id="ytfacade" aria-label="Play real student testimonials video">
+          <span class="ytfacade__q" data-yt-quote></span>
+          <span class="ytfacade__btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="ytfacade__cite" data-yt-cite></span>
+        </button>
+      </div>
+    </div>
+    <div class="awards awards--hero reveal" style="margin:clamp(36px,5vw,56px) auto clamp(10px,1.6vw,18px)">
+      <div class="award">
+        <div class="award__seal award__seal--star">
+          <img class="award__img" src="images/badges/rosette.svg?v=1" alt="40,000+ students">
+          <div class="award__overlay"><span class="award__num" data-count="40000" data-suffix="+">0</span><span class="award__lbl">Students</span></div>
+        </div>
+        <p class="award__cap">In 60+ countries</p>
+      </div>
+      <div class="award award--lead">
+        <div class="award__seal award__seal--laurel">
+          <img class="award__img" src="images/badges/laurel.png?v=1" alt="Best online piano course 2025">
+          <div class="award__overlay"><span class="award__star">★</span><span class="award__best">Best</span><span class="award__ttl">Piano<br>Course</span><span class="award__lbl">2025</span></div>
+        </div>
+        <p class="award__cap">Insider Weekly</p>
+      </div>
+      <div class="award">
+        <div class="award__seal award__seal--coin">
+          <img class="award__img" src="images/badges/coin.png?v=1" alt="1,300+ five-star reviews">
+          <div class="award__overlay"><span class="award__num" data-count="1300" data-suffix="+">0</span><span class="award__lbl">5-Star Reviews</span></div>
+        </div>
+        <p class="award__cap">Trustpilot · Google</p>
+      </div>
+    </div>
+    <div class="wallshots" style="margin-top:clamp(26px,3.4vw,42px)">
+      <figure class="shot"><picture><source media="(max-width:640px)" srcset="images/reviews/wallm-heather-f.png" width="728" height="3854"><img src="images/reviews/wall-heather-f.png" width="820" height="992" alt="5-star Trustpilot review by Heather F for Ridley Academy" loading="lazy" decoding="async"></picture></figure>
+      <figure class="shot"><picture><source media="(max-width:640px)" srcset="images/reviews/wallm-clyde-simmons.png" width="728" height="1348"><img src="images/reviews/wall-clyde-simmons.png" width="820" height="420" alt="5-star Trustpilot review by Clyde Simmons for Ridley Academy" loading="lazy" decoding="async"></picture></figure>
+      <figure class="shot"><img src="images/reviews/mq-jana.png" width="820" height="266" alt="5-star Trustpilot review by Jana for Ridley Academy" loading="lazy" decoding="async"></figure>
+      <figure class="shot"><picture><source media="(max-width:640px)" srcset="images/reviews/wallm-dan-seegmiller.png" width="728" height="2154"><img src="images/reviews/wall-dan-seegmiller.png" width="820" height="574" alt="5-star Trustpilot review by Dan Seegmiller for Ridley Academy" loading="lazy" decoding="async"></picture></figure>
+      <figure class="shot"><img src="images/reviews/mq-chip-ross.png" width="820" height="266" alt="5-star Trustpilot review by Chip Ross for Ridley Academy" loading="lazy" decoding="async"></figure>
+      <figure class="shot"><picture><source media="(max-width:640px)" srcset="images/reviews/wallm-caroline.png" width="728" height="1706"><img src="images/reviews/wall-caroline.png" width="820" height="442" alt="5-star Trustpilot review by Caroline for Ridley Academy" loading="lazy" decoding="async"></picture></figure>
+      <figure class="shot"><img src="images/reviews/mq-elaine-white.png" width="820" height="288" alt="5-star Trustpilot review by Elaine White for Ridley Academy" loading="lazy" decoding="async"></figure>
+      <figure class="shot"><picture><source media="(max-width:640px)" srcset="images/reviews/wallm-jessie.png" width="728" height="2018"><img src="images/reviews/wall-jessie.png" width="820" height="508" alt="5-star Trustpilot review by Jessie for Ridley Academy" loading="lazy" decoding="async"></picture></figure>
+    </div>
+    <div class="center" style="margin-top:clamp(30px,4vw,46px)">
+      <p class="lede" style="max-width:600px;margin:0 auto 1em">One more time, so it's easy: add your call to your calendar now.</p>
+      <div class="calbtns" style="margin-top:0">
+        <button type="button" class="calbtn" data-cal="google"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span data-cal-label>Google Calendar</span></button>
+        <button type="button" class="calbtn" data-cal="ics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span data-cal-label>Apple / Outlook</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <svg class="sitelogo__mark" viewBox="0 0 40 40" fill="none" aria-hidden="true" style="width:24px;height:24px"><rect x="4" y="22" width="5.5" height="14" rx="2.5" fill="#FF2230"/><rect x="12" y="15" width="5.5" height="21" rx="2.5" fill="#C20D1C"/><rect x="20" y="8" width="5.5" height="28" rx="2.5" fill="#FF4A4F"/><rect x="28" y="3" width="5.5" height="33" rx="2.5" fill="#74121D"/></svg>
+        Ridley Academy
+      </div>
+      <nav class="foot__links"><a href="index.html">Home</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
+    </div>
+    <div class="foot__fine">
+      <p>See you on the call. If you need to reschedule, use the link in your confirmation email. The add-to-calendar buttons create an event with automatic 1-hour and 5-minute reminders; the exact call time comes from your Calendly confirmation.</p>
+      <p>This site is not a part of the Facebook website or Meta Platforms, Inc. and is not endorsed by Meta in any way. FACEBOOK is a trademark of Meta Platforms, Inc. This site is not a part of, or endorsed by, YouTube or Google LLC. YOUTUBE is a trademark of Google LLC.</p>
+      <p>&copy; 2026 RA MIGR Inc. dba Ridley Academy. The Ridley Method. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js?v=102"></script>
+<script src="funnel.js?v=7"></script>
+</body>
+</html>

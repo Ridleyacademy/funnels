@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Meta Pixel Code (base: init + PageView). Conversion events fire from
+     main.js/funnel.js at the correct moments (Lead on form submit,
+     InitiateCheckout on the $27 checkout, ViewContent on the upsells);
+     Schedule fires ONLY on thank-you.html, Purchase ONLY from ThriveCart. -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2032449947451129');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<title>Order Complete | Ridley Academy</title>
+<meta name="description" content="Welcome to Ridley Academy. Your access details are on their way to your inbox.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2A060D">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=124">
+<link rel="stylesheet" href="funnel.css?v=27">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='4' y='22' width='6' height='14' rx='2' fill='%23C52233'/%3E%3Crect x='13' y='14' width='6' height='22' rx='2' fill='%23A51C30'/%3E%3Crect x='22' y='7' width='6' height='29' rx='2' fill='%23FF2230'/%3E%3Crect x='31' y='2' width='6' height='34' rx='2' fill='%2374121D'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="sitelogo is-dark" id="sitelogo" href="index.html">
+  <svg class="sitelogo__mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <rect x="4" y="22" width="5.5" height="14" rx="2.5" fill="currentColor"/><rect x="12" y="15" width="5.5" height="21" rx="2.5" fill="currentColor"/><rect x="20" y="8" width="5.5" height="28" rx="2.5" fill="currentColor"/><rect x="28" y="3" width="5.5" height="33" rx="2.5" fill="currentColor"/>
+  </svg>
+  <span>Ridley Academy</span>
+</a>
+
+<!-- ============ COMPLETE ============ -->
+<section class="pagehero" style="min-height:82vh;display:grid;place-items:center">
+  <div class="wrap wrap--narrow">
+    <div class="confirmx"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+    <span class="eyebrow eyebrow--center" style="justify-content:center">Welcome to Ridley Academy</span>
+    <h1 style="margin-top:.25em">Your Order Is <span class="fire-text">Complete!</span></h1>
+    <p class="lede" style="max-width:520px;margin:.8em auto 0">Check your inbox. Your access details and your workbook are on their way. <b>Your first song is minutes away.</b></p>
+    <!-- INTEGRATION POINT: show the real receipt + product access links from NMI / ThriveCart -->
+    <div class="tpx" style="margin-top:2em"><b>Excellent</b><span class="tpx__stars"><i></i><i></i><i></i><i></i><i></i></span> Join 400,000+ students already playing</div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__fine">
+      <p>Your order confirmation and access details are delivered by email to the address used at checkout. Purchases are covered as described in our Terms of Service.</p>
+      <p>This site is not a part of the Facebook website or Meta Platforms, Inc. and is not endorsed by Meta in any way. FACEBOOK is a trademark of Meta Platforms, Inc. This site is not a part of, or endorsed by, YouTube or Google LLC. YOUTUBE is a trademark of Google LLC.</p>
+      <p>&copy; 2026 RA MIGR Inc. dba Ridley Academy. The Ridley Method. All rights reserved.</p>
+      <nav class="foot__links" style="margin-top:14px"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js?v=102"></script>
+<script src="funnel.js?v=7"></script>
+</body>
+</html>
