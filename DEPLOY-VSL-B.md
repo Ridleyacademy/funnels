@@ -83,6 +83,14 @@ handler answers and writes nothing — it will say `axl:no_proxy_key` in the
 response body rather than failing silently, which is how the original vsl-b
 opt-ins were lost unnoticed.
 
+**Adding a variable does not affect the running site until the next build.**
+Pages bakes environment variables in at deploy time, so a secret added after the
+last deploy is invisible to the Function even though the dashboard lists it.
+Measured here on 2026-08-06: the endpoint answered
+`axl:no_proxy_key visible_env=["AC_URL","ASSETS","CF_PAGES",...]` with
+ACCEL_PROXY_KEY plainly set in the dashboard. Redeploy (or push to the branch)
+and it appears. Set the variable before the deploy, or redeploy after.
+
 Paste the name carefully. This exact handler sat dead for an evening on funnels
 because the secret was saved as `" ACCEL_PROXY_KEY"` with a leading space. The
 handler now trims env names to survive that, but the diagnostic is worth
