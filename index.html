@@ -86,6 +86,13 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
   gtag('js', new Date());
   gtag('config', 'AW-631436705', { 'allow_enhanced_conversions': true });
 </script>
+<!-- Everything that happens after the base tag: click-id capture, the hashed
+     email for enhanced conversions, and the two conversions themselves. It
+     observes the door's own `rdly_optin` dataLayer event rather than hooking
+     the submit handler, so the once-per-email dedupe lives in exactly one
+     place and this cannot drift from it. Deferred: it only needs to be in
+     place before a human can finish typing into the form. -->
+<script src="ra-ads.js" defer></script>
 
 <!-- ============================================================
      FRONT DOOR (vsl-b): Transformative Video opt-in before the VSL.
