@@ -666,8 +666,29 @@
     // CALENDAR RED = #AC1818 (user decision, matches the custom calendar's day numbers) so
     // every red in the booking experience is the same: our day numbers, slot pills, and the
     // Calendly-themed accents incl. the Schedule Event button fill on the confirm step.
+    /* Meta and organic attribution. This door is a single page, so whatever the ad
+       put on the query string is still here when the embed is built. Calendly
+       forwards utm_* into the event payload, which is what makes a booking
+       traceable back to the ad that bought it. Without this the record arrives
+       blank, which is what every booking in the account was doing until 8 Aug.
+       Kept separate from calendlyParams() below on purpose: shared.js appends its
+       own attribution() on the funnel arm, and folding these together would send
+       every key twice. */
+    var CAL_ATTR = (function(){
+      var keys = ['el', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'], s = '';
+      try{
+        var p = new URLSearchParams(location.search);
+        keys.forEach(function(k){
+          var v = p.get(k);
+          if(v) s += '&' + k + '=' + encodeURIComponent(v);
+        });
+      }catch(e){}
+      return s;
+    })();
+
     var CAL_URL = BASE + '?hide_gdpr_banner=1&hide_event_type_details=1' +
       '&background_color=fffbf4&text_color=000000&primary_color=AC1818' +
+      CAL_ATTR +
       /* Google Ads click ID as salesforce_uuid, so the booking record carries the
          gclid that paid for it and sales outcomes can be uploaded back later.
          Empty string when there is no click ID. */

@@ -1,3 +1,64 @@
+/* Attribution passthrough. Load this first: everything below and vsl-gate.js use it.
+
+   Paid traffic lands here carrying utm_* and an el tag on the query string. Every
+   CTA on the page is authored with its own ?el=..., and a plain href REPLACES the
+   query string rather than extending it, so the ad's tags died at the first click
+   and every booking reached Calendly with blank tracking. shared.js already had a
+   correct attribution() reading those keys off location.search further down; it was
+   reading an empty pocket.
+
+   rdlyLink() merges the two. What the visitor arrived with wins, and the link's own
+   params fill the gaps. So the ad's el survives all the way to the booking, while a
+   CTA's own el is still used when someone arrives untagged (direct, organic, email).
+   Nothing downstream changes: apply.html already forwards location.search to
+   booking.html, and shared.js appends it to the Calendly embed. */
+(function(){
+  var CARRY = ['el', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content',
+               'utm_term', 'gclid', 'fbclid'];
+  /* Conversion paths only. Leave content and legal links alone. */
+  var TARGETS = 'a[href*="apply"],a[href*="booking"],a[href*="optin"]';
+
+  function inbound(){
+    try{ return new URLSearchParams(location.search); }catch(e){ return new URLSearchParams(''); }
+  }
+
+  window.rdlyLink = function(href){
+    if(!href) return href;
+    if(/^(#|mailto:|tel:|javascript:)/i.test(href)) return href;
+
+    var got = inbound(), carry = [];
+    CARRY.forEach(function(k){ var v = got.get(k); if(v) carry.push([k, v]); });
+    if(!carry.length) return href;              // untagged visit, leave the link as authored
+
+    var hash = '', query = '', i = href.indexOf('#');
+    if(i > -1){ hash = href.slice(i); href = href.slice(0, i); }
+    i = href.indexOf('?');
+    if(i > -1){ query = href.slice(i + 1); href = href.slice(0, i); }
+
+    var out = new URLSearchParams(query);
+    carry.forEach(function(kv){ out.set(kv[0], kv[1]); });   // inbound wins on collision
+    var s = out.toString();
+    return href + (s ? '?' + s : '') + hash;
+  };
+
+  /* Static CTAs (nav, hero, final, footer). The gate CTA is injected later and is
+     decorated at build time instead, in mountSelfHosted below and in vsl-gate.js. */
+  function decorate(){
+    var links;
+    try{ links = document.querySelectorAll(TARGETS); }catch(e){ return; }
+    Array.prototype.forEach.call(links, function(a){
+      if(a.getAttribute('data-rdly-attr')) return;
+      var href = a.getAttribute('href');
+      if(!href) return;
+      a.setAttribute('href', window.rdlyLink(href));
+      a.setAttribute('data-rdly-attr', '1');
+    });
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', decorate);
+  else decorate();
+})();
+
 /* Ridley funnel pages: scroll-reveal layer.
    IntersectionObserver only (no scroll listeners). Honors prefers-reduced-motion
    via the CSS gate; if motion is reduced, .rv elements are visible by default. */
@@ -63,7 +124,7 @@
   /* self-hosted, locked sales player */
   function mountSelfHosted(v){
     var src=v.getAttribute('data-src');
-    var ctaHref=v.getAttribute('data-vsl-cta')||'apply.html';
+    var ctaHref=window.rdlyLink(v.getAttribute('data-vsl-cta')||'apply.html');
     var ctaText=v.getAttribute('data-vsl-cta-text')||'Book my free Breakthrough Session';
     var posterImg=v.querySelector('img');
     var poster=v.getAttribute('data-poster')||(posterImg?posterImg.getAttribute('src'):'');

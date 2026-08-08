@@ -36,7 +36,11 @@
   var GATE_AT = parseInt(frame.getAttribute('data-gate-at'), 10) || 305;
   var videoId = frame.getAttribute('data-vsl-yt');
   var poster = frame.getAttribute('data-poster') || '';
-  var ctaHref = frame.getAttribute('data-vsl-cta') || 'apply.html';
+  /* rdlyLink (shared.js, loaded first) carries the ad's utm_* and el across this
+     click. Without it the gate CTA replaced the query string and attribution died
+     for exactly the people who watched to the end. */
+  var ctaHref = (window.rdlyLink || function(h){ return h; })(
+    frame.getAttribute('data-vsl-cta') || 'apply.html');
   var ctaText = frame.getAttribute('data-vsl-cta-text') || 'Book my free Breakthrough Session';
 
   var unlocked = !root.classList.contains('rdly-gated');
