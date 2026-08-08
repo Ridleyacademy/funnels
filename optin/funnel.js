@@ -168,15 +168,80 @@
   });
 
   /* ---- add-to-calendar (Google link + .ics with 1hr & 5min alarms) ----
-     INTEGRATION POINT: inject the real booking datetime from Calendly. ---- */
+
+     The entry has to carry the time the visitor actually booked. There is no
+     safe default: a button that writes a guessed time is worse than no button
+     at all, because whatever lands in their calendar is what they will trust,
+     and they stop watching for the real invite. This used to hardcode "two
+     days from now at 3pm" behind copy promising one-tap reminders, so every
+     visitor who tapped it got a confident, wrong appointment.
+
+     Where a real time can come from: Calendly's `event_scheduled` postMessage
+     does NOT carry the start time, and this funnel mounts Calendly as an
+     INLINE widget, which also rules out Calendly's own "redirect with event
+     details" - that redirect fires inside the iframe and never reaches this
+     page. So the time has to be handed to this page explicitly, either as
+     ?event_start_time= or stashed by the booking page. Reading the booking
+     back server-side off the event URI is the durable fix and drops straight
+     in here: bookedWindow() is the only thing that needs a new source.
+
+     With no real time the buttons are removed rather than faked, and the copy
+     around them is rewritten to point at the Calendly confirmation email,
+     which does have the correct time. The reminder row underneath ("put it in
+     your calendar, set an alarm, protect the time") is what actually moves
+     show rate and needs no timestamp, so it stays either way. */
+  function bookedWindow() {
+    var raw = null, rawEnd = null;
+    try {
+      var q = new URLSearchParams(location.search);
+      raw    = q.get('event_start_time') || sessionStorage.getItem('rdly_booking_start');
+      rawEnd = q.get('event_end_time')   || sessionStorage.getItem('rdly_booking_end');
+    } catch (e) {}
+    if (!raw) return null;
+    var start = new Date(raw);
+    if (isNaN(start.getTime())) return null;
+    /* Never offer to add a slot that has already been and gone: a stale link or
+       a revisited tab should not put yesterday's call in someone's calendar. */
+    if (start.getTime() < Date.now() - 6e4) return null;
+    var end = rawEnd ? new Date(rawEnd) : null;
+    if (!end || isNaN(end.getTime())) end = new Date(start.getTime() + 30 * 6e4);
+    return { start: start, end: end };
+  }
+
+  /* No real time: strip the buttons and say the true thing instead. */
+  function calendarFallback() {
+    var LEDE = 'Your call time and a calendar invite are in your confirmation email. Open it now, accept the invite, and set an alarm on your phone.';
+    [].forEach.call(document.querySelectorAll('.calbtns'), function (row) {
+      /* Inline display, not just [hidden]: .calbtns carries display:flex in
+         funnel.css and a class rule beats the [hidden] user-agent rule, so the
+         attribute on its own leaves the buttons on screen. */
+      row.hidden = true;
+      row.style.display = 'none';
+      row.setAttribute('aria-hidden', 'true');
+      var prev = row.previousElementSibling;
+      while (prev && prev.className.indexOf('lede') === -1) prev = prev.previousElementSibling;
+      if (prev) prev.textContent = LEDE;
+      var parent = row.parentNode;
+      if (!parent) return;
+      var head = parent.querySelector('.fire-text');
+      if (head) head.textContent = 'Right Now';
+      var note = parent.querySelector('.cta-note');
+      if (note) note.textContent = 'Accept the invite in your email so the reminders reach your phone.';
+    });
+  }
+
   safe(function () {
-    [].forEach.call(document.querySelectorAll('[data-cal]'), function (btn) {
+    var btns = document.querySelectorAll('[data-cal]');
+    if (!btns.length) return;
+    var when = bookedWindow();
+    if (!when) { calendarFallback(); return; }
+    [].forEach.call(btns, function (btn) {
       btn.addEventListener('click', function () {
         var type = btn.getAttribute('data-cal');
         var title = 'My Free Piano Consultation with Ridley Academy';
         var details = 'Your 1-on-1 call with the Ridley Academy team. Have your questions ready.';
-        var start = new Date(Date.now() + 2 * 864e5); start.setHours(15, 0, 0, 0);
-        var end = new Date(start.getTime() + 30 * 6e4);
+        var start = when.start;
+        var end = when.end;
         function z(d){ return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'; }
         if (type === 'google') {
           var u = new URL('https://calendar.google.com/calendar/render');
@@ -199,8 +264,14 @@
         } else {
           /* Opens WhatsApp with the reminder drafted (visitor can send it to
              themselves or anyone). INTEGRATION POINT: swap for an automated
-             reminder flow (Twilio / 360dialog) with the business number. */
-          var msg = 'Reminder: my FREE piano consultation with Ridley Academy is coming up! 1-hour and 5-minute alerts are set in my calendar.';
+             reminder flow (Twilio / 360dialog) with the business number.
+             The real booked time is spelled out here for the same reason the
+             calendar entry carries it: a reminder without a time is noise. */
+          var stamp = start.toLocaleString(undefined, {
+            weekday: 'long', month: 'long', day: 'numeric',
+            hour: 'numeric', minute: '2-digit'
+          });
+          var msg = 'Reminder: my free piano consultation with Ridley Academy is on ' + stamp + '. 1-hour and 5-minute alerts are set in my calendar.';
           window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
         }
         btn.classList.add('done');

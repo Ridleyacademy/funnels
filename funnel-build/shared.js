@@ -372,17 +372,28 @@
   var booked=false;
   window.addEventListener('message',function(e){
     /* Only Calendly gets to fire a booking. Without this, any page that can
-       postMessage to us could trip the Schedule pixel and bounce the visitor to
-       booked.html. Kept deliberately loose (substring, not equality) because
-       Calendly serves embeds from more than one calendly.com host. */
+       postMessage to us could trip the booking signal and bounce the visitor to
+       the confirmation page. Kept deliberately loose (substring, not equality)
+       because Calendly serves embeds from more than one calendly.com host. */
     if(typeof e.origin!=='string'||e.origin.indexOf('calendly.com')===-1) return;
     if(!e.data||typeof e.data!=='object') return;
     if(e.data.event!=='calendly.event_scheduled') return;
     if(booked) return;
     booked=true;
-    track('Schedule','rdly_booking_confirmed',{content_name:'Breakthrough Session'});
-    /* Give the pixel a beat to flush before the navigation. */
-    setTimeout(function(){ location.href='booked.html'+location.search; },400);
+    /* NOTE: the Meta "Schedule" conversion is NOT fired here. Site convention
+       (Ori 7/27) is base pixel everywhere, Schedule on the confirmation page
+       only, and that is where this arm now lands. Firing it here as well would
+       count every booking on this arm twice. The dataLayer signal stays put:
+       it is the site's own booking marker and GTM may be triggering on it.
+       The Google Ads conversion is untouched by any of this, it is sent from
+       ra-ads.js off the same postMessage. */
+    track(null,'rdly_booking_confirmed',{content_name:'Breakthrough Session'});
+    /* Give the tags a beat to flush before the navigation. The destination is
+       the full confirmation page shared with the opt-in arm: add-to-calendar,
+       the pre-call video, and the eight answer videos. It is absolute because
+       it lives outside /funnel-build/, and it keeps the query string so the
+       attribution that rode in on the ad click survives the hop. */
+    setTimeout(function(){ location.href='/optin/thank-you.html'+location.search; },400);
   });
 
   function init(){

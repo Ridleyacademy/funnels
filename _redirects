@@ -12,3 +12,23 @@
 
 /funnel-build/index.html    /    301
 /funnel-build/              /    301
+
+# ONE confirmation page for the whole site.
+#
+# Both arms now land on /optin/thank-you.html after a booking: the opt-in arm
+# always did, and the main arm (root -> apply -> booking) was moved onto it in
+# shared.js. It is the richer page - add-to-calendar, the pre-call video, the
+# eight answer videos - and having a single one means the Schedule pixel, the
+# copy and the pre-call videos only ever have to be right in one place.
+#
+# The page stays where it is rather than being copied to the root because every
+# asset it references (funnel.css, styles.css, main.js, funnel.js, the images,
+# and its own privacy/terms links) is relative to /optin/. Copying the file up
+# would silently break all of them: this host answers 200 with the landing page
+# for any path that does not exist, so a missing stylesheet does not 404, it
+# quietly returns HTML and the page renders unstyled.
+#
+# /thank-you is the clean public URL for it. Before this rule it was one of
+# those silent 200s and served the landing page to anyone who tried it.
+/thank-you                  /optin/thank-you.html    301
+/funnel-build/booked.html   /optin/thank-you.html    301
