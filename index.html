@@ -417,8 +417,9 @@ html.is-door .door{
 /* height, NOT min-height. Calendly sizes its iframe with height:100%, and a
    percentage height cannot resolve against a parent that only has a
    min-height, so the calendar collapsed to the 150px iframe default inside
-   this 720px box. Control probe on the live page: a min-height:720px parent
-   gives a height:100% iframe 154px, an height:720px parent gives it 720px. */
+   this 720px box. Proven with a control probe on the live page: a
+   min-height:720px parent gives a height:100% iframe 154px, an
+   height:720px parent gives it 720px. */
 .choice__calhost{
   width:100%;height:720px;border-radius:18px;overflow:hidden;
   background:var(--paper,#FFFBF4);border:1px solid var(--line,rgba(42,6,13,.14));
@@ -426,9 +427,9 @@ html.is-door .door{
 @media(max-width:640px){.choice__calhost{height:1040px}}
 /* Calendly's widget.css only sizes iframes under .calendly-inline-widget, and
    initInlineWidget({parentElement}) never adds that class. We cannot add it
-   either: widget.js auto-scans for the class on load and throws on a host with
-   no data-url, killing window.Calendly page-wide. So size the iframe here and
-   depend on none of it. */
+   either: widget.js auto-scans for it on load and crashes on a host with no
+   data-url, which is exactly the bug build.sh neutralises on #calInline. So
+   size the iframe here instead and depend on none of it. */
 .choice__calhost iframe{width:100%;height:100%;display:block;border:0}
 .choice__powered{
   margin:10px 0 0;font-size:.76rem;opacity:.6;
@@ -502,9 +503,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        real/perf-streetpiano.jpg  the street piano crowd
        real/perf-lights.jpg       phone lights at an open-air concert
 
-     Copy is grounded in the brand's own language: "Fast. Fun. Simple.",
-     "10X faster than traditional methods", "10-15 minutes a day",
-     "understand music, don't just memorize it" (ridleyacademy.com).
+     Copy is grounded in the locked message (MESSAGE-LOCK-AND-CLOSEOUT-
+     20260809.md): songs-first hook, understanding as the promise, and
+     "reading and theory aren't the entry fee" as the bridge line.
      Proof numbers are the verified set from PRODUCT.md only.
      ==================================== -->
 <div class="door" id="door" role="dialog" aria-modal="true" aria-labelledby="doorH1">
@@ -523,9 +524,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <span class="eyebrow">The Ridley Method</span>
 
-      <h1 class="door__h1" id="doorH1">Learn Piano In <span class="fire-text">Weeks, Not Years</span>.</h1>
+      <h1 class="door__h1" id="doorH1">Start With A Song You Love. <span class="fire-text">Then Find Out Why It Works</span>.</h1>
 
-      <p class="door__sub">Stephen Ridley's true story, and the method <b>40,000+ adults</b> use to play the songs they love on <b>10 minutes a day</b>. No theory drills. No experience needed.</p>
+      <p class="door__sub">Stephen Ridley's true story, and the method <b>40,000+ adults</b> use to play the songs they love on <b>10 minutes a day</b>. No experience needed. Reading and theory aren't the entry fee, <b>they're what you walk out with</b>.</p>
     </div>
 
     <!-- Everything in here sits directly under the copy on desktop (same
@@ -675,7 +676,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h2 class="choice__h">Ready to start playing?</h2>
   <p class="choice__sub">Book a free 30-minute call. We'll map your way in, answer your questions, and find which program fits where you are now.</p>
   <button type="button" class="btn btn--fire btn--lg" id="choiceBook">Book My Free Call ›</button>
-  <p class="choice__note">🔒 Free. No card needed. 30 minutes.</p>
+  <p class="choice__note">🔒 Free. 30 minutes. A conversation, not a checkout.</p>
 
   <!-- Calendly mounts here, in place of the button, prefilled from the gate.
        Booking is caught by main.js's existing `calendly.event_scheduled`
@@ -1028,7 +1029,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="faqx__item">
         <button type="button" class="faqx__q">Am I too old to learn? <span class="tog">+</span></button>
         <div class="faqx__a"><div class="faqx__a-in">
-          <p>The piano does not care how old you are. <b>Most of our students are over 50</b>, and we teach players from 8 to 96. Older learners often progress faster: more time, more patience, and a lifetime of songs they've always wanted to play.</p>
+          <p>The piano does not care how old you are. We teach players from <b>8 to 96</b>, and older learners often progress faster: more time, more patience, and a lifetime of songs they've always wanted to play.</p>
         </div></div>
       </div>
       <div class="faqx__item">
