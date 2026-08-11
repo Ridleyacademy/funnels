@@ -414,32 +414,6 @@ html.is-door .door{
 
 /* ---- inline Calendly, revealed in place of the button ---- */
 .choice__cal{margin-top:var(--d-5,24px)}
-/* height, NOT min-height. Calendly sizes its iframe with height:100%, and a
-   percentage height cannot resolve against a parent that only has a
-   min-height, so the calendar collapsed to the 150px iframe default inside
-   this 720px box. Proven with a control probe on the live page: a
-   min-height:720px parent gives a height:100% iframe 154px, an
-   height:720px parent gives it 720px. */
-.choice__calhost{
-  width:100%;height:720px;border-radius:18px;overflow:hidden;
-  background:var(--paper,#FFFBF4);border:1px solid var(--line,rgba(42,6,13,.14));
-}
-@media(max-width:640px){.choice__calhost{height:1040px}}
-/* Calendly's widget.css only sizes iframes under .calendly-inline-widget, and
-   initInlineWidget({parentElement}) never adds that class. We cannot add it
-   either: widget.js auto-scans for it on load and crashes on a host with no
-   data-url, which is exactly the bug build.sh neutralises on #calInline. So
-   size the iframe here instead and depend on none of it. */
-.choice__calhost iframe{width:100%;height:100%;display:block;border:0}
-.choice__powered{
-  margin:10px 0 0;font-size:.76rem;opacity:.6;
-  text-transform:uppercase;letter-spacing:.07em;
-}
-/* once the calendar is up, the pitch above it has done its job */
-.is-booking .choice__sub,
-.is-booking #choiceBook,
-.is-booking .choice__note{display:none}
-
 /* ---- returning visitor: re-entry ----
    Only revealed for someone carrying a prior opt-in. Quiet by design: the
    form is still the main path, this is the shortcut for a re-watch. */
@@ -661,32 +635,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      Injected directly after the page's own hero CTA, which is hidden for
      opted-in visitors (.is-opted .gate-cta{display:none}).
 
-     One tap to the calendar. We already hold name, email and phone from
-     the door, so they are passed to Calendly as prefill rather than
+     One tap to the qualifier. We already hold name, email and phone from
+     the door; apply.html reads the same ridley_lead_v1 key, so nothing is
      re-typed. The soft exit under it goes to the $27 tripwire.
 
-     NO QUALIFICATION IN THIS FLOW. An investment line sat here and was
-     cut by Chris on 7/31. Nothing now filters for fit between the ad and
-     the calendar: no price, no form, no qualifying questions. If call
-     quality needs a filter later, the zero-click place to put it is a
-     required custom question on the Calendly event itself, since that
-     step is already being taken. Do not add one here without a reason.
+     QUALIFIED FROM 11 AUG. This flow ran unfiltered from 7/31, when an
+     investment line here was cut: no price, no form, no questions between
+     the ad and the calendar. That made a vsl-b booking a different object
+     from a funnels booking, which had cleared thirteen questions and a
+     budget gate, so the two arms' cost per booking was never comparable.
+     The button now opens funnels' own apply.html, carried over whole. Keep
+     the two copies in step: if the questions change on funnels, change
+     them here.
      ============================================ -->
 <div class="choice" id="choice">
   <h2 class="choice__h">Ready to start playing?</h2>
   <p class="choice__sub">Book a free 30-minute call. We'll map your way in, answer your questions, and find which program fits where you are now.</p>
   <button type="button" class="btn btn--fire btn--lg" id="choiceBook">Book My Free Call ›</button>
   <p class="choice__note">🔒 Free. 30 minutes. A conversation, not a checkout.</p>
-
-  <!-- Calendly mounts here, in place of the button, prefilled from the gate.
-       Booking is caught by main.js's existing `calendly.event_scheduled`
-       listener, which sends them to /thank-you where the Meta Schedule
-       conversion fires. Nothing new is fired here, so Schedule cannot
-       double-count. -->
-  <div class="choice__cal" id="choiceCal" hidden>
-    <div class="choice__calhost" id="choiceCalHost"></div>
-    <p class="choice__powered">Powered by Calendly · Free Piano Consultation</p>
-  </div>
 
   <br>
   <a class="choice__alt" id="choiceLater" href="/tripwire">I'm not ready yet →</a>
@@ -1404,98 +1370,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 
   /* ---- POST-VIDEO CHOICE ------------------------------------------
-     One tap from the video to the calendar. Everything Calendly needs
-     we already hold, so it goes across as prefill instead of being
-     re-typed. Lead fires here because this replaces the page's booking
-     form for opted-in visitors, and the ladder has to stay intact:
-     CompleteRegistration (door) -> Lead (this) -> Schedule (Calendly).  */
-  var CAL = 'https://calendly.com/d/dv25-nhh-w9v/free-piano-consultation';
+     One tap from the video to the qualifier. This button used to mount
+     Calendly directly, which meant a vsl-b booking had passed no
+     qualification at all while a funnels booking had passed thirteen
+     questions and a budget gate. The two arms could not be compared on
+     cost per booking, because they were not selling the same thing.
+
+     apply.html here is the same page funnels serves, so both arms now
+     qualify identically, disqualify identically, and route the DQ'd to the
+     same $27 downsell. It posts source "application-vslb" so AXL can still
+     tell the arms apart.
+
+     Lead deliberately no longer fires here. It belongs on the qualified
+     route inside apply.html; firing it on the click counted every browser
+     as a lead. The ladder is CompleteRegistration (door) -> Lead (qualified
+     application) -> Schedule (thank-you).
+
+     The door already wrote name, email and phone to ridley_lead_v1 and
+     apply.html reads that key, so a door visitor is never asked twice. The
+     query string carries the ad attribution across.  */
   var book = document.getElementById('choiceBook');
   var later = document.getElementById('choiceLater');
 
-  function lead$() {
-    try { return JSON.parse(localStorage.getItem('ridley_lead_v1') || '{}'); }
-    catch (e) { return {}; }
-  }
-
-  /* Query-string prefill. Used by the inline embed and by the navigate
-     fallback, so both carry the same details.
-     `a1` is Calendly's first custom question. On this event that is the
-     phone field; if it ever is not, Calendly ignores the value and simply
-     asks, so this can never write an answer into the wrong question.
-     Deliberately no `month=` param: pinning a month would silently point
-     at a past calendar as soon as it rolls over. */
-  function prefillQS(l) {
-    var q = [];
-    if (l.name)  q.push('name='  + encodeURIComponent(l.name));
-    if (l.email) q.push('email=' + encodeURIComponent(l.email));
-    if (l.phone) q.push('a1='    + encodeURIComponent(l.phone));
-    return q.length ? '?' + q.join('&') : '';
-  }
-
-  if (book) book.addEventListener('click', function () {
-    var l = lead$();
-    try { if (window.fbq) window.fbq('track', 'Lead', { content_name: 'Free Piano Consultation', content_category: 'post-video-choice' }); } catch (e) {}
-    try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_book_click', source: 'post-video-choice', page_variant: 'vsl-b' }); } catch (e) {}
-
-    var host = document.getElementById('choiceCalHost');
-    var wrap = document.getElementById('choiceCal');
-    if (!host || !wrap) { window.location.href = CAL + prefillQS(l); return; }
-
-    function mount() {
-      try {
-        window.Calendly.initInlineWidget({
-          url: CAL + '?hide_gdpr_banner=1',
-          parentElement: host,
-          prefill: {
-            name: l.name || '',
-            email: l.email || '',
-            customAnswers: l.phone ? { a1: l.phone } : {}
-          }
-        });
-        wrap.hidden = false;
-        root.className += ' is-booking';
-        setTimeout(function () {
-          try { wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
-        }, 80);
-      } catch (e) {
-        window.location.href = CAL + prefillQS(l);
-      }
-    }
-
-    /* widget.js is loaded async in the page head, so on a fast click it is
-       often not ready yet. Wait for it rather than bouncing them off the
-       page: poll briefly, and only navigate if it genuinely never arrives.
-       The button says so meanwhile, so the tap is never a dead one. */
-    if (window.Calendly) { mount(); return; }
-
-    book.disabled = true;
-    var was = book.textContent;
-    book.textContent = 'Opening the calendar…';
-    var waited = 0;
-    var poll = setInterval(function () {
-      if (window.Calendly) {
-        clearInterval(poll);
-        book.disabled = false; book.textContent = was;
-        mount();
-      } else if ((waited += 100) >= 5000) {
-        clearInterval(poll);
-        window.location.href = CAL + prefillQS(l);
-      }
-    }, 100);
-  });
-
-  /* Booking itself is NOT tracked here. main.js already listens for
-     `calendly.event_scheduled` and moves them to /thank-you, and that page
-     is where the Meta Schedule conversion fires (Ori, 7/27: base pixel
-     everywhere, Schedule on thank-you only). Firing it here as well would
-     double-count every booking. This listener only records the moment in
-     the dataLayer so the embed's own funnel is visible in GA. */
-  window.addEventListener('message', function (e) {
-    if (!e || !e.data || typeof e.data !== 'object') return;
-    if (e.data.event === 'calendly.event_scheduled') {
-      try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_call_booked', source: 'post-video-embed', page_variant: 'vsl-b' }); } catch (err) {}
-    }
+  if (book) book.addEventListener('click', function (e) {
+    e.preventDefault();
+    try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_book_click', source: 'post-video-choice', page_variant: 'vsl-b' }); } catch (err) {}
+    window.location.href = 'apply.html' + window.location.search;
   });
 
   if (later) later.addEventListener('click', function () {
