@@ -414,11 +414,22 @@ html.is-door .door{
 
 /* ---- inline Calendly, revealed in place of the button ---- */
 .choice__cal{margin-top:var(--d-5,24px)}
+/* height, NOT min-height. Calendly sizes its iframe with height:100%, and a
+   percentage height cannot resolve against a parent that only has a
+   min-height, so the calendar collapsed to the 150px iframe default inside
+   this 720px box. Control probe on the live page: a min-height:720px parent
+   gives a height:100% iframe 154px, an height:720px parent gives it 720px. */
 .choice__calhost{
-  width:100%;min-height:720px;border-radius:18px;overflow:hidden;
+  width:100%;height:720px;border-radius:18px;overflow:hidden;
   background:var(--paper,#FFFBF4);border:1px solid var(--line,rgba(42,6,13,.14));
 }
-@media(max-width:640px){.choice__calhost{min-height:1040px}}
+@media(max-width:640px){.choice__calhost{height:1040px}}
+/* Calendly's widget.css only sizes iframes under .calendly-inline-widget, and
+   initInlineWidget({parentElement}) never adds that class. We cannot add it
+   either: widget.js auto-scans for the class on load and throws on a host with
+   no data-url, killing window.Calendly page-wide. So size the iframe here and
+   depend on none of it. */
+.choice__calhost iframe{width:100%;height:100%;display:block;border:0}
 .choice__powered{
   margin:10px 0 0;font-size:.76rem;opacity:.6;
   text-transform:uppercase;letter-spacing:.07em;
