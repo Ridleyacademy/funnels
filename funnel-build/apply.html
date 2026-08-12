@@ -1198,10 +1198,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           payload[k]=Object.prototype.toString.call(v)==='[object Array]'?v.join(', '):v;
         }
         window.RDLY.capture(payload);
-        /* Lead fires on a completed application, which is the equivalent moment to
-           the booking-form submit on vsl-a. Schedule fires later, on the Calendly
-           confirmation, from shared.js. */
-        window.RDLY.track('Lead','rdly_apply_captured',{route:payload.route});
+        /* Two events, deliberately split. Lead used to fire on both routes, so a
+           soft-DQ counted as a lead and the bidder went looking for more people who
+           would fail the budget gate: 5-11 Aug that was 42 DQ events against 33
+           completions, a large share of what Meta learned from.
+
+             CompleteRegistration - both routes. We have their details, which is the
+                                    same thing the vsl-b door fires on its opt-in, so
+                                    the two arms finally share one event and can be
+                                    compared. This arm has no door, so nothing has
+                                    fired it earlier in the visit: there is no
+                                    double-count to worry about here.
+             Lead                 - qualified only. The quality signal.
+             Schedule             - later, on the Calendly confirmation, in shared.js.
+
+           SEQUENCING: the ad sets on this arm bid LEAD. Shipping this alone drops
+           their weekly event count from about 39 to about 20 and pushes them further
+           into learning. Switch RA_FUNNELS to COMPLETE_REGISTRATION in the same
+           sitting, which holds the count near 35 and matches the door. Moving the
+           contact step to Q1 is what eventually takes it to ~189/wk. */
+        window.RDLY.track('CompleteRegistration','rdly_apply_captured',{route:payload.route});
+        if(!softDQ) window.RDLY.track('Lead',null,{route:payload.route});
       }
     }catch(e){}
 
