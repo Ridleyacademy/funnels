@@ -103,7 +103,13 @@ function cohortTags(lead) {
   const out = [];
   // The soft landing fires from Q1/Q2 and from the budget gate. Only the first is
   // "not ready"; the budget path gets its own tag below instead.
-  if (lead.source === 'application-dq' && lead.dqTrigger !== 'budget') {
+  //
+  // Matched as a pattern, not a literal. funnels posts "application-dq" and this
+  // arm posts "application-vslb-dq" so the two are separable in AXL's comment
+  // field; an exact match on the funnels string would silently drop the Not Ready
+  // tag for every vsl-b applicant who said No on Q1 or Q2. Any future arm that
+  // follows the same "application[-arm]-dq" shape is covered without a code change.
+  if (/^application(-[a-z0-9]+)?-dq$/.test(lead.source || '') && lead.dqTrigger !== 'budget') {
     out.push(COHORT_TAGS.notReady);
   }
   if (lead.qbudget === 'no') out.push(COHORT_TAGS.budgetBelow);
