@@ -258,14 +258,26 @@ async function ac(env, lead) {
   // segmentation is available on both sides.
   // 642-645 created 2026-08-06, ids read back from the API at creation. Their names are
   // COHORT_TAGS above, character for character, so the AXL and AC sides stay one taxonomy.
+  // 646 created 2026-08-12. It is the ARM tag, and it exists because AC had no way to
+  // tell the two funnel arms apart: both write the same opt-in, quiz and cohort tags,
+  // and only AXL's `comment` carried the arm. AXL gets its copy from the registration
+  // scenario (a `comment contains application-vslb` branch ahead of the generic
+  // `application` one), so it is deliberately NOT in cohortTags() — that function is
+  // the shared taxonomy, this is the one tag each system writes its own way.
   const TAGS = {
     optin: 634, quizDone: 640, quizDq: 641,
     'VSL Application - Not Ready': 642,
     'VSL Application - Budget Below': 643,
     'VSL Application - Budget Deferred': 644,
     'VSL Application - Budget Cleared': 645,
+    vslbApplication: 646,
   };
   const wanted = [TAGS.optin];
+  // Matched as a pattern, like cohortTags() does, so the soft-DQ arm
+  // ("application-vslb-dq") is tagged as the same arm as a qualified one. The door
+  // ("vsl-b-door") is deliberately not included: it is the same arm but not an
+  // application, and conflating the two would break any count of applications.
+  if (/^application-vslb(-dq)?$/.test(lead.source || '')) wanted.push(TAGS.vslbApplication);
   // 641 is a suppression signal as well as a label: it takes them out of the Front Gate
   // Nurture (599), which exists to push a booking. Someone who just declined a call
   // should not receive it, so every dq route keeps this tag.
