@@ -19,7 +19,9 @@
    Fail open, always. The .rdly-gated class is set by an inline script in the page
    head, so JS off means an ungated page. If the YouTube API never loads (blocked
    network, ad blocker), a watchdog unlocks the page rather than leaving a visitor
-   staring at a fade they can never clear.
+   staring at a fade they can never clear. A second watchdog covers the case that
+   one misses: a player that loads, reports ready, and then never plays a frame,
+   which is what blocked autoplay looks like from here.
 
    The unlock is remembered per browser, so someone who watched it and came back
    to book is not made to sit through it twice. */
@@ -78,6 +80,17 @@
   /* Watchdog: if the player never reports ready, the gate has no way to open, so
      open it. Cleared the moment the API hands us a player. */
   var watchdog = setTimeout(function () { unlock('player-unavailable'); }, 12000);
+
+  /* Second watchdog, for the failure the first one cannot see. A player can report
+     ready and still never play a frame: muted autoplay is refused in Low Power
+     Mode, by data savers, and inside several in-app browsers. onReady clears the
+     timer above, so that visitor was left on a video sitting at 0:00, a counter
+     reading "Starting the video", and a clipped page with no CTA anywhere on it.
+     Armed at onReady, cleared by the first frame of real playback. Progress is
+     tracked separately from `furthest` because soundOn() resets that to zero for
+     anyone who taps in the first half-minute. */
+  var progressed = false;
+  var stallWatchdog = null;
 
   /* ---------- player chrome: same locked shell as the self-hosted VSL ---------- */
   frame.classList.add('is-playing');
@@ -166,6 +179,9 @@
     e.target.mute();          // belt and braces: muted autoplay is the only kind that plays
     e.target.playVideo();
     ticker = setInterval(tick, 250);
+    stallWatchdog = setTimeout(function () {
+      if (!progressed) unlock('player-stalled');
+    }, 10000);
     push('rdly_video_play', { video_id: videoId, video_type: 'vsl', autoplay: true });
   }
 
@@ -197,6 +213,8 @@
     if (!player || !player.getCurrentTime) return;
     var t = player.getCurrentTime() || 0;
     var d = player.getDuration() || 0;
+
+    if (!progressed && t > 0.5) { progressed = true; clearTimeout(stallWatchdog); }
 
     /* belt and braces: there is no seek affordance, but if anything ever jumps
        the position ahead, snap it back */
