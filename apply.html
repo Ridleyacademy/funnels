@@ -1139,10 +1139,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           payload[k]=Object.prototype.toString.call(v)==='[object Array]'?v.join(', '):v;
         }
         window.RDLY.capture(payload);
-        /* Lead fires on a completed application, which is the equivalent moment to
-           the booking-form submit on vsl-a. Schedule fires later, on the Calendly
-           confirmation, from shared.js. */
-        window.RDLY.track('Lead','rdly_apply_captured',{route:payload.route});
+        /* Lead ONLY on the qualified route. It used to fire on both, so a soft-DQ
+           counted as a lead and Meta went looking for more people who would fail the
+           budget gate. Last week that was 42 DQ events against 33 completions, so a
+           large share of what the bidder was learning from. The dataLayer event still
+           fires on both routes, which is what keeps GA4's funnel whole.
+
+           The ladder on this arm: CompleteRegistration (the door, once) -> Lead
+           (qualified application) -> Schedule (Calendly confirmation, from shared.js).
+           Deliberately no CompleteRegistration here: the door already fired it for
+           this visitor and RB27-CR bids on that event, so firing it again would
+           inflate the very number that ad set optimises against. */
+        window.RDLY.track(softDQ?null:'Lead','rdly_apply_captured',{route:payload.route});
       }
     }catch(e){}
 
