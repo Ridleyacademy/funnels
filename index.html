@@ -627,7 +627,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="center reveal d1 gate-hide gate-cta" style="margin-top:clamp(26px,3.4vw,44px)">
-      <a href="#book" class="btn btn--fire btn--lg">Book My Free Piano Consultation</a>
+      <a href="apply.html" class="btn btn--fire btn--lg">Book My Free Piano Consultation</a>
       <p class="cta-note cta-note--dark">🔒 No Credit Card Required</p>
     </div>
 
@@ -658,67 +658,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a class="choice__alt" id="choiceLater" href="/tripwire">I'm not ready yet →</a>
 </div>
 
-    <div class="book" id="book" hidden>
-      <div class="book__tabs">
-        <span class="book__tab is-active" id="tabForm">Fill out the form</span>
-        <span class="book__tab" id="tabCal">Book your call</span>
-      </div>
-      <div class="book__body">
-        <form class="book__form" id="bookForm" novalidate>
-          <h3>Let's Talk</h3>
-          <p class="muted">Ready to start playing the songs you love?</p>
-          <input class="book__field" type="text" name="name" placeholder="Name *" required autocomplete="name">
-          <div class="book__phone">
-            <!-- COUNTRY-CODE PICKER, replicated from Calendly's own panel per Ori:
-                 tapping the pill opens a "Select country code" sheet over the
-                 booking card - pinned common countries, then the full alphabetical
-                 list, real flag images (flagcdn), native names in parentheses,
-                 selected row in fire red, Close at the bottom. main.js builds the
-                 rows and prefixes the chosen dial code onto the number sent to
-                 Calendly. -->
-            <button type="button" class="book__flag" id="ccFlag" aria-haspopup="dialog" aria-label="Country code, tap to change"><img id="ccFlagImg" src="https://flagcdn.com/w40/us.png" alt="" width="20" height="15" decoding="async"><span id="ccFlagTxt">+1</span><i class="book__caret" aria-hidden="true">▾</i></button>
-            <input class="book__field" type="tel" name="phone" placeholder="Phone number *" style="flex:1" autocomplete="tel">
-          </div>
-          <input class="book__field" type="email" name="email" placeholder="Email address *" required autocomplete="email">
-          <div class="qual" id="qualBlock" hidden>
-            <p class="qual__intro">A few quick questions to make sure it's a fit</p>
-            <!-- NOTE: Steven has the exact approved wording for these two questions;
-                 paste it over these labels if it differs. -->
-            <div class="qual__q">
-              <p class="qual__label">When are you looking to start?</p>
-              <div class="qual__opts" data-q="q1">
-                <button type="button" class="qual__opt" data-val="I'm ready to start right away">I'm ready to start right away</button>
-                <button type="button" class="qual__opt" data-val="Not any time soon">Not any time soon</button>
-              </div>
-            </div>
-            <div class="qual__q">
-              <p class="qual__label">How much have you invested in your piano playing so far?</p>
-              <div class="qual__opts" data-q="q2">
-                <button type="button" class="qual__opt" data-val="Just getting started">Just getting started &mdash; little to nothing yet</button>
-                <button type="button" class="qual__opt" data-val="Under $1,000">Under $1,000 &mdash; some apps, books, or a keyboard</button>
-                <button type="button" class="qual__opt" data-val="$1,000-$3,000">$1,000&ndash;$3,000 &mdash; lessons or gear over the years</button>
-                <button type="button" class="qual__opt" data-val="More than $3,000">More than $3,000 &mdash; I've taken this seriously</button>
-              </div>
-            </div>
-          </div>
-          <button type="submit" class="btn btn--fire btn--block">Continue ›</button>
-          <p class="cta-note cta-note--dark">🔒 No Credit Card Required</p>
-        </form>
-        <div class="book__cal" id="bookCal">
-          <div class="ccal-manual" id="calInline">
-            <div class="cal-fallback"><span>Loading available times&hellip;</span></div>
-          </div>
-          <div class="book__overlay" id="calOverlay"><span>Please fill out the form before choosing your time slot.</span></div>
-        </div>
-      </div>
-      <div class="book__powered">Powered by Calendly · Ridley Academy Piano Consultation</div>
-      <!-- the country-code sheet: fills the booking card when open (see .ccpanel) -->
-      <div class="ccpanel" id="ccPanel" role="dialog" aria-label="Select country code" hidden>
-        <div class="ccpanel__head">Select country code</div>
-        <div class="ccpanel__list" id="ccList"></div>
-        <div class="ccpanel__foot"><button type="button" class="ccpanel__close" id="ccClose">Close</button></div>
-      </div>
-    </div>
+    <!-- The legacy inline booking widget (#book, its two-question qualifier and its
+         own Calendly mount) was REMOVED on 2026-08-12. Every "Book" CTA on this page
+         used to open it, and it was the wrong door: it never called /api/optin, so
+         the answers died in localStorage and the lead reached neither AXL nor AC.
+         Its DQ rule was also half dead (`q2 === 'No'` against a four-band spend
+         question that has no "No"), and it fired a Meta Lead for disqualified
+         visitors too. Every CTA now goes to apply.html, the same qualifier the
+         post-video choice uses, so this arm captures and disqualifies exactly once
+         and exactly like funnels. main.js still carries the widget's code; it guards
+         on `getElementById('book')` and no-ops without it, and other pages share
+         that file, so it is deliberately left alone. -->
 
     <div class="tpx reveal d2 gate-hide"><b>Excellent</b><span class="tpx__stars"><i></i><i></i><i></i><i></i><i></i></span> <span data-count="1300" data-suffix="+">0</span> reviews on Trustpilot</div>
 
@@ -758,7 +708,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </button>
       </div>
     </div>
-    <div class="center" style="margin-top:clamp(26px,3.4vw,44px)"><a href="#book" class="btn btn--fire btn--lg">Book My Free Piano Consultation</a><p class="cta-note cta-note--dark">🔒 No Credit Card Required</p></div>
+    <div class="center" style="margin-top:clamp(26px,3.4vw,44px)"><a href="apply.html" class="btn btn--fire btn--lg">Book My Free Piano Consultation</a><p class="cta-note cta-note--dark">🔒 No Credit Card Required</p></div>
   </div>
 </section>
 
@@ -784,7 +734,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <figure class="shot reveal d2"><picture><source media="(max-width:640px)" srcset="images/reviews/shotm-xylocni.png" width="728" height="1124"><img src="images/reviews/tp-xylocni.png" alt="5-star Trustpilot review by Xylocni for Ridley Academy" loading="lazy" decoding="async" width="820" height="332"></picture></figure>
       <figure class="shot reveal"><picture><source media="(max-width:640px)" srcset="images/reviews/shotm-andrea-kenney.png" width="728" height="1346"><img src="images/reviews/tp-andrea-kenney.png" alt="5-star Trustpilot review by Andrea Kenney for Ridley Academy" loading="lazy" decoding="async" width="820" height="376"></picture></figure>
     </div>
-    <div class="center" style="margin-top:clamp(34px,4vw,52px)"><a href="#book" class="btn btn--fire btn--lg">Book My Free Piano Consultation</a><p class="cta-note cta-note--dark">🔒 No Credit Card Required</p></div>
+    <div class="center" style="margin-top:clamp(34px,4vw,52px)"><a href="apply.html" class="btn btn--fire btn--lg">Book My Free Piano Consultation</a><p class="cta-note cta-note--dark">🔒 No Credit Card Required</p></div>
   </div>
 </section>
 
@@ -899,7 +849,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="pianox__done" id="pianoDone" hidden>
       <p class="pianox__done-big">🎉 You just played <b id="pianoDoneSong">it</b>!</p>
       <p class="pianox__done-sub">That took you under a minute. Imagine a full song by Friday.</p>
-      <div style="margin-top:1em"><a href="#book" class="btn btn--fire">Book My Free Piano Consultation ›</a></div>
+      <div style="margin-top:1em"><a href="apply.html" class="btn btn--fire">Book My Free Piano Consultation ›</a></div>
       <button type="button" class="declinex" id="pianoAgain">Play another song</button>
     </div>
   </div>
@@ -972,7 +922,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <figure class="shot"><picture><source media="(max-width:640px)" srcset="images/reviews/wallm-beckie-c.png" width="728" height="1748"><img src="images/reviews/wall-beckie-c.png" width="820" height="530" alt="5-star Trustpilot review by Beckie C for Ridley Academy" loading="lazy" decoding="async"></picture></figure>
       <figure class="shot"><picture><source media="(max-width:640px)" srcset="images/reviews/wallm-ashley-akey.png" width="728" height="3272"><img src="images/reviews/wall-ashley-akey.png" width="820" height="728" alt="5-star Trustpilot review by Ashley Akey for Ridley Academy" loading="lazy" decoding="async"></picture></figure>
     </div>
-    <div class="center" style="margin-top:clamp(34px,4vw,52px)"><a href="#book" class="btn btn--fire btn--lg">Book My Free Piano Consultation</a><p class="cta-note cta-note--dark">🔒 No Credit Card Required</p></div>
+    <div class="center" style="margin-top:clamp(34px,4vw,52px)"><a href="apply.html" class="btn btn--fire btn--lg">Book My Free Piano Consultation</a><p class="cta-note cta-note--dark">🔒 No Credit Card Required</p></div>
   </div>
 </section>
 
@@ -1097,7 +1047,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="gate-hide section--tight center">
   <div class="wrap">
     <h2 class="h-lg" style="margin-bottom:.45em">Your turn to <span class="fire-text">start playing.</span></h2>
-    <div class="center" style="margin-top:clamp(18px,2.6vw,28px)"><a href="#book" class="btn btn--fire btn--lg">Book My Free Piano Consultation</a></div>
+    <div class="center" style="margin-top:clamp(18px,2.6vw,28px)"><a href="apply.html" class="btn btn--fire btn--lg">Book My Free Piano Consultation</a></div>
     <p class="cta-note cta-note--dark">🔒 No Credit Card Required</p>
   </div>
 </section>
@@ -1112,7 +1062,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </svg>
         Ridley Academy
       </div>
-      <nav class="foot__links"><a href="#top">Home</a><a href="#book">Book a call</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
+      <nav class="foot__links"><a href="#top">Home</a><a href="apply.html">Book a call</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
     </div>
     <div class="foot__fine">
       <p>Review screenshots shown on this page are unedited captures of genuine 5-star reviews from trustpilot.com/review/ridleyacademy.com. Reviews shown as quote cards are sourced from the same reviews; the rotating carousel and skeptic cards are illustrative summaries with sample verification labels. Individual results vary and are not guaranteed.</p>
@@ -1402,6 +1352,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_not_ready', source: 'post-video-choice', page_variant: 'vsl-b' }); } catch (e) {}
     /* href="/tripwire" carries the navigation, so nothing is preventDefault'd
        here: if the dataLayer push throws, the visitor still gets there. */
+  });
+
+  /* ---- every other "Book a call" CTA on the page ------------------
+     Seven of them run down the long-form, and until 2026-08-12 they all
+     opened the old inline widget instead. They now land on the same
+     qualifier as the choice button above, so there is one booking route
+     on this arm and every booker is captured and gated once.
+
+     The href already carries the navigation, so a visitor still gets to
+     apply.html if this script never runs. What the handler adds is the
+     query string: attribution (el, utm_*) lives there, and apply.html
+     passes it on to Calendly, so dropping it would blind the arm to
+     which ad produced the call. Labelled 'page-cta' rather than
+     'post-video-choice' so GA4 can still tell the two entries apart. */
+  [].forEach.call(document.querySelectorAll('a[href="apply.html"]'), function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      try { (window.dataLayer = window.dataLayer || []).push({ event: 'rdly_book_click', source: 'page-cta', page_variant: 'vsl-b' }); } catch (err) {}
+      window.location.href = 'apply.html' + window.location.search;
+    });
   });
 })();
 </script>
