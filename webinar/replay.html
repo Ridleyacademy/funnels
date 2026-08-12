@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>The replay | Ridley Academy</title>
+
+<!-- ============================================================
+     RIDLEY ACADEMY : WEBINAR REPLAY
+
+     Replay is not an afterthought. On current benchmarks it pulls
+     more unique viewers than the live broadcast over a 30 day
+     window, and roughly 71% of replay watch time lands in the first
+     14 days. For a live-event funnel the window is deliberately
+     much tighter than that, because the event has to stay an event.
+
+     THE EXPIRY IS REAL OR IT IS NOT STATED. PRODUCT.md bans
+     invented scarcity outright. So the countdown here is driven by
+     a real server-set timestamp, and when it runs out the video
+     genuinely goes. If we are not willing to take it down, we take
+     the countdown off the page instead. No fake timers, ever.
+
+     WINDOW_HOURS is the one thing to set per event.
+     ============================================================ -->
+
+<script>document.documentElement.className+=' js-anim';</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap" rel="stylesheet">
+
+<!-- one config for the whole funnel: date, offer mode, checkout,
+     calendars, video ids, replay window. See event.js. -->
+<script src="event.js"></script>
+
+<style>
+:root{
+  --cream:#F8F6F2; --cream-2:#F1EBDF; --paper:#FFFBF4;
+  --cherry:#E81420; --burgundy:#B00C19; --bordeaux:#6E0717;
+  --ink:#2A060D; --ink-soft:#7a3a40;
+  --gold:#FFB42B; --gold-acc:#FFC04A;
+  --line:rgba(42,6,13,.14); --cream-line:rgba(252,244,234,.16);
+  --display:'Oswald','Switzer',Arial,sans-serif;
+  --body:'Switzer',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --hand:'Caveat',cursive;
+  --wrap:1200px; --wrap-narrow:860px; --gut:clamp(20px,5vw,60px);
+  --radius:18px; --radius-lg:26px; --radius-sm:12px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --shadow-warm:0 24px 60px -24px rgba(110,7,23,.28);
+  --s-1:8px; --s-2:12px; --s-3:20px; --s-4:32px; --s-5:48px; --s-6:72px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+::selection{background:var(--gold);color:var(--ink)}
+h1,h2,h3{font-family:var(--display);text-transform:uppercase;line-height:1.05;font-weight:600}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.section{padding:clamp(56px,9vw,120px) 0}
+.section--tight{padding:clamp(32px,5vw,56px) 0}
+
+.head{display:flex;align-items:center;justify-content:center;gap:.5em;padding:var(--s-3) var(--gut) var(--s-1)}
+.head svg{width:26px;height:26px;color:var(--cherry)}
+.head span{font-family:var(--display);font-size:21px;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+
+/* countdown strip. Real deadline or it is not here at all. */
+.strip{background:var(--bordeaux);color:var(--paper);padding:var(--s-3) var(--gut);text-align:center}
+.strip p{font-size:15px;color:rgba(252,244,234,.86)}
+.strip b{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-weight:500;color:var(--gold-acc)}
+#clock{font-family:var(--display);font-size:clamp(24px,3.4vw,34px);font-weight:600;letter-spacing:.03em;margin-top:4px;display:block}
+
+.hero{padding:var(--s-5) 0 0;text-align:center}
+.eyebrow{display:inline-block;font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:var(--cherry);margin-bottom:var(--s-2);font-weight:500}
+.h1{font-size:clamp(30px,5vw,50px);line-height:1.03;max-width:20ch;margin:0 auto;text-wrap:balance}
+.lede{color:var(--ink-soft);font-size:clamp(16px,2.1vw,18.5px);max-width:56ch;margin:var(--s-3) auto 0}
+
+.player{margin-top:var(--s-5);border-radius:var(--radius-lg);overflow:hidden;border:1.5px solid var(--line);background:var(--ink);box-shadow:var(--shadow-warm);aspect-ratio:16/9;position:relative}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* chapters: boxless, hairline rows, seek on click */
+.chapters{margin-top:var(--s-5);border-top:1.5px solid var(--line);max-width:74ch;margin-left:auto;margin-right:auto;text-align:left}
+.chapters button{display:flex;width:100%;gap:var(--s-3);align-items:baseline;background:none;border:0;border-bottom:1.5px solid var(--line);padding:var(--s-3) var(--s-1);font:inherit;color:inherit;text-align:left;cursor:pointer;transition:background .18s var(--ease)}
+.chapters button:hover{background:var(--paper)}
+.chapters button:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+.chapters time{font-family:var(--display);font-size:15px;font-weight:600;color:var(--cherry);flex:none;min-width:5ch}
+.chapters b{font-weight:600;font-size:16.5px;line-height:1.4}
+
+.cta{background:var(--cream-2);text-align:center}
+.cta h2{font-size:clamp(26px,4vw,40px);max-width:22ch;margin:0 auto;text-wrap:balance}
+.cta p{color:var(--ink-soft);font-size:17px;max-width:56ch;margin:var(--s-3) auto 0;line-height:1.6}
+.btn{display:inline-block;background:var(--cherry);color:#fff;border:0;border-radius:999px;padding:19px 52px;font-family:var(--display);text-transform:uppercase;font-size:18px;letter-spacing:.05em;white-space:nowrap;cursor:pointer;text-decoration:none;margin-top:var(--s-4);transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease)}
+.btn:hover{background:var(--burgundy);transform:translateY(-2px);box-shadow:var(--shadow-warm)}
+.btn:active{transform:translateY(1px) scale(.985)}
+.btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+/* expired state */
+.gone{display:none;text-align:center;padding:var(--s-6) 0}
+.gone.on{display:block}
+.gone h2{font-size:clamp(26px,4vw,40px);max-width:20ch;margin:0 auto;text-wrap:balance}
+.gone p{color:var(--ink-soft);font-size:17px;max-width:54ch;margin:var(--s-3) auto 0;line-height:1.6}
+.hand{font-family:var(--hand);font-size:clamp(20px,2.8vw,28px);color:var(--cherry);line-height:1.25;font-weight:700;margin-top:var(--s-3)}
+body.expired #live{display:none}
+
+.sitefoot{background:var(--ink);color:rgba(252,244,234,.62);padding:clamp(40px,6vw,64px) 0 28px;font-size:12.5px;line-height:1.65}
+.sitefoot .wrap{max-width:var(--wrap-narrow)}
+.sitefoot a{color:rgba(252,244,234,.82);display:inline-block;padding:10px 2px}
+.sitefoot p+p{margin-top:var(--s-2)}
+
+@media (prefers-reduced-motion: no-preference){
+  .js-anim .rv{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:var(--d,0s)}
+  .js-anim .rv.in{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="head">
+  <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <rect x="4" y="22" width="5.5" height="14" rx="2.5" fill="currentColor"/>
+    <rect x="12" y="15" width="5.5" height="21" rx="2.5" fill="currentColor"/>
+    <rect x="20" y="8" width="5.5" height="28" rx="2.5" fill="currentColor"/>
+    <rect x="28" y="3" width="5.5" height="33" rx="2.5" fill="currentColor"/>
+  </svg>
+  <span>Ridley Academy</span>
+</div>
+
+<main id="main">
+
+<div class="strip" id="strip" hidden>
+  <p><b>Replay comes down</b></p>
+  <span id="clock">--:--:--</span>
+</div>
+
+<div id="live">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">The masterclass</span>
+      <h1 class="h1">Watch it back, then come and play.</h1>
+      <p class="lede">The whole session. If you only have twenty minutes, use the chapters below and go straight to the part you need.</p>
+
+      <div class="player">
+        <iframe id="vid" title="Ridley Academy masterclass replay"
+                src="about:blank"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
+                allowfullscreen></iframe>
+      </div>
+
+      <nav class="chapters" aria-label="Jump to a section">
+        <button type="button" data-t="0"><time>0:00</time><b>Why you were never the problem</b></button>
+        <button type="button" data-t="720"><time>12:00</time><b>The four chords, and the songs sitting on top of them</b></button>
+        <button type="button" data-t="1980"><time>33:00</time><b>What your left hand is actually doing</b></button>
+        <button type="button" data-t="3120"><time>52:00</time><b>Ten minutes a day, and why the long sessions held you back</b></button>
+        <button type="button" data-t="3900"><time>65:00</time><b>Playing your first song</b></button>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section cta">
+    <div class="wrap">
+      <h2>If you want to keep going, this is the next step.</h2>
+      <p>A Breakthrough Session is a conversation about your fastest path, not a checkout. About thirty minutes, and you never have to play a note.</p>
+      <a class="btn" href="apply.html?el=replay-cta">Book My Session</a>
+    </div>
+  </section>
+</div>
+
+<section class="gone wrap" id="gone">
+  <h2>The replay has come down.</h2>
+  <p>It was up for a limited window and that window has closed. We do it live again soon, and registering for the next one is the fastest way back in.</p>
+  <a class="btn" href="register.html?el=replay-expired">Save My Seat For The Next One</a>
+  <p class="hand">Meanwhile, ten minutes at the piano beats reading about it.</p>
+</section>
+
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap">
+    <p>Ridley Academy teaches a method. It is not a promise of a result. How well you play depends on you, the time you put in, and where you are starting from.</p>
+    <p><a href="terms.html?el=replay-foot">Terms of Service</a> &nbsp;·&nbsp; <a href="privacy.html?el=replay-foot">Privacy Policy</a> &nbsp;·&nbsp; © Ridley Academy</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   Replay window.
+
+   RIDLEY_REPLAY.expiresISO is the real deadline and must be set
+   server-side per event, from the same source the email sequence
+   reads. It is not "now plus 48 hours in the visitor's browser",
+   because that resets every time she clears storage and turns an
+   honest deadline into a fake one.
+
+   If expiresISO is absent, the countdown strip does not render at
+   all and the replay simply stays up. Silence is the correct
+   fallback; a guessed deadline is not.
+
+   Rewired 12 Aug: the deadline now derives from the broadcast in
+   event.js (end of the event plus replayHours) rather than being
+   hand-typed here, so it can never be left pointing at a past
+   event. event.js.expiresISO still wins when the server sets one,
+   which remains the only version of this deadline that is actually
+   enforced. Client-side expiry hides the video; it does not protect
+   it. Treat it as courtesy, not as a gate.
+   ============================================================ */
+
+window.RIDLEY_REPLAY = window.RIDLEY_REPLAY || (function(){
+  var E = window.RIDLEY_EVENT || {};
+  var x = (typeof E.replayExpiry === 'function') ? E.replayExpiry() : null;
+  return {
+    videoId:    (E.videos && E.videos.replay) || '',
+    expiresISO: x ? x.toISOString() : '',
+    provider:   'youtube'
+  };
+})();
+
+(function(){
+  const R = window.RIDLEY_REPLAY;
+  const vid = document.getElementById('vid');
+
+  /* ---- player ---- */
+  if (R.videoId) {
+    vid.src = R.provider === 'youtube'
+      ? 'https://www.youtube.com/embed/' + R.videoId + '?rel=0&modestbranding=1&enablejsapi=1'
+      : R.videoId;
+  }
+
+  /* chapter seek. Works for YouTube via postMessage; for other
+     providers wire the equivalent seek call here. */
+  document.querySelectorAll('.chapters button').forEach(b => {
+    b.addEventListener('click', () => {
+      const t = +b.dataset.t;
+      if (!R.videoId) return;
+      if (R.provider === 'youtube') {
+        vid.contentWindow.postMessage(JSON.stringify({
+          event: 'command', func: 'seekTo', args: [t, true]
+        }), '*');
+      }
+      vid.scrollIntoView({behavior:'smooth', block:'center'});
+      try {
+        window.dataLayer = window.dataLayer || [];
+        dataLayer.push({event:'rdly_replay_chapter', chapter_seconds:t});
+      } catch(_){}
+    });
+  });
+
+  /* ---- countdown, only when a real deadline exists ---- */
+  const end = R.expiresISO ? new Date(R.expiresISO) : null;
+  if (!end || isNaN(end)) return;
+
+  /* ...and only once the broadcast has actually finished. Reaching
+     this page early otherwise shows a multi-day clock counting down
+     to the expiry of a replay that does not exist yet, which reads
+     as a fake deadline and is exactly what the comment above is
+     trying to avoid. */
+  const E = window.RIDLEY_EVENT;
+  const broadcastEnd = (E && typeof E.end === 'function') ? E.end() : null;
+  if (broadcastEnd && broadcastEnd.getTime() > Date.now()) return;
+
+  const strip = document.getElementById('strip');
+  const clock = document.getElementById('clock');
+  strip.hidden = false;
+
+  function expire(){
+    document.body.classList.add('expired');
+    document.getElementById('gone').classList.add('on');
+    strip.hidden = true;
+    if (vid) vid.src = 'about:blank';
+    try {
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({event:'rdly_replay_expired'});
+    } catch(_){}
+  }
+
+  /* Declared before tick() runs. The first tick() call below happens
+     BEFORE the setInterval assignment, so on an already-expired
+     replay the old `const iv` was still in its temporal dead zone
+     and clearInterval(iv) threw a ReferenceError. That aborted the
+     rest of this IIFE, which is why an expired replay never fired
+     rdly_replay_view. Caught in the browser console 12 Aug. */
+  let iv = null;
+
+  function tick(){
+    const ms = end - new Date();
+    if (ms <= 0) { expire(); if (iv) clearInterval(iv); return; }
+    const h = Math.floor(ms / 3.6e6);
+    const m = Math.floor(ms % 3.6e6 / 6e4);
+    const s = Math.floor(ms % 6e4 / 1000);
+    clock.textContent = String(h).padStart(2,'0') + ':' +
+                        String(m).padStart(2,'0') + ':' +
+                        String(s).padStart(2,'0');
+  }
+
+  tick();
+  if (!document.body.classList.contains('expired')) iv = setInterval(tick, 1000);
+
+  try {
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({event:'rdly_replay_view'});
+  } catch(_){}
+})();
+</script>
+
+</body>
+</html>

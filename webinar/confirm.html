@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>You're in. Here's what to do before we start | Ridley Academy</title>
+
+<!-- ============================================================
+     RIDLEY ACADEMY : MASTERCLASS CONFIRMATION PAGE
+     The piece almost nobody builds, and the reason Haynes gets
+     44% show rate on ice-cold broad-targeted traffic.
+
+     The rule this page follows: at the moment someone opts in they
+     flip from SCANNER mode to JUSTIFICATION mode. Before the opt-in
+     they skim. After it they will genuinely consume, because now
+     they are answering "is this worth clearing my evening for?"
+     So all the depth goes HERE, not on the registration page.
+
+     What that means in practice:
+       1. NO "thanks, you're registered, see you Wednesday" filler.
+       2. A primary video whose stated job is to let them research
+          Stephen on our terms rather than going to find their own
+          version of him.
+       3. Breakout videos: short, chaptered, self-selected. They
+          pick the one matching their own objection.
+       4. The honest-proof block. This is the Ridley equivalent of
+          Haynes showing his real Stripe dispute rate. It must be
+          built from REAL numbers and REAL cases before this page
+          ships. Placeholders are marked [NEEDS REAL DATA] and must
+          not be filled with invented figures.
+       5. Calendar add and the explicit "here's what will land in
+          your inbox and on your phone" so the reminders are
+          expected rather than ignored.
+     ============================================================ -->
+
+<!-- reveal is opt-in: only a JS-capable client ever hides content, so
+     no-JS, print, and crawler renders always see the full page. -->
+<script>document.documentElement.className+=' js-anim';</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap" rel="stylesheet">
+
+<!-- one config for the whole funnel: date, offer mode, checkout,
+     calendars, video ids, replay window. See event.js. -->
+<script src="event.js"></script>
+
+<style>
+:root{
+  /* tokens ported from funnels-clean arm-d, 10 Aug (Stephen's palette note):
+     brighter ground, pure white cards, red committed at region scale.
+     --cherry stays locked at #E81420; brightening it fails AA on buttons. */
+  --cream:#FDFAF5; --cream-2:#F4EFE6; --paper:#FFFFFF;
+  --cherry:#E81420; --ruby:#E23237; --burgundy:#B00C19; --bordeaux:#6E0717;
+  --hinge:#C21120; --close-deep:#8C1024;
+  --on-field:#FFF4F1; --on-field-dim:rgba(255,242,238,.95);
+  --wine:#2B0B13;
+  --ink:#2A060D; --ink-soft:#7a3a40;
+  --gold:#FFB42B; --gold-acc:#FFC04A;
+  --line:rgba(42,6,13,.14); --line-2:rgba(42,6,13,.06);
+  --cream-line:rgba(252,244,234,.16);
+  --display:'Oswald','Switzer',Arial,sans-serif;
+  --body:'Switzer',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --hand:'Caveat',cursive;
+  --wrap:1200px; --wrap-narrow:860px; --gut:clamp(20px,5vw,60px);
+  --s-1:8px; --s-2:12px; --s-3:20px; --s-4:32px; --s-5:48px; --s-6:72px;
+  --radius:18px; --radius-lg:26px; --radius-sm:12px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --shadow-warm:0 24px 60px -24px rgba(110,7,23,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+::selection{background:var(--gold);color:var(--ink)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+h1,h2,h3{font-family:var(--display);text-transform:uppercase;line-height:1.05;font-weight:600}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.section{padding:clamp(56px,9vw,120px) 0}
+.section--tight{padding:clamp(32px,5vw,56px) 0}
+
+.head{display:flex;align-items:center;justify-content:center;gap:.55em;padding:22px 16px 4px}
+.head svg{width:26px;height:26px;color:var(--cherry)}
+.head span{font-family:var(--display);font-size:21px;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+
+/* ---------- confirmed strip: the hinge. Red owns the celebration ----------
+   Arm-d pattern ported for Stephen's palette note: the one saturated red
+   field on the page is the moment the seat is confirmed. Highlights go
+   full white; gold fails as text on the red field. */
+.confirmed{background:var(--cherry);color:var(--on-field);padding:clamp(26px,4vw,42px) 0}
+.confirmed .wrap{display:flex;gap:clamp(16px,3vw,28px);align-items:center;flex-wrap:wrap}
+.tick{flex:none;width:52px;height:52px;border-radius:50%;background:var(--gold);color:var(--ink);display:grid;place-items:center;font-size:26px;font-weight:700}
+.confirmed h1{font-size:clamp(25px,4.2vw,40px)}
+.confirmed p{color:var(--on-field-dim);font-size:15.5px;margin-top:6px}
+.confirmed p b{color:#fff}
+.slot{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px;width:100%}
+.slot i{font-style:normal;display:inline-flex;align-items:center;gap:7px;border:1.5px solid rgba(255,244,241,.28);background:rgba(255,244,241,.10);border-radius:999px;padding:8px 16px;font-size:14px}
+.slot i b{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:12.5px;font-weight:500;color:#fff}
+.cal{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.cal a{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:13.5px;background:var(--paper);color:var(--ink);text-decoration:none;padding:12px 22px;border-radius:999px;transition:transform .2s var(--ease)}
+.cal a:hover{transform:translateY(-2px)}
+
+/* small red caps text uses burgundy: cherry measures 4.4:1 on the bright
+   ground, under AA at this size */
+.kicker{font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:12.5px;color:var(--burgundy);margin-bottom:12px;font-weight:500}
+.h2{font-size:clamp(24px,4.2vw,38px);max-width:24ch;text-wrap:balance}
+.lead{color:var(--ink-soft);font-size:clamp(16px,2.2vw,18.5px);max-width:62ch;margin-top:13px}
+
+/* ---------- bring a song ----------
+   Sits between the confirmation and the offer, and that position is
+   the point: the last thing read before any money is mentioned is an
+   instruction about turning up. Two columns so the question and the
+   answer sit side by side rather than reading as one paragraph. */
+.bring{background:var(--cream-2);border-bottom:1px solid var(--line)}
+.bring__in{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(22px,4vw,56px);align-items:start}
+@media(max-width:820px){.bring__in{grid-template-columns:1fr;gap:var(--s-3)}}
+.bring__h{font-family:var(--display);text-transform:uppercase;font-size:clamp(21px,3vw,31px);
+  line-height:1.08;color:var(--ink);font-weight:600;text-wrap:balance}
+.bring__lead{color:var(--ink-soft);font-size:clamp(15.5px,2vw,17.5px);line-height:1.6;max-width:44ch}
+.bring__lead+.bring__lead{margin-top:var(--s-2)}
+.bring__lead b{color:var(--ink);font-weight:600}
+
+/* ---------- primary video ---------- */
+.primary{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(26px,4vw,52px);align-items:center}
+@media(max-width:900px){.primary{grid-template-columns:1fr}}
+.player{position:relative;border-radius:var(--radius-lg);overflow:hidden;border:1.5px solid var(--line);background:#000;box-shadow:var(--shadow-warm);aspect-ratio:16/9;width:100%;display:block;cursor:pointer;padding:0}
+.player img{width:100%;height:100%;object-fit:cover;opacity:.86}
+.player__play{position:absolute;inset:0;margin:auto;width:74px;height:74px;border-radius:50%;background:var(--cherry);display:grid;place-items:center;box-shadow:0 12px 34px rgba(0,0,0,.36);transition:transform .25s var(--ease)}
+.player:hover .player__play{transform:scale(1.07)}
+.player__play::after{content:"";border-left:22px solid #fff;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px}
+.player__tag{position:absolute;left:14px;bottom:14px;background:rgba(42,6,13,.82);color:var(--paper);font-family:var(--display);text-transform:uppercase;letter-spacing:.07em;font-size:11.5px;padding:7px 13px;border-radius:999px}
+
+/* ---------- breakout videos ---------- */
+/* 5 breakouts, 5 cells, explicit rhythm: 2 wide over 3 narrow.
+   No auto-fit, so there is never a hole at the end of the grid. */
+/* 5 breakouts, 5 cells at every width, no empty tail cell:
+     <=560   1 col, 5 rows
+     561-900 2 col, lead spans both, then 2x2
+     >=901   6 col, 3+3 over 2+2+2 */
+.grid{display:grid;grid-template-columns:1fr;gap:clamp(14px,2.2vw,22px);margin-top:var(--s-5)}
+@media(min-width:561px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .grid > :nth-child(1){grid-column:span 2}
+}
+@media(min-width:901px){
+  .grid{grid-template-columns:repeat(6,1fr)}
+  .grid > :nth-child(1),.grid > :nth-child(2){grid-column:span 3}
+  .grid > :nth-child(3),.grid > :nth-child(4),.grid > :nth-child(5){grid-column:span 2}
+}
+.bo{display:flex;flex-direction:column;background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius);overflow:hidden;text-align:left;padding:0;cursor:pointer;font:inherit;color:inherit;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.bo:hover{transform:translateY(-3px);box-shadow:var(--shadow-warm)}
+.bo:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.bo__thumb{display:block;position:relative;aspect-ratio:16/9;background:var(--cream-2);overflow:hidden}
+.bo__thumb img{width:100%;height:100%;object-fit:cover}
+.bo__len{position:absolute;right:9px;bottom:9px;background:rgba(42,6,13,.84);color:var(--paper);font-size:11.5px;padding:4px 9px;border-radius:999px;letter-spacing:.02em}
+.bo__play{position:absolute;inset:0;margin:auto;width:44px;height:44px;border-radius:50%;background:rgba(232,20,32,.94);display:grid;place-items:center}
+.bo__play::after{content:"";border-left:13px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:4px}
+.bo__body{display:block;padding:16px 18px 19px}
+.bo__q{display:block;font-family:var(--display);text-transform:uppercase;font-size:15.5px;line-height:1.22;font-weight:600}
+.bo__d{display:block;color:var(--ink-soft);font-size:14px;margin-top:7px;line-height:1.45}
+
+/* ---------- honest proof: warm wine, not neutral black ---------- */
+.band-ink{background:var(--wine);color:var(--paper)}
+.band-ink .lead{color:rgba(252,244,234,.74)}
+.band-ink .kicker{color:var(--gold-acc)}
+/* 4 cards, 4 cells, explicit 2x2. No auto-fit, so no hole in row 2. */
+/* boxless: hairline and type pairing carry the grouping, no card chrome */
+.honest{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(28px,5vw,64px);margin-top:var(--s-5)}
+@media(max-width:680px){.honest{grid-template-columns:1fr}}
+.hcard{padding:var(--s-4) 0;border-top:1.5px solid var(--cream-line)}
+.hcard:first-child{grid-column:1 / -1;border-top:2px solid var(--gold-acc)}
+.hcard:first-child b{font-size:clamp(34px,5vw,54px)}
+.hcard b{display:block;font-family:var(--display);text-transform:uppercase;font-size:clamp(24px,3.2vw,34px);color:var(--gold-acc);line-height:1;font-weight:600}
+.hcard span{display:block;margin-top:var(--s-2);font-size:15px;color:rgba(252,244,234,.74);line-height:1.55;max-width:44ch}
+.todo b{color:rgba(255,180,43,.6);font-size:clamp(14px,1.8vw,16px);letter-spacing:.06em}
+
+/* ---------- what happens next ---------- */
+.steps{list-style:none;counter-reset:s;margin-top:var(--s-5);max-width:74ch;border-bottom:1.5px solid var(--line)}
+.steps li{counter-increment:s;display:flex;gap:var(--s-3);align-items:baseline;border-top:1.5px solid var(--line);padding:var(--s-3) 0;font-size:16.5px;line-height:1.6}
+.steps li::before{content:counter(s);flex:none;font-family:var(--display);font-size:clamp(20px,2.4vw,26px);font-weight:600;color:var(--cherry);line-height:1;min-width:1.4ch}
+.steps b{font-weight:600}
+.hand{font-family:var(--hand);font-size:clamp(21px,3vw,28px);color:var(--cherry);text-transform:none;line-height:1.25;font-weight:700;margin-top:22px}
+
+/* ---------- MOTION (brand system runs MOTION 6) ----------
+   Motivated by storytelling: the breakout cards arrive in sequence,
+   which is how the "pick the one that sounds like you" section is
+   meant to be read. transform + opacity only. Static under reduced motion. */
+@media (prefers-reduced-motion: no-preference){
+  .js-anim .rv{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:var(--d,0s)}
+  .js-anim .rv.in{opacity:1;transform:none}
+}
+
+.sitefoot{background:var(--cream-2);color:var(--ink-soft);padding:clamp(40px,6vw,64px) 0 28px;font-size:12.5px;line-height:1.65;border-top:1.5px solid var(--line)}
+.sitefoot .wrap{max-width:var(--wrap-narrow)}
+.sitefoot p+p{margin-top:var(--s-2)}
+.sitefoot a{color:var(--ink-soft);display:inline-block;padding:10px 2px}
+.sitefoot strong{color:var(--ink);font-weight:600}
+
+/* ---------- 4 MAGIC CHORDS: optional paid step ----------
+   Sits AFTER the confirmation and the calendar buttons, never before.
+   They came for a seat. That gets settled first, then this is offered.
+   Framed as a ticket to the night, not a file in a library, because the
+   whole point is that they arrive able to play something.
+   Price IS shown here. A checkout offer shows its price; the
+   registration page never does. ------------------------------------ */
+.offer{background:var(--cream-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.offer__in{display:grid;grid-template-columns:6fr 5fr;gap:clamp(28px,5vw,60px);align-items:center}
+@media(max-width:900px){.offer__in{grid-template-columns:1fr;gap:var(--s-4)}}
+.offer__kick{display:inline-block;font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:12.5px;color:var(--burgundy);font-weight:500;margin-bottom:var(--s-2)}
+.offer h2{font-size:clamp(26px,4vw,40px);line-height:1.05}
+.offer h2 em{font-style:normal;color:var(--cherry)}
+.offer__lead{color:var(--ink-soft);font-size:clamp(16px,2vw,18.5px);margin-top:var(--s-3);max-width:46ch}
+.offer__lead b{color:var(--ink);font-weight:600}
+.offer__hand{font-family:var(--hand);font-size:clamp(21px,2.6vw,26px);color:var(--bordeaux);margin-top:var(--s-3);line-height:1.3}
+.offer__card{background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius-lg);padding:clamp(24px,3.4vw,34px);box-shadow:var(--shadow-warm)}
+.offer__price{display:flex;align-items:baseline;gap:var(--s-2);flex-wrap:wrap}
+.offer__price b{font-family:var(--display);font-size:clamp(42px,6vw,58px);line-height:1;color:var(--ink);font-weight:600}
+.offer__price span{font-size:14.5px;color:var(--ink-soft)}
+.offer__list{list-style:none;margin:var(--s-3) 0 0;display:grid;gap:var(--s-2)}
+.offer__list li{display:flex;gap:var(--s-2);align-items:flex-start;font-size:15.5px;line-height:1.45}
+.offer__list svg{width:19px;height:19px;flex:none;color:var(--cherry);margin-top:2px}
+.offer__btn{display:block;width:100%;background:var(--cherry);color:#fff;border:0;border-radius:999px;padding:19px 26px;font-family:var(--display);text-transform:uppercase;font-size:17.5px;letter-spacing:.05em;cursor:pointer;margin-top:var(--s-4);text-decoration:none;text-align:center;transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease)}
+.offer__btn:hover{background:var(--bordeaux);transform:translateY(-2px);box-shadow:var(--shadow-warm)}
+.offer__btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.offer__btn small{display:block;font-family:var(--body);text-transform:none;letter-spacing:.01em;font-size:12.5px;opacity:.92;margin-top:3px}
+.offer__fine{font-size:12.5px;color:var(--ink-soft);text-align:center;margin-top:var(--s-2);line-height:1.5}
+.offer__no{display:block;text-align:center;margin-top:var(--s-3);font-size:14px;color:var(--ink-soft);text-decoration:underline;text-underline-offset:3px}
+.offer__no:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="head">
+  <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <rect x="4" y="22" width="5.5" height="14" rx="2.5" fill="currentColor"/>
+    <rect x="12" y="15" width="5.5" height="21" rx="2.5" fill="currentColor"/>
+    <rect x="20" y="8" width="5.5" height="28" rx="2.5" fill="currentColor"/>
+    <rect x="28" y="3" width="5.5" height="33" rx="2.5" fill="currentColor"/>
+  </svg>
+  <span>Ridley Academy</span>
+</div>
+
+<!-- ============ CONFIRMED ============ -->
+<section class="confirmed">
+  <div class="wrap">
+    <div class="tick" aria-hidden="true">✓</div>
+    <div style="flex:1;min-width:260px">
+      <h1>You're in<span data-slot="firstname"></span>. Your seat with Stephen is saved.</h1>
+      <!-- The date is a slot, not a typed string. This sentence names
+           the day, so hardcoding it ships a page that keeps announcing
+           a date the event no longer has. -->
+      <p>On <b data-slot="date">the day</b>, you're going to sit down at your piano and experience the Ridley Method live.</p>
+      <p>Your joining link is heading to <b data-slot="email">your inbox</b> now. Add the masterclass to your calendar before you do anything else, then choose the song you'd <b>love</b> to be able to play.</p>
+    </div>
+
+    <div class="slot">
+      <i><b>When</b> <span data-slot="date">Date announced shortly</span></i>
+      <i><b>Time</b> <span data-slot="time">Details by email</span></i>
+      <i><b>Length</b> About 90 minutes</i>
+    </div>
+
+    <div class="cal">
+      <a href="#" data-cal="google">Add to Google Calendar</a>
+      <a href="#" data-cal="ics">Add to Apple / Outlook</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BRING A SONG ============
+     The one instruction that turns a registrant into a participant.
+     Given its own band rather than buried in the confirmation strip:
+     someone who arrives with a song in mind has already decided to
+     turn up, which is the only number this page exists to move. -->
+<section class="section--tight bring">
+  <div class="wrap bring__in">
+    <div>
+      <p class="kicker">One thing before you go</p>
+      <h2 class="bring__h">Think of the song you would play if someone handed you the ability today.</h2>
+    </div>
+    <div>
+      <p class="bring__lead"><b>Bring that song with you.</b></p>
+      <p class="bring__lead">Stephen will be taking songs from the live room and breaking some of them down at the piano.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 MAGIC CHORDS: optional, after the seat is settled ============ -->
+<section class="section offer">
+  <div class="wrap offer__in">
+
+    <div>
+      <span class="offer__kick">Optional head start</span>
+      <h2 class="h2">Don't wait until the masterclass <em>to play your first chords.</em></h2>
+
+      <p class="offer__lead">The live masterclass starts with four chords. They are simple. But once Stephen shows you what they unlock, they stop sounding like an exercise and start sounding like music you know.</p>
+
+      <p class="offer__lead">If you want to arrive with those four chords <b>already under your fingers</b>, start here. You'll get four short lessons, one for each chord, plus the songs they begin to unlock.</p>
+
+      <p class="offer__lead">You absolutely do not need this to attend the free masterclass. It's simply for people who want to start playing now.</p>
+    </div>
+
+    <div class="offer__card">
+      <p class="offer__kick" style="margin-bottom:var(--s-1)">4 Magic Chords</p>
+      <div class="offer__price"><b>$27</b><span>once, yours to keep</span></div>
+
+      <ul class="offer__list">
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Learn the four chords Stephen will build from live</span></li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Start using them in real songs from the first lesson</span></li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>Works with the piano or keyboard you already own</span></li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg><span>No previous experience or music reading required</span></li>
+      </ul>
+
+      <a class="offer__btn" href="CHECKOUT_URL" data-el="confirm-4mc">Get The 4 Magic Chords For $27
+        <small>Secure checkout</small></a>
+
+      <p class="offer__fine">30 day money back guarantee. If it does not do what it says, email us and we refund it.</p>
+      <a class="offer__no" href="#what-happens" data-el="confirm-4mc-decline">No thanks, I'll start with Stephen live</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PRIMARY VIDEO: research him on our terms ============ -->
+<section class="section">
+  <div class="wrap primary">
+    <button class="player" type="button" data-video="PRIMARY_VIDEO_ID" aria-label="Play: before you turn up, here is who I am">
+      <img src="images/masterclass-poster.jpg" alt="Stephen Ridley at the piano" width="1280" height="720">
+      <span class="player__play" aria-hidden="true"></span>
+      <!-- short label only: the section kicker beside it already
+           carries the full "watch before we go live" line -->
+      <span class="player__tag">6 minutes</span>
+    </button>
+
+    <div>
+      <p class="kicker">Watch before we go live · 6 minutes</p>
+      <h2 class="h2">Meet Stephen before you meet him at the piano.</h2>
+      <p class="lead"><b style="color:var(--ink);font-weight:600">Stephen quit traditional piano too.</b> What brought him back was discovering that the instrument worked very differently from the way he'd been taught.</p>
+      <p class="lead">In six minutes, he'll show you where the Ridley Method came from, what changed for him, and why more than 40,000 students have since learned piano this way.</p>
+      <p class="lead">Watch this before the masterclass. It will make what happens live make much more sense.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BREAKOUT VIDEOS ============
+     Short, self-selected, one per objection. The visitor picks the
+     one that matches the doubt they actually have. Chaptered so
+     they can scrub. Keep each under four minutes.
+     Replace data-video values with real IDs before shipping. -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <h2 class="h2">The five things people ask us before they turn up.</h2>
+    <p class="lead">Short answers, straight from Stephen. Watch the one that applies. Ignore the rest.</p>
+
+    <div class="grid">
+
+      <button class="bo rv" type="button" style="--d:0s" data-video="BREAKOUT_1_ID">
+        <span class="bo__thumb"><img src="images/perf-stance.jpg" alt=""><span class="bo__play" aria-hidden="true"></span><span class="bo__len">3:10</span></span>
+        <span class="bo__body">
+          <span class="bo__q">"I'm too old to start this now."</span>
+          <span class="bo__d">The oldest student to come through Ridley Academy was 96. Here is what actually changes with age, and what genuinely doesn't.</span>
+        </span>
+      </button>
+
+      <button class="bo rv" type="button" style="--d:.07s" data-video="BREAKOUT_2_ID">
+        <span class="bo__thumb"><img src="images/perf-streetpiano.jpg" alt=""><span class="bo__play" aria-hidden="true"></span><span class="bo__len">2:45</span></span>
+        <span class="bo__body">
+          <span class="bo__q">"I've tried this before and wasted the money."</span>
+          <span class="bo__d">Why the apps and the graded books leave most adults stuck in the same place, and what this does differently.</span>
+        </span>
+      </button>
+
+      <button class="bo rv" type="button" style="--d:.14s" data-video="BREAKOUT_3_ID">
+        <span class="bo__thumb"><img src="images/perf-lights.jpg" alt=""><span class="bo__play" aria-hidden="true"></span><span class="bo__len">3:30</span></span>
+        <span class="bo__body">
+          <span class="bo__q">"Is this just going to be a sales pitch?"</span>
+          <span class="bo__d">Yes, there is an offer at the end. Here is exactly when it comes, how long it takes, and what you get if you ignore it entirely.</span>
+        </span>
+      </button>
+
+      <button class="bo rv" type="button" style="--d:.21s" data-video="BREAKOUT_4_ID">
+        <span class="bo__thumb"><img src="images/masterclass-poster.jpg" alt=""><span class="bo__play" aria-hidden="true"></span><span class="bo__len">2:20</span></span>
+        <span class="bo__body">
+          <span class="bo__q">"I can't read music at all."</span>
+          <span class="bo__d">Good. That is the intended starting point, and this explains why it is an advantage rather than a gap to close first.</span>
+        </span>
+      </button>
+
+      <button class="bo rv" type="button" style="--d:.28s" data-video="BREAKOUT_5_ID">
+        <span class="bo__thumb"><img src="images/perf-stance.jpg" alt=""><span class="bo__play" aria-hidden="true"></span><span class="bo__len">2:05</span></span>
+        <span class="bo__body">
+          <span class="bo__q">"What do I need in front of me on the night?"</span>
+          <span class="bo__d">Any keyboard with any number of keys, and somewhere to put your phone or laptop. That is the whole list.</span>
+        </span>
+      </button>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ HONEST PROOF ============
+     This is the Ridley version of Haynes showing his real Stripe
+     dispute rate. It is the single strongest trust mechanic in his
+     whole funnel, and the ONLY way it works is if every number is
+     real and the failure cases are named honestly.
+
+     DO NOT SHIP with invented figures. The cards below marked
+     [NEEDS REAL DATA] are deliberately empty. Pull the real numbers
+     from Stripe/ThriveCart and the real cases from support before
+     this page goes live. If we cannot substantiate a number, the
+     card comes out rather than gets estimated.
+     ============================================================ -->
+<section class="section band-ink">
+  <div class="wrap">
+    <p class="kicker">The part nobody puts on a page</p>
+    <h2 class="h2">You are going to go looking for the bad reviews. Here they are.</h2>
+    <p class="lead">Everyone checks. It is the sensible thing to do before you hand someone an evening, let alone money. So rather than make you hunt, here is the honest picture, including the parts that do not flatter us.</p>
+
+    <div class="honest">
+      <div class="hcard">
+        <b>40,000+</b>
+        <span>Students taught to date, across 60+ countries, from age 5 to 96.</span>
+      </div>
+      <div class="hcard todo">
+        <b>[NEEDS REAL DATA]</b>
+        <span>Refund rate, with the real figure and the window it covers. Pull from Stripe / ThriveCart. Do not estimate.</span>
+      </div>
+      <div class="hcard todo">
+        <b>[NEEDS REAL DATA]</b>
+        <span>The honest failure case: a named, anonymised example of someone it did not work for, and why. Sourced from support, used with permission.</span>
+      </div>
+      <div class="hcard todo">
+        <b>[NEEDS REAL DATA]</b>
+        <span>Who this is genuinely not for. Written plainly, so the wrong people can rule themselves out before they spend anything.</span>
+      </div>
+    </div>
+
+    <p class="lead" style="margin-top:26px">If any of that changes your mind about coming, that is a fair outcome and we would rather you knew now.</p>
+  </div>
+</section>
+
+<!-- ============ WHAT HAPPENS NEXT ============
+     Setting the expectation is what makes the reminders get opened
+     rather than ignored. Say exactly what will arrive and when. -->
+<section class="section">
+  <div class="wrap">
+    <h2 class="h2">Four things will reach you. None of them are filler.</h2>
+
+    <ol class="steps">
+      <li class="rv" style="--d:0s"><span><b>Right now, by email.</b> Your joining link and the date. If it is not there in a few minutes, check spam and drag it to your inbox, otherwise the rest will land there too.</span></li>
+      <li class="rv" style="--d:.07s"><span><b>Each day until the masterclass.</b> One short email from Stephen. Each one is a piece of the method you can use at the piano that evening, whether or not you make it to the live session.</span></li>
+      <li class="rv" style="--d:.14s"><span><b>The morning of, by text.</b> A reminder with the link, so you are not digging through email an hour before.</span></li>
+      <li class="rv" style="--d:.21s"><span><b>Ten minutes before we start.</b> One last text with the link. Tap it and you are in the room.</span></li>
+    </ol>
+
+    <p class="hand">Sit at the piano for the session if you can. You will want to try things as we go.</p>
+  </div>
+</section>
+
+<footer class="sitefoot">
+  <div class="wrap">
+    <p><strong>About results.</strong> This masterclass teaches a method. It is not a promise of a result. How well you play depends on you, on the time you put in, and on where you are starting from. We do not guarantee any particular standard.</p>
+    <p>Student numbers, countries, ages and review counts describe Ridley Academy's student base to date. They are not a prediction of what any individual will achieve. Any testimonials shown are real, shared with permission, and are not typical or average results.</p>
+    <p><a href="terms.html?el=confirm-foot">Terms of Service</a> &nbsp;·&nbsp; <a href="privacy.html?el=confirm-foot">Privacy Policy</a> &nbsp;·&nbsp; © Ridley Academy</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   Confirmation page wiring.
+
+   1. Personalise from ridley_lead_v1 written by register.html.
+   2. Fill the session slot from window.RIDLEY_SESSION (set this
+      per event, or inject it server-side).
+   3. Build the Google Calendar link and a downloadable .ics.
+   4. Lazy-swap video facades for real embeds on click, so the
+      page stays fast and nothing third-party loads until asked.
+   ============================================================ */
+
+/* ---- the session comes from event.js ----
+   Rewired 12 Aug. This page used to hold its own copy of the date,
+   which could drift from the one on the registration page. It now
+   reads the same object. A server-side injection can still override
+   by setting window.RIDLEY_SESSION before this script runs. */
+window.RIDLEY_SESSION = window.RIDLEY_SESSION || (function(){
+  var E = window.RIDLEY_EVENT || {};
+  return {
+    title:    E.title    || 'Ridley Academy Live Masterclass with Stephen Ridley',
+    startISO: E.startISO || '',
+    minutes:  E.minutes  || 90,
+    joinUrl:  E.joinUrl  || '',
+    details:  E.details  || 'Ninety minutes with Stephen Ridley. Have a keyboard nearby if you can.'
+  };
+})();
+
+(function(){
+  var S = window.RIDLEY_SESSION;
+  var E = window.RIDLEY_EVENT || {};
+
+  /* ---------- video ids from the shared config ----------
+     Fill the facades before the click handler binds. An unset id
+     leaves the written placeholder in place, and the handler below
+     already no-ops on placeholders, so the page is safe to ship
+     before the shoot. */
+  (function(){
+    var v = E.videos || {};
+    var p = document.querySelector('[data-video="PRIMARY_VIDEO_ID"]');
+    if (p && v.primary) p.setAttribute('data-video', v.primary);
+    (v.breakouts || []).forEach(function(id, i){
+      if (!id) return;
+      var b = document.querySelector('[data-video="BREAKOUT_' + (i+1) + '_ID"]');
+      if (b) b.setAttribute('data-video', id);
+    });
+  })();
+
+  /* ---------- the $27 pre-sell ----------
+     Gated on checkoutUrl alone, NOT on offerMode. These are two
+     different decisions: offerMode is how the room ends, this is a
+     tripwire on the way to the room, and the two are independent.
+
+     Fail closed. Without a real cart url the block is removed. A dead
+     $27 button on the page that just confirmed someone's free seat is
+     worse than no offer at all. */
+  (function(){
+    var sec = document.querySelector('.offer');
+    if (!sec) return;
+    if (!(typeof E.hasCheckout === 'function' && E.hasCheckout())){ sec.remove(); return; }
+    var btn = sec.querySelector('[data-el="confirm-4mc"]');
+    if (btn) btn.href = E.checkoutUrl;
+  })();
+
+  /* ---------- personalise ---------- */
+  var lead = null;
+  try { lead = JSON.parse(localStorage.getItem('ridley_lead_v1') || 'null'); } catch(_){}
+
+  function setSlot(name, value){
+    document.querySelectorAll('[data-slot="'+name+'"]').forEach(function(el){ el.textContent = value; });
+  }
+  if (lead && lead.name) setSlot('firstname', ', ' + lead.name);
+  if (lead && lead.email) setSlot('email', lead.email);
+
+  /* ---------- session date/time, rendered in the visitor's own tz ---------- */
+  var start = S.startISO ? new Date(S.startISO) : null;
+  if (start && !isNaN(start)) {
+    var end = new Date(start.getTime() + (S.minutes||90)*60000);
+    setSlot('date', start.toLocaleDateString(undefined, {weekday:'long', day:'numeric', month:'long'}));
+    /* "12:00 PM Mountain Daylight Time", not "12:00 PM America/Denver".
+       The IANA zone id is what the browser reports, but nobody reads
+       their own timezone that way, and this line is the one a reader
+       checks against their own clock. */
+    var timeTxt;
+    try {
+      timeTxt = new Intl.DateTimeFormat(undefined, {
+        hour:'numeric', minute:'2-digit', timeZoneName:'long'
+      }).format(start);
+    } catch(_){
+      timeTxt = start.toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit'}) +
+                ' ' + (Intl.DateTimeFormat().resolvedOptions().timeZone || 'your time');
+    }
+    setSlot('time', timeTxt);
+
+    /* ---------- calendar links ---------- */
+    function z(d){ return d.toISOString().replace(/[-:]|\.\d{3}/g,''); }
+    var g = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+          + '&text='    + encodeURIComponent(S.title)
+          + '&dates='   + z(start) + '/' + z(end)
+          + '&details=' + encodeURIComponent(S.details + (S.joinUrl ? '\n\nJoin: ' + S.joinUrl : ''))
+          + (S.joinUrl ? '&location=' + encodeURIComponent(S.joinUrl) : '');
+
+    var gEl = document.querySelector('[data-cal="google"]');
+    if (gEl) gEl.href = g;
+
+    var ics = [
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Ridley Academy//Masterclass//EN',
+      'BEGIN:VEVENT',
+      'UID:' + z(start) + '@ridleyacademy',
+      'DTSTAMP:' + z(new Date()),
+      'DTSTART:' + z(start),
+      'DTEND:'   + z(end),
+      'SUMMARY:' + S.title,
+      'DESCRIPTION:' + S.details.replace(/\n/g,'\\n') + (S.joinUrl ? '\\n\\nJoin: ' + S.joinUrl : ''),
+      S.joinUrl ? 'LOCATION:' + S.joinUrl : '',
+      'BEGIN:VALARM','TRIGGER:-PT15M','ACTION:DISPLAY','DESCRIPTION:Masterclass starts in 15 minutes','END:VALARM',
+      'END:VEVENT','END:VCALENDAR'
+    ].filter(Boolean).join('\r\n');
+
+    var iEl = document.querySelector('[data-cal="ics"]');
+    if (iEl) {
+      iEl.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+      iEl.setAttribute('download','ridley-masterclass.ics');
+    }
+  } else {
+    /* no session set yet: hide the calendar buttons rather than ship dead links */
+    document.querySelectorAll('.cal').forEach(function(el){ el.style.display='none'; });
+  }
+
+  /* ---------- lazy video facades ---------- */
+  document.querySelectorAll('[data-video]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var id = btn.getAttribute('data-video');
+      if (!id || /_ID$/.test(id)) return;   /* placeholder, do nothing */
+
+      var frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
+      frame.title = btn.getAttribute('aria-label') || 'Video';
+      frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture';
+      frame.allowFullscreen = true;
+      frame.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0';
+
+      var host = btn.querySelector('.bo__thumb') || btn;
+      host.style.position = 'relative';
+      host.innerHTML = '';
+      host.appendChild(frame);
+
+      try {
+        window.dataLayer = window.dataLayer || [];
+        dataLayer.push({event:'rdly_confirm_video_play', video_id:id});
+      } catch(_){}
+    });
+  });
+
+  /* ---------- scroll reveal. IntersectionObserver, never a scroll listener. ---------- */
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rv = document.querySelectorAll('.rv');
+  if (reduce || !('IntersectionObserver' in window)) {
+    rv.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, {threshold:.2, rootMargin:'0px 0px -8% 0px'});
+    rv.forEach(function(el){ io.observe(el); });
+    /* failsafe: nothing stays invisible because an observer missed it */
+    setTimeout(function(){ rv.forEach(function(el){ el.classList.add('in'); }); }, 2500);
+  }
+
+  /* ---------- fire the confirmation-page view ---------- */
+  try {
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({event:'rdly_webinar_confirmed'});
+  } catch(_){}
+})();
+</script>
+
+</body>
+</html>

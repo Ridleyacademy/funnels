@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Apply for a Breakthrough Session | Ridley Academy</title>
+
+<!-- ============================================================
+     RIDLEY ACADEMY : POST-WEBINAR APPLICATION
+
+     ONLY USED IF THE WEBINAR SELLS ACCELERATOR.
+     If the webinar sells a $1,397 to $3,000 product, delete this
+     step and sell in the room. Stephen is right about that: at that
+     price the moment is the asset and an application throws it away.
+     This page exists for the high-ticket path only.
+
+     Two jobs, in this order:
+       1. The applicant writes her own sales narrative. The sentence
+          stems are not decoration; the closer reads the answers
+          before the call and the call starts from her words rather
+          than from discovery. (PRODUCT.md strategic principle.)
+       2. Score, then route to one of three calendars. Highest scores
+          book soonest, because intent decays. Lowest scores land on
+          setters rather than closers.
+
+     DQ IS A RE-ROUTE, NEVER A REJECT. (PRODUCT.md.) Nobody is told
+     no. Someone with no instrument or no time is sent to the thing
+     that actually helps them today, which is the mini course, not a
+     sales call that wastes both parties.
+
+     LOW VOLUME: if fewer than roughly 40 applications per event,
+     set ROUTING_MODE = 'immediate'. Below that volume, pushing
+     anyone into a later calendar costs more than the filtering
+     gains. Operators running this at scale say the same.
+     ============================================================ -->
+
+<script>document.documentElement.className+=' js-anim';</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap" rel="stylesheet">
+
+<!-- one config for the whole funnel: date, offer mode, checkout,
+     calendars, video ids, replay window. See event.js. -->
+<script src="event.js"></script>
+
+<style>
+:root{
+  --cream:#F8F6F2; --cream-2:#F1EBDF; --paper:#FFFBF4;
+  --cherry:#E81420; --burgundy:#B00C19; --bordeaux:#6E0717;
+  --ink:#2A060D; --ink-soft:#7a3a40;
+  --gold:#FFB42B; --gold-acc:#FFC04A;
+  --line:rgba(42,6,13,.14); --cream-line:rgba(252,244,234,.16);
+  --display:'Oswald','Switzer',Arial,sans-serif;
+  --body:'Switzer',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --hand:'Caveat',cursive;
+  --wrap:1200px; --wrap-narrow:860px; --gut:clamp(20px,5vw,60px);
+  --radius:18px; --radius-lg:26px; --radius-sm:12px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --shadow-warm:0 24px 60px -24px rgba(110,7,23,.28);
+  --s-1:8px; --s-2:12px; --s-3:20px; --s-4:32px; --s-5:48px; --s-6:72px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+::selection{background:var(--gold);color:var(--ink)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+h1,h2,h3{font-family:var(--display);text-transform:uppercase;line-height:1.05;font-weight:600}
+.wrap{max-width:var(--wrap-narrow);margin:0 auto;padding:0 var(--gut)}
+
+.head{display:flex;align-items:center;justify-content:center;gap:.5em;padding:var(--s-3) var(--gut) var(--s-1)}
+.head svg{width:26px;height:26px;color:var(--cherry)}
+.head span{font-family:var(--display);font-size:21px;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+
+.intro{padding:var(--s-5) 0 var(--s-4);text-align:center}
+.eyebrow{display:inline-block;font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:var(--cherry);margin-bottom:var(--s-2);font-weight:500}
+.h1{font-size:clamp(30px,5vw,48px);line-height:1.03;max-width:20ch;margin:0 auto;text-wrap:balance}
+.lede{color:var(--ink-soft);font-size:clamp(16px,2.1vw,18.5px);max-width:56ch;margin:var(--s-3) auto 0}
+
+/* progress: honest, not gamified */
+.prog{display:flex;gap:var(--s-1);max-width:340px;margin:var(--s-4) auto 0}
+.prog i{flex:1;height:3px;border-radius:999px;background:var(--line);transition:background .4s var(--ease)}
+.prog i.on{background:var(--cherry)}
+.progl{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:var(--s-2);letter-spacing:.04em}
+
+form{padding-bottom:var(--s-6)}
+.step{display:none}
+.step.on{display:block}
+
+fieldset{border:0;margin-top:var(--s-5)}
+legend{font-family:var(--display);text-transform:uppercase;font-size:clamp(18px,2.4vw,23px);font-weight:600;line-height:1.15;margin-bottom:var(--s-1)}
+.hint{color:var(--ink-soft);font-size:15px;margin-bottom:var(--s-3);max-width:52ch}
+
+/* choices: boxless rows, hairline separated */
+.choices{border-top:1.5px solid var(--line)}
+.choice{display:flex;gap:var(--s-3);align-items:flex-start;padding:var(--s-3) var(--s-2);border-bottom:1.5px solid var(--line);cursor:pointer;transition:background .18s var(--ease)}
+.choice:hover{background:var(--paper)}
+.choice input{margin-top:4px;width:19px;height:19px;accent-color:var(--cherry);flex:none}
+.choice b{display:block;font-weight:600;font-size:16.5px;line-height:1.35}
+.choice span{display:block;color:var(--ink-soft);font-size:14.5px;margin-top:3px;line-height:1.45}
+.choice:has(input:checked){background:var(--paper)}
+.choice:has(input:focus-visible){outline:3px solid var(--gold);outline-offset:-3px}
+
+/* sentence stems: the applicant writes her own narrative */
+.stem{margin-top:var(--s-4)}
+.stem label{display:block;font-size:17px;line-height:1.5;margin-bottom:var(--s-2)}
+.stem label b{font-weight:600}
+textarea,.text{width:100%;font:inherit;font-size:16px;padding:14px 16px;border:1.5px solid var(--line);border-radius:var(--radius-sm);background:var(--paper);color:var(--ink);resize:vertical}
+textarea{min-height:96px;line-height:1.55}
+textarea:focus,.text:focus{outline:0;border-color:var(--cherry);box-shadow:0 0 0 4px rgba(232,20,32,.12)}
+.count{font-size:12.5px;color:var(--ink-soft);text-align:right;margin-top:5px}
+
+.nav{display:flex;gap:var(--s-2);margin-top:var(--s-5);align-items:center}
+.btn{background:var(--cherry);color:#fff;border:0;border-radius:999px;padding:17px 40px;font-family:var(--display);text-transform:uppercase;font-size:17px;letter-spacing:.05em;white-space:nowrap;cursor:pointer;text-decoration:none;text-align:center;transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease)}
+.btn:hover{background:var(--burgundy);transform:translateY(-2px);box-shadow:var(--shadow-warm)}
+.btn:active{transform:translateY(1px) scale(.985)}
+.btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.btn[disabled]{opacity:.55;cursor:not-allowed;transform:none}
+.btn--ghost{background:none;color:var(--ink-soft);padding:17px 8px;font-size:15px;letter-spacing:.04em}
+.btn--ghost:hover{background:none;color:var(--ink);transform:none;box-shadow:none}
+.err{color:var(--burgundy);font-size:14px;margin-top:var(--s-2);display:none}
+.err.on{display:block}
+
+/* outcomes */
+.out{display:none;padding:var(--s-5) 0 var(--s-6)}
+.out.on{display:block}
+.out h2{font-size:clamp(26px,4vw,40px);max-width:20ch;text-wrap:balance}
+.out p{color:var(--ink-soft);font-size:17px;margin-top:var(--s-3);max-width:56ch;line-height:1.6}
+.out .btn{margin-top:var(--s-4);display:inline-block}
+.cal{margin-top:var(--s-4);border:1.5px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;min-height:640px;background:var(--paper)}
+.cal iframe{width:100%;height:640px;border:0;display:block}
+.hand{font-family:var(--hand);font-size:clamp(20px,2.8vw,27px);color:var(--cherry);line-height:1.25;font-weight:700;margin-top:var(--s-3)}
+
+.sitefoot{background:var(--ink);color:rgba(252,244,234,.62);padding:clamp(40px,6vw,64px) 0 28px;font-size:12.5px;line-height:1.65}
+.sitefoot a{color:rgba(252,244,234,.82);display:inline-block;padding:10px 2px}
+.sitefoot p+p{margin-top:var(--s-2)}
+
+@media (prefers-reduced-motion: no-preference){
+  .js-anim .rv{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+  .js-anim .rv.in{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="head">
+  <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <rect x="4" y="22" width="5.5" height="14" rx="2.5" fill="currentColor"/>
+    <rect x="12" y="15" width="5.5" height="21" rx="2.5" fill="currentColor"/>
+    <rect x="20" y="8" width="5.5" height="28" rx="2.5" fill="currentColor"/>
+    <rect x="28" y="3" width="5.5" height="33" rx="2.5" fill="currentColor"/>
+  </svg>
+  <span>Ridley Academy</span>
+</div>
+
+<main id="main">
+
+<section class="intro" id="intro">
+  <span class="eyebrow">Breakthrough Session</span>
+  <h1 class="h1">Tell us where you are, and we will find the fastest way forward.</h1>
+  <p class="lede">Six questions, about two minutes. Then you pick a time. It is a conversation, not a checkout, and you never have to play a note.</p>
+  <div class="prog" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+  <p class="progl" id="progl">Step 1 of 3</p>
+</section>
+
+<form id="app" class="wrap" novalidate>
+
+  <!-- STEP 1: where they are. Scored. -->
+  <div class="step on" data-step="1">
+
+    <fieldset>
+      <legend>Where are you with the piano right now?</legend>
+      <p class="hint">There is no wrong answer here. It only changes where we start you.</p>
+      <div class="choices">
+        <label class="choice"><input type="radio" name="level" value="never" data-score="1" required>
+          <span><b>I have never really played</b><span>Complete beginner, or so long ago it does not count.</span></span></label>
+        <label class="choice"><input type="radio" name="level" value="child" data-score="3">
+          <span><b>I played as a child and stopped</b><span>Lessons, maybe grades, then it fell away.</span></span></label>
+        <label class="choice"><input type="radio" name="level" value="apps" data-score="3">
+          <span><b>I have tried apps or courses</b><span>Started something, did not get where I wanted.</span></span></label>
+        <label class="choice"><input type="radio" name="level" value="some" data-score="2">
+          <span><b>I can play a few pieces</b><span>Only the ones I have learned by heart.</span></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Do you have a piano or keyboard you can use?</legend>
+      <p class="hint">Any size, any number of keys.</p>
+      <div class="choices">
+        <label class="choice"><input type="radio" name="instrument" value="yes" data-score="3" required>
+          <span><b>Yes, at home</b></span></label>
+        <label class="choice"><input type="radio" name="instrument" value="soon" data-score="2">
+          <span><b>Not yet, but I plan to get one</b></span></label>
+        <label class="choice"><input type="radio" name="instrument" value="no" data-score="0">
+          <span><b>No, and I am not planning to</b></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Realistically, how much time do you have most days?</legend>
+      <p class="hint">Be honest rather than ambitious. Ten minutes done daily beats an hour done occasionally.</p>
+      <div class="choices">
+        <label class="choice"><input type="radio" name="time" value="under10" data-score="1" required>
+          <span><b>Under ten minutes</b></span></label>
+        <label class="choice"><input type="radio" name="time" value="10to20" data-score="3">
+          <span><b>Ten to twenty minutes</b><span>This is the sweet spot for the method.</span></span></label>
+        <label class="choice"><input type="radio" name="time" value="30plus" data-score="3">
+          <span><b>Half an hour or more</b></span></label>
+        <label class="choice"><input type="radio" name="time" value="none" data-score="0">
+          <span><b>Honestly, none right now</b></span></label>
+      </div>
+    </fieldset>
+
+    <p class="err" id="e1" role="alert"></p>
+    <div class="nav"><button type="button" class="btn" data-next="2">Continue</button></div>
+  </div>
+
+  <!-- STEP 2: her own words. Not scored, read aloud on the call. -->
+  <div class="step" data-step="2">
+
+    <fieldset>
+      <legend>In your own words</legend>
+      <p class="hint">Whoever speaks with you reads this first, so the call starts where you are rather than with twenty minutes of questions.</p>
+
+      <div class="stem">
+        <label for="s1">The song I have always wanted to be able to play is <b>...</b></label>
+        <input class="text" id="s1" name="stem_song" maxlength="160" placeholder="Name it, even if it feels out of reach">
+      </div>
+
+      <div class="stem">
+        <label for="s2">I last tried to learn, and what stopped me was <b>...</b></label>
+        <textarea id="s2" name="stem_stopped" maxlength="600" placeholder="Time, a teacher, boredom, life, or you never really started"></textarea>
+        <div class="count" data-for="s2">600 left</div>
+      </div>
+
+      <div class="stem">
+        <label for="s3">If I could sit down and play properly a year from now, it would mean <b>...</b></label>
+        <textarea id="s3" name="stem_meaning" maxlength="600" placeholder="This is the one worth thinking about for a moment"></textarea>
+        <div class="count" data-for="s3">600 left</div>
+      </div>
+    </fieldset>
+
+    <p class="err" id="e2" role="alert"></p>
+    <div class="nav">
+      <button type="button" class="btn" data-next="3">Continue</button>
+      <button type="button" class="btn btn--ghost" data-back="1">Back</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: contact + readiness -->
+  <div class="step" data-step="3">
+
+    <fieldset>
+      <legend>Where do we reach you?</legend>
+      <div class="stem">
+        <label for="fn">First name</label>
+        <input class="text" id="fn" name="name" autocomplete="given-name" required>
+      </div>
+      <div class="stem">
+        <label for="em">Email</label>
+        <input class="text" id="em" name="email" type="email" inputmode="email" autocomplete="email" required>
+      </div>
+      <div class="stem">
+        <label for="ph">Phone</label>
+        <input class="text" id="ph" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>One last thing</legend>
+      <p class="hint">Coaching with Stephen is an investment. For context, two years of weekly private lessons typically runs $5,200 to $10,400. We will talk through what makes sense for you on the call.</p>
+      <div class="choices">
+        <label class="choice"><input type="radio" name="ready" value="ready" data-score="3" required>
+          <span><b>I am in a position to invest in this if it is right</b></span></label>
+        <label class="choice"><input type="radio" name="ready" value="maybe" data-score="2">
+          <span><b>Probably, but I would want to understand it first</b></span></label>
+        <label class="choice"><input type="radio" name="ready" value="not" data-score="0">
+          <span><b>Not right now</b><span>Completely fine. We will point you somewhere useful instead.</span></span></label>
+      </div>
+    </fieldset>
+
+    <p class="err" id="e3" role="alert"></p>
+    <div class="nav">
+      <button type="submit" class="btn" id="submit">See My Times</button>
+      <button type="button" class="btn btn--ghost" data-back="2">Back</button>
+    </div>
+  </div>
+
+</form>
+
+<!-- OUTCOME A: book a call. Calendar chosen by score. -->
+<section class="out wrap" id="out-book">
+  <h2 id="bookH">Good. Here are your times.</h2>
+  <p id="bookP">Pick whatever suits. It runs about thirty minutes, it is a conversation rather than a pitch, and you will leave with a plan either way.</p>
+  <div class="cal"><iframe id="calFrame" title="Choose a time for your Breakthrough Session" loading="lazy"></iframe></div>
+</section>
+
+<!-- OUTCOME B: re-route. Never a reject. -->
+<section class="out wrap" id="out-route">
+  <h2>Start here instead.</h2>
+  <p id="routeP"></p>
+  <p>The 4 Magic Chords Mini Course is the fastest way to get your hands on real music, and it needs nothing from you but the time you already have. When your circumstances change, come back and we will pick this up properly.</p>
+  <a class="btn" id="routeCta" href="https://ridleyacademy.com/4-magic-chords?el=apply-reroute">Get the Mini Course</a>
+  <p class="hand">No hard feelings and no hard sell. Go and play something.</p>
+</section>
+
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap">
+    <p>Ridley Academy teaches a method. Results depend on you, the time you put in, and where you are starting from. We do not guarantee any particular standard.</p>
+    <p><a href="terms.html?el=apply-foot">Terms of Service</a> &nbsp;·&nbsp; <a href="privacy.html?el=apply-foot">Privacy Policy</a> &nbsp;·&nbsp; © Ridley Academy</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   Application, scoring and routing.
+
+   SCORING. Four scored questions, max 12.
+     level       1 to 3
+     instrument  0 to 3
+     time        0 to 3
+     ready       0 to 3
+
+   HARD RE-ROUTE, regardless of total. Any one of these means a
+   sales call helps nobody, so we send her somewhere that does:
+     instrument = no      cannot practise
+     time       = none    cannot practise
+     ready      = not     not an investment conversation today
+
+   Re-route is not rejection. Nobody sees a "you do not qualify"
+   screen, and the copy never implies one. (PRODUCT.md.)
+
+   BANDS, for everyone not hard-re-routed:
+     9 to 12   A   soonest calendar, closers
+     6 to 8    B   second calendar, closers
+     0 to 5    C   third calendar, setters
+
+   ROUTING_MODE. At low volume, banding costs more than it gains:
+   pushing a warm applicant a week out loses more than the filtering
+   saves. Under roughly 40 applications an event, use 'immediate'
+   and everyone gets calendar A.
+   ============================================================ */
+
+const ROUTING_MODE = 'immediate';   // 'immediate' | 'banded'
+
+/* Live links come from event.js. The fallback below is the same
+   verified url, so this page still routes correctly if the config
+   fails to load rather than dropping a qualified applicant.
+
+   Corrected 12 Aug: this page pointed at d3xy-58j-rxw, which is not
+   the booking link the rest of the funnel uses. The live pooled
+   round-robin type is dv25-nhh-w9v, verified against the API and
+   rendered live on 4 Aug (AUDIT-BOOKING-LINKS.md). 18 of the next 20
+   real org bookings sit on it. */
+const CALENDLY = 'https://calendly.com/d/dv25-nhh-w9v/free-piano-consultation?hide_gdpr_banner=1';
+const CALENDARS = (window.RIDLEY_EVENT && window.RIDLEY_EVENT.calendars) || {
+  A: CALENDLY, B: CALENDLY, C: CALENDLY
+};
+
+(function(){
+  const form  = document.getElementById('app');
+  const steps = [...form.querySelectorAll('.step')];
+  const bars  = [...document.querySelectorAll('.prog i')];
+  const progl = document.getElementById('progl');
+  const EMAIL = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+
+  function show(n){
+    steps.forEach(s => s.classList.toggle('on', +s.dataset.step === n));
+    bars.forEach((b,i) => b.classList.toggle('on', i < n));
+    progl.textContent = 'Step ' + n + ' of 3';
+    document.getElementById('intro').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function fail(id, msg){
+    const el = document.getElementById(id);
+    el.textContent = msg; el.classList.add('on');
+    return false;
+  }
+  function clear(id){ document.getElementById(id).classList.remove('on'); }
+
+  /* live character counts */
+  form.querySelectorAll('[data-for]').forEach(c => {
+    const t = document.getElementById(c.dataset.for);
+    const max = +t.getAttribute('maxlength');
+    t.addEventListener('input', () => { c.textContent = (max - t.value.length) + ' left'; });
+  });
+
+  form.querySelectorAll('[data-next]').forEach(b => b.addEventListener('click', () => {
+    const n = +b.dataset.next;
+    if (n === 2) {
+      clear('e1');
+      for (const q of ['level','instrument','time']) {
+        if (!form.querySelector(`[name="${q}"]:checked`))
+          return fail('e1', 'Please answer all three so we can point you in the right direction.');
+      }
+    }
+    if (n === 3) clear('e2');   // step 2 is optional by design, never gate her words
+    show(n);
+  }));
+
+  form.querySelectorAll('[data-back]').forEach(b =>
+    b.addEventListener('click', () => show(+b.dataset.back)));
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    clear('e3');
+
+    const name  = document.getElementById('fn');
+    const email = document.getElementById('em');
+    const phone = document.getElementById('ph');
+
+    if (!name.value.trim())              return fail('e3','Please add your first name.');
+    if (!EMAIL.test(email.value.trim())) return fail('e3','That email address does not look right.');
+    if (phone.value.replace(/\D/g,'').length < 7) return fail('e3','Please add a phone number.');
+    if (!form.querySelector('[name="ready"]:checked'))
+      return fail('e3','Please pick the last one so we know how to help.');
+
+    /* score */
+    let score = 0;
+    const answers = {};
+    ['level','instrument','time','ready'].forEach(q => {
+      const el = form.querySelector(`[name="${q}"]:checked`);
+      answers[q] = el.value;
+      score += +el.dataset.score;
+    });
+
+    const hardReroute =
+      answers.instrument === 'no' || answers.time === 'none' || answers.ready === 'not';
+
+    const band = hardReroute ? 'R'
+               : ROUTING_MODE === 'immediate' ? 'A'
+               : score >= 9 ? 'A' : score >= 6 ? 'B' : 'C';
+
+    const E = window.RIDLEY_EVENT || {};
+
+    const payload = {
+      name: name.value.trim(),
+      email: email.value.trim(),
+      phone: phone.value.trim(),
+      source: 'webinar-application-PREVIEW',   /* PREVIEW BRANCH ONLY: /api/optin is live on this
+         host, so a team member filling this form writes a real contact.
+         The -PREVIEW suffix makes those trivially filterable in AXL.
+         Production must ship the unsuffixed source. */
+      score, band,
+      ...answers,
+      stem_song:    document.getElementById('s1').value.trim(),
+      stem_stopped: document.getElementById('s2').value.trim(),
+      stem_meaning: document.getElementById('s3').value.trim(),
+      ts: Date.now()
+    };
+
+    /* Full attribution stored locally, utm_source on the wire. Same
+       contract as register.html; see event.js. An application that
+       arrives with no source cannot be attributed back to the
+       channel that produced it, and channel is the split that
+       matters most on this funnel. */
+    const attr = (typeof E.attribution === 'function') ? E.attribution() : {};
+    const wire = (typeof E.wireAttribution === 'function') ? E.wireAttribution() : {};
+
+    try { localStorage.setItem('ridley_lead_v1', JSON.stringify({...payload, ...attr})); } catch(_){}
+    try {
+      fetch('/api/optin', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({...payload, ...wire}), keepalive: true
+      }).catch(()=>{});
+    } catch(_){}
+
+    try {
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({event:'rdly_application_complete', app_band: band, app_score: score});
+      if (window.fbq && !hardReroute) fbq('track','Lead',{content_name:'Breakthrough Session Application'});
+    } catch(_){}
+
+    form.style.display = 'none';
+    document.getElementById('intro').style.display = 'none';
+
+    if (hardReroute) {
+      const why =
+        answers.instrument === 'no' ? 'You mentioned you are not planning to get an instrument, so a call about coaching would be putting the cart a long way before the horse.'
+      : answers.time === 'none'     ? 'You said you have no time right now, and I would rather not sell you something that needs time you do not have.'
+      :                               'You said now is not the moment to invest, which is a completely reasonable answer and I would rather you kept your money.';
+      document.getElementById('routeP').textContent = why;
+      document.getElementById('out-route').classList.add('on');
+      document.getElementById('out-route').scrollIntoView({behavior:'smooth', block:'start'});
+      return;
+    }
+
+    /* fall back rather than throw: a missing band key at this point
+       would strand a qualified applicant one step from booking */
+    const url = new URL(CALENDARS[band] || CALENDLY);
+    url.searchParams.set('name',  payload.name);
+    url.searchParams.set('email', payload.email);
+    document.getElementById('calFrame').src = url.toString();
+
+    if (band !== 'A') {
+      document.getElementById('bookH').textContent = 'Here are your times.';
+    }
+    document.getElementById('out-book').classList.add('on');
+    document.getElementById('out-book').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+})();
+</script>
+
+</body>
+</html>

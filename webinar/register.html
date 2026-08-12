@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Learn To Play Your Favorite Song In Days, Not Years | Free Live Masterclass</title>
+<meta name="description" content="A free live piano masterclass with Stephen Ridley. 90 minutes at your own piano, discovering the simple patterns hiding inside the songs you already love. No reading music required.">
+
+<!-- ============================================================
+     RIDLEY ACADEMY : LIVE MASTERCLASS REGISTRATION
+
+     Register: brand (PRODUCT.md). Tokens, split ratios, motion class
+     names and radius scale all come from funnel-build/shared.css so
+     this page sits inside the existing funnel rather than beside it.
+
+     Structure cloned from the Jeremy Haynes / Megalodon opt-in
+     pattern (../WEBINAR-FUNNEL-CLONE-HAYNES.md). Structural only:
+       1. Headline, then the form, above any body copy.
+       2. Three fields plus a separate unticked SMS consent, because
+          the day-of text is the biggest single show-rate lever.
+       3. Symptoms in the reader's voice, then mirrored outcomes.
+
+     Spatial rhythm is deliberate, not uniform:
+       hero (tight)  proof (tight)  symptoms (generous)
+       outcomes (generous)  close (tight)
+
+     PRODUCT.md constraints honoured: only verified proof numbers,
+     no invented scarcity or counters, no dashes, no exclamation
+     points, no printed coaching price.
+     ============================================================ -->
+
+<!-- reveal is opt-in: only a JS-capable client ever hides content, so
+     no-JS, print, and crawler renders always see the full page. -->
+<script>document.documentElement.className+=' js-anim';</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap" rel="stylesheet">
+
+<!-- one config for the whole funnel: date, offer mode, checkout,
+     calendars, video ids, replay window. See event.js. -->
+<script src="event.js"></script>
+
+<style>
+:root{
+  /* --- system tokens: ported from funnels-clean arm-d, 10 Aug (Stephen's
+     palette note). Ground brightened to the arm-d near-white, cards go pure
+     white, and red commits at region scale via --hinge / --close-deep.
+     --cherry #E81420 is the locked brand red and is never brightened:
+     white on it clears 4.6:1, a brighter red fails AA on every button. --- */
+  --cream:#FDFAF5; --cream-2:#F4EFE6; --paper:#FFFFFF;
+  --cherry:#E81420; --burgundy:#B00C19; --bordeaux:#6E0717;
+  --hinge:#C21120; --close-deep:#8C1024;
+  --on-field:#FFF4F1; --on-field-dim:rgba(255,242,238,.95);
+  --wine:#2B0B13;
+  --ink:#2A060D; --ink-soft:#7a3a40;
+  --gold:#FFB42B; --gold-acc:#FFC04A;
+  --line:rgba(42,6,13,.14); --line-2:rgba(42,6,13,.06);
+  --cream-line:rgba(252,244,234,.16);
+  --display:'Oswald','Switzer',Arial,sans-serif;
+  --body:'Switzer',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --hand:'Caveat',cursive;
+  --wrap:1200px; --wrap-narrow:860px; --gut:clamp(20px,5vw,60px);
+  --radius:18px; --radius-lg:26px; --radius-sm:12px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --shadow-warm:0 24px 60px -24px rgba(110,7,23,.28);
+
+  /* --- semantic space scale. every gap below comes from this set --- */
+  --s-1:8px; --s-2:12px; --s-3:20px; --s-4:32px; --s-5:48px; --s-6:72px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+::selection{background:var(--gold);color:var(--ink)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+h1,h2{font-family:var(--display);text-transform:uppercase;line-height:1.04;font-weight:600}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+
+/* section rhythm: tight and generous alternate, never uniform */
+.section{padding:clamp(56px,9vw,120px) 0}
+.section--tight{padding:clamp(32px,5vw,56px) 0}
+
+/* ---------- chrome ---------- */
+.topbar{background:var(--cherry);color:#fff;text-align:center;font-size:14px;padding:10px var(--gut);letter-spacing:.02em}
+.topbar b{font-family:var(--display);font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+.head{display:flex;align-items:center;justify-content:center;gap:.5em;padding:var(--s-3) var(--gut) var(--s-1)}
+.head svg{width:26px;height:26px;color:var(--cherry)}
+.head span{font-family:var(--display);font-size:21px;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+
+/* ---------- 1. HERO: light, punchy, 7/5 asymmetric ----------
+   Redesigned lighter 10 Aug on Chris's note. The ground is the bright
+   near-white; energy comes from the cherry accent in the headline, the
+   red-framed hall photograph, and the red card button, not from a dark
+   backdrop. The photo keeps Stephen's creation-and-effect note above
+   the fold, now as a framed asset instead of a scrimmed background. */
+.hero{position:relative;padding:clamp(28px,4vw,52px) 0 clamp(48px,6vw,80px);background:var(--cream)}
+/* Three children, not two, and the split is the reason.
+   The 12 Aug copy runs long above the fold, so the left column is
+   cut in half: the HEAD (badge, headline, the three "you do not
+   need" lines, the when/where row) and the TAIL (the longer setup
+   paragraphs and the photograph). On desktop both stack in column
+   one beside the form. On mobile the DOM order puts the form
+   BETWEEN them, so the fields stay reachable instead of sitting
+   under six paragraphs of body copy, which is the whole reason
+   this page is laid out asymmetrically in the first place. */
+.split{display:grid;grid-template-columns:7fr 5fr;gap:clamp(26px,4vw,72px) clamp(30px,5vw,72px);align-items:start}
+.hero__intro{container-type:inline-size;grid-column:1;grid-row:1}
+.card{grid-column:2;grid-row:1 / span 2}
+.hero__tail{grid-column:1;grid-row:2}
+@media(max-width:1000px){
+  .split{grid-template-columns:1fr;gap:var(--s-4)}
+  .hero__intro,.card,.hero__tail{grid-column:1;grid-row:auto}
+}
+
+/* the three disqualifiers, read as a set. Short lines, hairline
+   separated, so they scan in about two seconds. */
+.needs{list-style:none;margin-top:var(--s-3);display:grid;gap:0;max-width:46ch}
+/* the text is wrapped in a single span on purpose: a bare flex item
+   per inline child would space out every <b> inside the sentence */
+.needs li{display:flex;gap:.7em;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line-2);
+  font-size:clamp(15.5px,1.9vw,17px);color:var(--ink)}
+.needs li:last-child{border-bottom:0}
+.needs li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cherry);flex:none;transform:translateY(-2px)}
+.needs b{font-weight:600}
+
+.hero__tail p{color:var(--ink-soft);font-size:clamp(16px,2vw,18px);max-width:54ch;margin-top:var(--s-3)}
+.hero__tail p b{color:var(--ink);font-weight:600}
+
+.eyebrow{display:inline-flex;align-items:center;gap:.6em;font-family:var(--display);text-transform:uppercase;letter-spacing:.15em;font-size:12.5px;color:var(--burgundy);margin-bottom:var(--s-3);font-weight:500}
+.eyebrow::before{content:"";width:26px;height:1.5px;background:var(--cherry);flex:none}
+
+/* the event badge: the first thing read after the topbar, and the thing
+   that says "this is a live event you attend", not another course page */
+.evbadge{display:inline-flex;align-items:center;gap:.55em;background:var(--cherry);color:#fff;
+  font-family:var(--display);text-transform:uppercase;letter-spacing:.12em;font-size:13px;font-weight:500;
+  padding:9px 18px;border-radius:999px;margin-bottom:var(--s-3)}
+.evbadge i{width:8px;height:8px;border-radius:50%;background:#fff;flex:none}
+@media (prefers-reduced-motion:no-preference){
+  .evbadge i{animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+}
+.h1{font-size:clamp(33px,9cqi,58px);line-height:1.0;letter-spacing:.004em;color:var(--ink);text-wrap:balance}
+.h1 em{font-style:normal;color:var(--cherry)}
+.sub{color:var(--ink-soft);font-size:clamp(16.5px,2.1vw,19.5px);max-width:44ch;margin-top:var(--s-3)}
+.sub b{color:var(--ink);font-weight:600}
+
+/* meta row: one line of hairline-separated facts */
+.when{display:flex;flex-wrap:wrap;align-items:center;gap:0;margin-top:clamp(20px,3vw,30px);
+  border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);padding:14px 0}
+.when i{font-style:normal;display:flex;flex-direction:column;gap:3px;padding:2px clamp(14px,2.2vw,26px) 2px 0;margin-right:clamp(14px,2.2vw,26px);
+  border-right:1.5px solid var(--line)}
+.when i:last-child{border-right:0;margin-right:0;padding-right:0}
+.when i b{font-family:var(--display);text-transform:uppercase;letter-spacing:.12em;font-weight:500;font-size:10.5px;color:var(--burgundy)}
+.when i span,.when i{font-size:15px;color:var(--ink)}
+@media(max-width:560px){
+  .when{gap:14px 0}
+  .when i{width:50%;padding-right:12px;margin-right:0;border-right:0}
+}
+
+/* the hall photograph: framed, bottom edge carries the brand red */
+.hero__photo{position:relative;margin-top:clamp(20px,3vw,30px);border-radius:var(--radius-lg);overflow:hidden;
+  border-bottom:5px solid var(--cherry);box-shadow:0 26px 60px -26px rgba(110,7,23,.4)}
+.hero__photo img{width:100%;height:auto;aspect-ratio:21/9;object-fit:cover;object-position:50% 42%}
+.livetag{position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:.5em;
+  background:rgba(255,255,255,.94);color:var(--ink);font-family:var(--display);text-transform:uppercase;
+  letter-spacing:.1em;font-size:11.5px;font-weight:600;padding:7px 13px;border-radius:999px}
+.livetag i{width:7px;height:7px;border-radius:50%;background:var(--cherry);flex:none}
+
+@media(max-width:640px){
+  .hero{padding:clamp(22px,5vw,36px) 0 clamp(36px,7vw,52px)}
+  .h1{font-size:clamp(31px,10.5cqi,42px)}
+  .sub{margin-top:var(--s-2);font-size:16.5px}
+  .when{margin-top:var(--s-3);padding:12px 0}
+  .eyebrow{margin-bottom:var(--s-2)}
+  .hero__photo img{aspect-ratio:16/9}
+}
+
+/* form card: the only elevated surface on the page, so elevation means something */
+.card{background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius-lg);padding:clamp(24px,3vw,34px);
+  box-shadow:0 30px 70px -28px rgba(110,7,23,.38)}
+.card h2{font-size:clamp(22px,3vw,27px)}
+.card__sub{color:var(--ink-soft);font-size:15px;margin:var(--s-1) 0 var(--s-3)}
+.fields{display:grid;gap:var(--s-1)}
+.field{width:100%;font:inherit;font-size:16px;padding:15px 17px;border:1.5px solid var(--line);border-radius:var(--radius-sm);background:var(--cream-2);color:var(--ink)}
+.field::placeholder{color:#7d5b60}                 /* AA on --cream-2, fields must not dissolve into the white card */
+.field:focus{outline:0;border-color:var(--cherry);background:var(--paper);box-shadow:0 0 0 4px rgba(232,20,32,.12)}
+.field[aria-invalid="true"]{border-color:var(--cherry);background:#fff5f5}
+.err{display:none;color:var(--burgundy);font-size:13.5px;margin-top:calc(var(--s-1) * -0.5)}
+.err.on{display:block}
+.consent{display:flex;gap:var(--s-2);align-items:flex-start;margin:var(--s-3) 0 0;font-size:13px;color:var(--ink-soft);line-height:1.45;cursor:pointer}
+.consent input{margin-top:2px;width:18px;height:18px;accent-color:var(--cherry);flex:none}
+.btn{display:block;width:100%;background:var(--cherry);color:#fff;border:0;border-radius:999px;padding:19px 30px;font-family:var(--display);text-transform:uppercase;font-size:18px;letter-spacing:.05em;white-space:nowrap;cursor:pointer;margin-top:var(--s-3);text-decoration:none;text-align:center;transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease)}
+.btn:hover{background:var(--burgundy);transform:translateY(-2px);box-shadow:var(--shadow-warm)}
+.btn:active{transform:translateY(1px) scale(.985)}
+.btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.btn[disabled]{opacity:.62;cursor:progress;transform:none}
+.note{font-size:12.5px;color:var(--ink-soft);text-align:center;margin-top:var(--s-2)}
+.btn small{display:block;font-size:12.5px;letter-spacing:.03em;opacity:.92;margin-top:3px;text-transform:none;font-family:var(--body)}
+
+/* ---------- show-rate devices: attendance bonus + countdown ---------- */
+.bonus{margin-top:var(--s-3);padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--radius-sm);background:var(--cream-2)}
+.bonus b{font-family:var(--display);text-transform:uppercase;letter-spacing:.09em;font-size:12px;color:var(--burgundy);display:block;margin-bottom:4px}
+.bonus span{font-size:14px;line-height:1.5;color:var(--ink);display:block}
+.cd{margin-top:var(--s-3);text-align:center}
+.cd__lbl{font-size:12.5px;color:var(--ink-soft);margin-bottom:7px}
+.cd__t{display:flex;justify-content:center;gap:8px}
+.cd__u{min-width:56px;padding:8px 4px 7px;border-radius:var(--radius-sm);background:var(--cherry);color:#fff}
+.cd__u b{display:block;font-family:var(--display);font-size:22px;line-height:1;font-variant-numeric:tabular-nums}
+.cd__u span{display:block;font-size:10px;letter-spacing:.11em;text-transform:uppercase;opacity:.72;margin-top:3px}
+.cd[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){.cd__u b{transition:none}}
+.fine{font-size:11.5px;color:var(--ink-soft);text-align:center;margin-top:var(--s-2);line-height:1.5}
+.fine a{color:var(--ink-soft);display:inline-block;padding:11px 3px}
+
+/* ---------- 2. PROOF: photo band + boxless stat row ---------- */
+.band{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-1);border-radius:var(--radius-lg);overflow:hidden}
+.band img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/5}
+@media(max-width:640px){.band{grid-template-columns:1fr 1fr}.band img:last-child{display:none}}
+.hand{font-family:var(--hand);font-size:clamp(22px,3vw,30px);color:var(--cherry);line-height:1.2;font-weight:700;margin-top:var(--s-3)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-4);margin-top:var(--s-4);padding-top:var(--s-4);border-top:1.5px solid var(--line)}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr);gap:var(--s-3) var(--s-4)}}
+.stat b{display:block;font-family:var(--display);font-weight:600;font-size:clamp(26px,3.4vw,40px);color:var(--cherry);line-height:1;white-space:nowrap}
+.stat span{display:block;margin-top:6px;font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em}
+
+/* ---------- 3. SYMPTOMS: the hinge. Red owns the whole region ----------
+   Arm-d pattern: the section that moves the blame off the visitor gets the
+   saturated red field, not a scattered accent. Text is the warm on-field
+   white; highlights go full white rather than gold, which fails on red. */
+.band-dark{background:var(--cherry);color:var(--on-field)}
+.band-dark .lede{color:var(--on-field-dim)}
+.h2{font-size:clamp(27px,4.2vw,44px);max-width:23ch;text-wrap:balance}
+.lede{color:var(--ink-soft);font-size:clamp(16px,2.1vw,18.5px);max-width:56ch;margin-top:var(--s-3)}
+.rows{margin-top:var(--s-5);border-top:1.5px solid rgba(255,244,241,.22);max-width:74ch}
+.rows li{list-style:none;padding:var(--s-4) 0;border-bottom:1.5px solid rgba(255,244,241,.22);font-size:clamp(16px,1.9vw,18.5px);line-height:1.6;color:var(--on-field-dim)}
+.rows b{font-weight:600;color:#fff}
+
+/* ---------- 4. OUTCOMES: boxless, hairline grid, lead item wide ----------
+   No card backgrounds. Grouping comes from the hairline and from
+   tight type pairing inside each item, per DESIGN.md (boxless
+   patterns preferred over cards). */
+.outcomes{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(28px,5vw,64px);margin-top:var(--s-5)}
+@media(max-width:760px){.outcomes{grid-template-columns:1fr}}
+.oc{padding:var(--s-4) 0;border-top:1.5px solid var(--line)}
+.oc:first-child{grid-column:1 / -1;border-top:2px solid var(--ink)}
+.oc:first-child h3{font-size:clamp(21px,2.8vw,28px);max-width:22ch}
+.oc:first-child p{font-size:17px;max-width:62ch}
+.oc h3{font-family:var(--display);text-transform:uppercase;font-size:clamp(17px,2vw,20px);line-height:1.14;font-weight:600}
+.oc p{color:var(--ink-soft);font-size:15.5px;margin-top:var(--s-1);line-height:1.55;max-width:46ch}
+
+/* ---------- 5. CLOSE: deep-wine CTA band, gold button face ----------
+   Arm-d pattern: the closing band commits to --close-deep, and the button
+   switches to the gold face because cherry-on-wine is two reds fighting. */
+.close{background:var(--cherry);color:var(--on-field);text-align:center}
+.close .h2{margin:0 auto;max-width:24ch;color:var(--on-field)}
+.close .btn{display:inline-block;width:auto;padding-left:52px;padding-right:52px;margin-top:var(--s-4);
+  background:var(--gold);color:var(--ink)}
+.close .btn:hover{background:var(--gold-acc)}
+.honest{max-width:62ch;margin:var(--s-3) auto 0;font-size:15.5px;color:var(--on-field-dim);line-height:1.6}
+/* the three closing lines. Set larger than the honest note under
+   them, because they are the last thing read before the button. */
+.closelines{margin:var(--s-4) auto 0;max-width:26ch;font-family:var(--display);text-transform:uppercase;
+  font-size:clamp(19px,2.6vw,27px);line-height:1.22;color:#fff;font-weight:600;letter-spacing:.01em}
+
+/* ---------- want-block: the three songs, on the red field ----------
+   Set as display type rather than body copy. These are the reader's
+   own reasons in their own words, so they carry more weight than
+   the paragraph around them. */
+.triplet{margin-top:var(--s-4);max-width:34ch;display:grid;gap:10px}
+.triplet li{list-style:none;font-family:var(--display);text-transform:uppercase;font-weight:500;
+  font-size:clamp(17px,2.3vw,23px);line-height:1.16;color:#fff;letter-spacing:.01em}
+.triplet li span{color:var(--on-field-dim)}
+.turn{margin-top:var(--s-4);max-width:60ch;font-size:clamp(16px,2vw,18.5px);color:var(--on-field-dim);line-height:1.6}
+.turn b{color:#fff;font-weight:600}
+
+/* the four "maybe" lines: the self-blame, stacked and then answered */
+.maybe{margin-top:var(--s-5);padding-top:var(--s-4);border-top:1.5px solid rgba(255,244,241,.22);max-width:70ch}
+.maybe ul{margin:var(--s-3) 0 0;display:grid;gap:6px}
+.maybe li{list-style:none;font-size:clamp(16px,2vw,19px);color:#fff;font-weight:600;line-height:1.4}
+.maybe p{color:var(--on-field-dim);font-size:clamp(15.5px,1.9vw,17.5px);line-height:1.6}
+.maybe p+p{margin-top:var(--s-2)}
+
+/* ---------- patterns: what Stephen is actually doing ----------
+   Deliberately the quietest section on the page. It is the hinge of
+   the argument, and it lands better read plainly than shouted. */
+.patterns{background:var(--cream-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.patterns__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,60px);align-items:start;margin-top:var(--s-4)}
+@media(max-width:860px){.patterns__grid{grid-template-columns:1fr;gap:var(--s-3)}}
+.isnt{display:grid;gap:8px}
+.isnt li{list-style:none;color:var(--ink-soft);font-size:clamp(15.5px,1.9vw,17.5px);line-height:1.5;
+  padding-left:1.4em;position:relative}
+.isnt li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:1.5px;background:var(--ink-soft);opacity:.5}
+.does{display:grid;gap:10px}
+.does li{list-style:none;font-family:var(--display);text-transform:uppercase;font-weight:600;
+  font-size:clamp(19px,2.6vw,27px);line-height:1.14;color:var(--ink)}
+.does li em{font-style:normal;color:var(--cherry)}
+
+/* ---------- students: two real quotes ---------- */
+.quotes{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(26px,4vw,56px);align-items:start;margin-top:var(--s-4)}
+@media(max-width:860px){.quotes{grid-template-columns:1fr}}
+/* .quotes .pull, not .pull: the generic `.quotes p` rule below is a
+   more specific selector, and a bare .pull loses to it, which renders
+   the pull quote as muted 17px body copy. */
+.quotes .pull{font-family:var(--display);text-transform:uppercase;font-size:clamp(23px,3.6vw,40px);line-height:1.06;
+  color:var(--ink);font-weight:600;text-wrap:balance;max-width:none}
+.quotes .pull em{font-style:normal;color:var(--cherry)}
+.quotes p{color:var(--ink-soft);font-size:clamp(15.5px,1.9vw,17.5px);line-height:1.6;max-width:52ch}
+.quotes p+p{margin-top:var(--s-3)}
+.quotes p b{color:var(--ink);font-weight:600}
+.qcard{background:var(--paper);border:1.5px solid var(--line);border-left:3px solid var(--cherry);
+  border-radius:var(--radius);padding:clamp(20px,2.6vw,28px);box-shadow:var(--shadow-warm)}
+.qcard q{quotes:none;display:block;font-size:clamp(17px,2.2vw,21px);line-height:1.45;color:var(--ink)}
+.qcard cite{display:block;margin-top:12px;font-style:normal;font-family:var(--display);text-transform:uppercase;
+  letter-spacing:.1em;font-size:11.5px;color:var(--burgundy)}
+
+/* ---------- foot ---------- */
+.sitefoot{background:var(--cream-2);color:var(--ink-soft);border-top:1.5px solid var(--line);padding:clamp(40px,6vw,64px) 0 28px;font-size:12.5px;line-height:1.65}
+.sitefoot .wrap{max-width:var(--wrap-narrow)}
+.sitefoot p+p{margin-top:var(--s-2)}
+.sitefoot a{color:var(--ink-soft);display:inline-block;padding:10px 2px}
+.sitefoot strong{color:var(--ink);font-weight:600}
+
+/* ---------- motion: system .rv, gated ---------- */
+@media (prefers-reduced-motion: no-preference){
+  .js-anim .rv{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:var(--d,0s)}
+  .js-anim .rv.in{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar"><b>Free live piano masterclass</b> with Stephen Ridley. Live online, free to attend. The live coaching portion is for attendees in the room.</div>
+
+<div class="head">
+  <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <rect x="4" y="22" width="5.5" height="14" rx="2.5" fill="currentColor"/>
+    <rect x="12" y="15" width="5.5" height="21" rx="2.5" fill="currentColor"/>
+    <rect x="20" y="8" width="5.5" height="28" rx="2.5" fill="currentColor"/>
+    <rect x="28" y="3" width="5.5" height="33" rx="2.5" fill="currentColor"/>
+  </svg>
+  <span>Ridley Academy</span>
+</div>
+
+<main id="main">
+
+<!-- 1. HERO -->
+<section class="hero">
+  <div class="wrap split">
+
+    <div class="hero__intro rv" style="--d:0s">
+      <span class="evbadge"><i aria-hidden="true"></i>Free Live Piano Masterclass</span>
+      <!-- nbsp between "In" and "Days": left to wrap freely the balancer
+           strands "In" alone at the end of line two, splitting the red
+           phrase across the break at its weakest word. -->
+      <h1 class="h1">Learn To Play Your Favorite Song <em>In&nbsp;Days, Not Years.</em></h1>
+      <p class="sub">Come hear what happens when piano finally starts making sense. Join Stephen Ridley live at your own piano for <b>90 minutes</b> and discover the simple patterns hiding inside the songs you already love.</p>
+
+      <ul class="needs">
+        <li><span>You do <b>not</b> need to read music before you come.</span></li>
+        <li><span>You do <b>not</b> need years of lessons.</span></li>
+        <li><span>You do <b>not</b> even need to believe you're &ldquo;musical.&rdquo;</span></li>
+      </ul>
+
+      <div class="when">
+        <i><b>When</b> <span data-slot="date">Date announced shortly</span></i>
+        <i><b>Time</b> <span data-slot="time">Details by email</span></i>
+        <i><b>Where</b> <span>Live online</span></i>
+        <i><b>Length</b> <span>90 minutes</span></i>
+      </div>
+    </div>
+
+
+    <aside class="card rv" style="--d:.12s">
+      <h2>Save your free seat</h2>
+      <p class="card__sub">This is a live working masterclass with Stephen, not another video to add to your &ldquo;watch later&rdquo; list. Your joining link will arrive by email. You can also choose to receive a text reminder before we begin.</p>
+
+      <form id="regForm" novalidate>
+        <div class="fields">
+          <label class="sr-only" for="f-name">First name</label>
+          <input class="field" id="f-name" type="text" name="name" placeholder="First name" required autocomplete="given-name" autocapitalize="words">
+
+          <label class="sr-only" for="f-email">Email address</label>
+          <input class="field" id="f-email" type="email" name="email" placeholder="Email address" required autocomplete="email" inputmode="email">
+
+          <label class="sr-only" for="f-phone">Phone number</label>
+          <input class="field" id="f-phone" type="tel" name="phone" placeholder="Phone number" required autocomplete="tel" inputmode="tel">
+        </div>
+        <p class="err" id="regErr" role="alert"></p>
+
+        <label class="consent">
+          <input type="checkbox" name="sms_consent" value="1" id="f-consent">
+          <span>Text me the joining link and a reminder before we start. Message and data rates may apply. Reply STOP to opt out.</span>
+        </label>
+
+        <!-- Attendance bonus. Must be something Stephen can only give live,
+             or it is a lie and it will read as one. Live-only by construction. -->
+        <!-- Attendance bonus. Must be something Stephen can only give
+             live, or it is a lie and it will read as one. Live-only by
+             construction: it needs a room to take requests from. -->
+        <div class="bonus">
+          <b>Live attendee bonus</b>
+          <span>Bring the song you've always wanted to play. At the end of the masterclass, Stephen will take songs from people in the room and show you how he would begin breaking them down at the piano. You might finally see your song differently. This portion is for the live room.</span>
+        </div>
+
+        <div class="cd" id="regCd" hidden aria-live="off">
+          <p class="cd__lbl">Doors open in</p>
+          <div class="cd__t">
+            <div class="cd__u"><b data-cd="d">00</b><span>Days</span></div>
+            <div class="cd__u"><b data-cd="h">00</b><span>Hrs</span></div>
+            <div class="cd__u"><b data-cd="m">00</b><span>Min</span></div>
+            <div class="cd__u"><b data-cd="s">00</b><span>Sec</span></div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn" id="regBtn">Reserve My Free Seat<small data-slot="btn-when"></small></button>
+        <p class="note">Free to attend. Unsubscribe any time.</p>
+        <p class="fine">By registering you agree to our <a href="terms.html?el=reg-fine">Terms</a> and <a href="privacy.html?el=reg-fine">Privacy Policy</a> and consent to being contacted about the masterclass.</p>
+      </form>
+    </aside>
+
+    <div class="hero__tail rv" style="--d:.08s">
+      <p>Bring a piano, bring one song you wish you could play, and come ready to experience music differently.</p>
+      <p>Stephen will show you how four simple chords can suddenly become songs you recognise, how to start playing without depending on a page, and why <b>10 focused minutes a day</b> can get you further than hours of repetitive practice.</p>
+      <p><b>40,000+ students have already learned the Ridley way.</b> Now Stephen is teaching it live.</p>
+
+      <figure class="hero__photo">
+        <img src="images/hero-hall.jpg"
+             srcset="images/hero-hall-sm.jpg 1200w, images/hero-hall.jpg 2400w"
+             sizes="(max-width:1000px) 100vw, 55vw"
+             alt="Stephen Ridley playing a grand piano to a packed concert hall"
+             width="2400" height="1598" fetchpriority="high" decoding="async">
+        <span class="livetag"><i aria-hidden="true"></i>Taught live by Stephen Ridley</span>
+      </figure>
+    </div>
+
+  </div>
+</section>
+
+<!-- 2. PROOF -->
+<section class="section--tight" style="padding-top:0">
+  <div class="wrap">
+    <div class="band">
+      <img src="images/perf-stance.jpg" alt="Stephen Ridley at a grand piano, mid-phrase, in front of a packed concert hall" width="1200" height="1500" loading="eager" decoding="async">
+      <img src="images/perf-streetpiano.jpg" alt="Stephen Ridley singing on top of a street piano with a crowd pressed in around him" width="1200" height="1500" loading="eager" decoding="async">
+      <img src="images/perf-lights.jpg" alt="Thousands of phone lights held up at a Stephen Ridley open-air concert" width="1200" height="1500" loading="lazy" decoding="async">
+    </div>
+    <p class="lede" style="max-width:48ch">Stephen doesn't teach piano the way most people were taught.</p>
+    <p class="hand">He teaches it the way he actually plays it.</p>
+
+    <div class="stats">
+      <div class="stat"><b>40,000+</b><span>Students</span></div>
+      <div class="stat"><b>60+</b><span>Countries</span></div>
+      <div class="stat"><b>5 to 96</b><span>Ages taught</span></div>
+      <div class="stat"><b>1,300+</b><span>Five-star reviews</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. SYMPTOMS -->
+<section class="section band-dark">
+  <div class="wrap">
+    <h2 class="h2">You don't want another piano course. You want to sit down and play.</h2>
+
+    <ul class="triplet">
+      <li>The song you turn up in the car.</li>
+      <li>The song connected to <span>someone you love.</span></li>
+      <li>The one you've imagined yourself playing for years.</li>
+    </ul>
+
+    <p class="turn">You don't want to spend another six months getting better at exercises so that someday you might get to the music. <b>You want the music.</b></p>
+    <p class="turn" style="margin-top:var(--s-3)">And if you've tried piano before, you probably know this feeling:</p>
+
+    <ul class="rows">
+      <li class="rv">You can follow a piece you've practised, but <b>take the page away</b> and suddenly you have no idea what to play.</li>
+      <li class="rv" style="--d:.07s">You've tried <b>lessons, apps, YouTube videos or courses</b>, yet sitting down and simply playing still feels strangely out of reach.</li>
+      <li class="rv" style="--d:.14s">You practise <b>the same section again and again</b>, but the progress never seems to match the effort.</li>
+      <li class="rv" style="--d:.21s">You learned when you were younger, came back years later, and somehow found yourself <b>hitting the same wall</b>.</li>
+      <li class="rv" style="--d:.28s">Someone says, <b>&ldquo;Play something,&rdquo;</b> and despite all the time you've spent at the piano, your mind goes completely blank.</li>
+    </ul>
+
+    <div class="maybe rv">
+      <p>Eventually, it's very easy to decide the problem must be you.</p>
+      <ul>
+        <li>Maybe you're not musical.</li>
+        <li>Maybe you're too old.</li>
+        <li>Maybe you don't have enough time.</li>
+        <li>Maybe other people simply have something you don't.</li>
+      </ul>
+      <p style="margin-top:var(--s-3)">Stephen wants to challenge that idea in the first few minutes of this masterclass.</p>
+      <p>Because sometimes the problem isn't your ability. <b style="color:#fff">It's where you were told to begin.</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- 3b. PATTERNS: the hinge of the whole argument -->
+<section class="section patterns">
+  <div class="wrap">
+    <span class="eyebrow">The shift</span>
+    <h2 class="h2">What happens when Stephen sits down at a piano?</h2>
+
+    <div class="patterns__grid">
+      <ul class="isnt">
+        <li>He isn't mentally reading thousands of individual notes.</li>
+        <li>He isn't trying to remember every song he's ever learned.</li>
+      </ul>
+      <ul class="does">
+        <li>He sees <em>patterns</em>.</li>
+        <li>He hears <em>relationships</em>.</li>
+        <li>He understands <em>what the music is doing</em>.</li>
+      </ul>
+    </div>
+
+    <p class="lede" style="margin-top:var(--s-5);max-width:62ch">And once you begin seeing some of those same patterns, piano starts looking very different. <b style="color:var(--ink);font-weight:600">That's what Stephen is going to show you live.</b></p>
+  </div>
+</section>
+
+<!-- 4. OUTCOMES -->
+<section class="section">
+  <div class="wrap">
+    <span class="eyebrow">What happens in the room</span>
+    <h2 class="h2">Ninety minutes. Bring the piano you already own.</h2>
+    <p class="lede">A working session, not a lecture. Stephen plays, breaks down what he just did, and you try it while he is still on the call.</p>
+
+    <div class="outcomes">
+      <div class="oc rv">
+        <h3>Four chords become music you know</h3>
+        <p>Stephen will sit down and show you what happens when four simple chords stop sounding like an exercise and suddenly become songs you've heard your entire life. This is usually the moment people start thinking: wait, is piano really built like this?</p>
+      </div>
+      <div class="oc rv" style="--d:.07s">
+        <h3>Stop depending on the page</h3>
+        <p>You'll see what Stephen is paying attention to when he plays a song, and how patterns can give you another way into music besides memorising every note. Sheet music can still be useful. It just doesn't have to be the price of admission.</p>
+      </div>
+      <div class="oc rv" style="--d:.14s">
+        <h3>Give ten minutes a job</h3>
+        <p>&ldquo;Practise piano&rdquo; is a terrible instruction. What do you actually do? For how long? In what order? Stephen will show you the simple structure behind the Ridley Academy approach to 10 focused minutes a day, so sitting down has a purpose instead of becoming another vague obligation.</p>
+      </div>
+      <div class="oc rv" style="--d:.21s">
+        <h3>Understand the song instead of memorising it</h3>
+        <p>Once you begin recognising what songs have in common, every new piece stops feeling like starting from zero. You begin noticing the things underneath the notes: the patterns, the movement, the musical logic. That is when piano starts feeling less like memorisation and more like music.</p>
+      </div>
+      <div class="oc rv" style="--d:.28s">
+        <h3>Then bring us your song</h3>
+        <p>At the end, Stephen will take song requests from people attending live and show you how he would start thinking about them at the piano. Bring the one you've secretly wanted to play. You may be surprised by what he sees in it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4b. STUDENTS: two real quotes, and what they are actually saying -->
+<section class="section--tight">
+  <div class="wrap">
+    <span class="eyebrow">What students say first</span>
+    <div class="quotes">
+      <div>
+        <p class="pull">&ldquo;It's so simple, and now I'm <em>not scared of it</em>.&rdquo;</p>
+        <p style="margin-top:var(--s-3)">That is one of our favourite things a student has ever said. Because the first transformation isn't always becoming an amazing pianist. Sometimes it is much smaller.</p>
+        <p><b>You sit down. You try something. You recognise what you're hearing.</b> And suddenly the story you've been telling yourself about piano gets a little harder to believe.</p>
+      </div>
+      <div>
+        <div class="qcard rv">
+          <q>I find myself, for the first time, enjoying playing music.</q>
+          <cite>Ridley Academy student</cite>
+        </div>
+        <p style="margin-top:var(--s-3)">That's the point. Not becoming better at piano homework. <b>Playing music.</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. CLOSE -->
+<section class="section--tight close">
+  <div class="wrap">
+    <h2 class="h2">What if 90 minutes changed the way you look at your piano?</h2>
+    <p class="honest">Not because you mastered the instrument in one night. You won't. But because something that has always looked complicated suddenly starts revealing a pattern. Because the page stops feeling like the only way in. Because the song you've wanted to play starts looking less impossible. Because instead of wondering whether you're musical enough, you finally get to put your hands on the piano and find out.</p>
+
+    <p class="closelines">One piano. One evening. One song you love.</p>
+    <p class="honest" style="margin-top:var(--s-2)">Come see what your hands can do with it.</p>
+
+    <a href="#main" class="btn">Reserve My Free Seat</a>
+    <p class="honest" style="margin-top:var(--s-3)">90 minutes. Live online. No cost.</p>
+    <p class="honest">At the end of the masterclass, Stephen will also explain how you can continue learning with Ridley Academy if you want more help and a clear path forward. You are completely welcome to take the masterclass and leave it there. Either way, come for the music.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap">
+    <p><strong>About results.</strong> This masterclass teaches the Ridley Academy method and gives attendees the opportunity to participate live. Individual results vary based on starting point, practice, participation and other factors. We do not guarantee any particular level of performance or progress.</p>
+    <p>Student numbers, countries, ages and review counts describe Ridley Academy's student community to date and are not a prediction of individual results. Testimonials are from real students and should not be interpreted as typical or guaranteed outcomes.</p>
+    <p><a href="terms.html?el=reg-foot">Terms of Service</a> &nbsp;·&nbsp; <a href="privacy.html?el=reg-foot">Privacy Policy</a> &nbsp;·&nbsp; © Ridley Academy</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   EVENT — the date comes from event.js, which every page in this
+   funnel loads. Set startISO there once and the When panel, the
+   label inside the CTA button, the countdown, the confirmation
+   page, the calendar files and the replay deadline all move
+   together.
+
+   Rewired 12 Aug. The date used to live here, which meant four
+   pages each held their own copy of it.
+
+   With no date set, the slots keep their written placeholders and
+   the countdown stays hidden, so a half-configured page never
+   shows "00 00 00 00".
+   ============================================================ */
+(function(){
+  var E = window.RIDLEY_EVENT;
+  if (!E) return;                 /* event.js failed to load: leave the written copy alone */
+  if (!E.paintDate()) return;     /* no date set yet */
+  E.countdown(document.getElementById('regCd'), E.start());
+})();
+
+/* ============================================================
+   Registration handler.
+
+   On submit, in order:
+     1. validate name / email / phone
+     2. persist ridley_lead_v1 so downstream pages prefill
+     3. POST /api/optin (keepalive, fire and forget)
+     4. fbq CompleteRegistration + dataLayer rdly_webinar_register
+     5. redirect to confirm.html
+
+   The redirect never waits on the network. If /api/optin is down the
+   visitor still reaches the confirmation page and only the CRM write
+   is lost.
+
+   KNOWN BLOCKER: /api/optin returns 405 on vsl-a and vsl-b, and
+   AC_KEY is unset, so writes are silently dropped (200, no record).
+   A dropped registration gets no reminder and never shows up. Fix
+   capture before spending on this page.
+   ============================================================ */
+(function(){
+  var form = document.getElementById('regForm');
+  var btn  = document.getElementById('regBtn');
+  var err  = document.getElementById('regErr');
+  var EMAIL = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+
+  function fail(msg, el){
+    err.textContent = msg; err.classList.add('on');
+    if (el){ el.setAttribute('aria-invalid','true'); el.focus(); }
+    return false;
+  }
+  function clearErr(){
+    err.classList.remove('on');
+    ['f-name','f-email','f-phone'].forEach(function(id){
+      document.getElementById(id).removeAttribute('aria-invalid');
+    });
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    clearErr();
+
+    var name  = document.getElementById('f-name');
+    var email = document.getElementById('f-email');
+    var phone = document.getElementById('f-phone');
+    var digits = phone.value.replace(/\D/g,'');
+
+    if (!name.value.trim())             return fail('Please add your first name.', name);
+    if (!EMAIL.test(email.value.trim()))return fail('That email address does not look right.', email);
+    if (digits.length < 7)              return fail('Please add a phone number we can text the link to.', phone);
+
+    var E = window.RIDLEY_EVENT || {};
+    var attr = (typeof E.attribution === 'function') ? E.attribution() : {};
+
+    var lead = {
+      name:  name.value.trim(),
+      email: email.value.trim(),
+      phone: phone.value.trim(),
+      sms_consent: document.getElementById('f-consent').checked ? 1 : 0,
+      source: 'webinar-register-PREVIEW',   /* PREVIEW BRANCH ONLY: /api/optin is live on this
+         host, so a team member filling this form writes a real contact.
+         The -PREVIEW suffix makes those trivially filterable in AXL.
+         Production must ship the unsuffixed source. */
+      ts: Date.now()
+    };
+
+    /* The full attribution set is kept locally for downstream pages.
+       Only utm_source rides the wire, because that is the only piece
+       the Accel proxy actually stores. See event.js. */
+    var stored = {};
+    for (var k in lead) stored[k] = lead[k];
+    for (var a in attr) stored[a] = attr[a];
+
+    try { localStorage.setItem('ridley_lead_v1', JSON.stringify(stored)); } catch(_){}
+
+    btn.disabled = true;
+    btn.textContent = 'Saving';
+
+    var payload = {};
+    for (var k2 in lead) payload[k2] = lead[k2];
+    var wire = (typeof E.wireAttribution === 'function') ? E.wireAttribution() : {};
+    for (var w in wire) payload[w] = wire[w];
+
+    try {
+      fetch('/api/optin', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload),
+        keepalive: true
+      }).catch(function(){});
+    } catch(_){}
+
+    try { if (window.fbq) fbq('track','CompleteRegistration',{content_name:'Live Masterclass'}); } catch(_){}
+    try {
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({event:'rdly_webinar_register', lead_source:'webinar-register'});
+    } catch(_){}
+
+    setTimeout(function(){ window.location.href = 'confirm.html'; }, 220);
+  });
+
+  ['f-name','f-email','f-phone'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', clearErr);
+  });
+
+  /* reveal: IntersectionObserver, never a scroll listener */
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rv = document.querySelectorAll('.rv');
+  if (reduce || !('IntersectionObserver' in window)) {
+    rv.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, {threshold:.2, rootMargin:'0px 0px -8% 0px'});
+    rv.forEach(function(el){ io.observe(el); });
+    setTimeout(function(){ rv.forEach(function(el){ el.classList.add('in'); }); }, 2500);
+  }
+})();
+</script>
+
+</body>
+</html>

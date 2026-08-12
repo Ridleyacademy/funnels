@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>It's yours. Now go make some music | Ridley Academy</title>
+
+<!-- ============================================================
+     RIDLEY ACADEMY : 4 MAGIC CHORDS DELIVERY
+     Built 12 Aug, rewritten same day on Chris's copy.
+
+     The job of this page is NOT delivery. Delivery is the easy half.
+     It has two jobs, and they pull against each other:
+
+       1. Get them to PLAY TODAY. Not to watch, not to plan, not to
+          bookmark. The copy refuses the word "study" on purpose and
+          the only instruction is "go to your piano".
+       2. Protect the live seat. A buyer who receives a course
+          quietly reclassifies the event as optional, because they
+          have the thing now. That is the whole risk of putting a
+          paid product in front of a free live event.
+
+     Those resolve into one argument: the head start is what makes
+     the masterclass land, so playing today and turning up are the
+     same instruction rather than competing ones. The seat is
+     restated before the first lesson, and the live section frames
+     the practice as the thing that gives Stephen somewhere to
+     build.
+
+     Structural note: the 01-04 block is genuinely sequential (go to
+     the piano, open the lesson, play along, keep going), which is
+     the only reason it carries numbers.
+
+     Fail-safe contract, same as the rest of the funnel: no date
+     hides the calendar buttons, no video id leaves the poster in
+     place and the click no-ops, and the CTAs fall back to the
+     on-page lessons when no external course url is configured.
+     ============================================================ -->
+
+<!-- reveal is opt-in: only a JS-capable client ever hides content, so
+     no-JS, print, and crawler renders always see the full page. -->
+<script>document.documentElement.className+=' js-anim';</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap" rel="stylesheet">
+
+<!-- one config for the whole funnel: date, offer mode, checkout,
+     calendars, video ids, replay window. See event.js. -->
+<script src="event.js"></script>
+
+<style>
+:root{
+  /* tokens ported from funnels-clean arm-d, matching confirm.html:
+     brighter ground, pure white cards, red committed at region scale.
+     --cherry stays locked at #E81420; brightening it fails AA on buttons. */
+  --cream:#FDFAF5; --cream-2:#F4EFE6; --paper:#FFFFFF;
+  --cherry:#E81420; --ruby:#E23237; --burgundy:#B00C19; --bordeaux:#6E0717;
+  --hinge:#C21120; --close-deep:#8C1024;
+  --on-field:#FFF4F1; --on-field-dim:rgba(255,242,238,.95);
+  --wine:#2B0B13;
+  --ink:#2A060D; --ink-soft:#7a3a40;
+  --gold:#FFB42B; --gold-acc:#FFC04A;
+  --line:rgba(42,6,13,.14); --line-2:rgba(42,6,13,.06);
+  --cream-line:rgba(252,244,234,.16);
+  --display:'Oswald','Switzer',Arial,sans-serif;
+  --body:'Switzer',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --hand:'Caveat',cursive;
+  --wrap:1200px; --wrap-narrow:860px; --gut:clamp(20px,5vw,60px);
+  --s-1:8px; --s-2:12px; --s-3:20px; --s-4:32px; --s-5:48px; --s-6:72px;
+  --radius:18px; --radius-lg:26px; --radius-sm:12px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --shadow-warm:0 24px 60px -24px rgba(110,7,23,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+::selection{background:var(--gold);color:var(--ink)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+h1,h2,h3{font-family:var(--display);text-transform:uppercase;line-height:1.05;font-weight:600}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.wrap--narrow{max-width:var(--wrap-narrow)}
+.section{padding:clamp(56px,9vw,120px) 0}
+.section--tight{padding:clamp(32px,5vw,56px) 0}
+
+.head{display:flex;align-items:center;justify-content:center;gap:.55em;padding:22px 16px 4px}
+.head svg{width:26px;height:26px;color:var(--cherry)}
+.head span{font-family:var(--display);font-size:21px;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+
+/* ---------- 1. THE SEAT, RESTATED ----------
+   Same red field as the confirmation page, and the repetition is the
+   point. The buyer saw this exact block when the seat was saved.
+   Repeating it says the purchase sat alongside the seat rather than
+   replacing it. */
+.seat{background:var(--cherry);color:var(--on-field);padding:clamp(26px,4vw,42px) 0}
+.seat .wrap{display:flex;gap:clamp(16px,3vw,28px);align-items:center;flex-wrap:wrap}
+.tick{flex:none;width:52px;height:52px;border-radius:50%;background:var(--gold);color:var(--ink);display:grid;place-items:center;font-size:26px;font-weight:700}
+.seat h1{font-size:clamp(25px,4.2vw,40px)}
+.seat p{color:var(--on-field-dim);font-size:15.5px;margin-top:8px;max-width:70ch}
+.seat p b{color:#fff}
+.slot{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px;width:100%}
+.slot i{font-style:normal;display:inline-flex;align-items:center;gap:7px;border:1.5px solid rgba(255,244,241,.28);background:rgba(255,244,241,.10);border-radius:999px;padding:8px 16px;font-size:14px}
+.slot i b{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:12.5px;font-weight:500;color:#fff}
+.cal{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.cal a{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:13.5px;background:var(--paper);color:var(--ink);text-decoration:none;padding:12px 22px;border-radius:999px;transition:transform .2s var(--ease)}
+.cal a:hover{transform:translateY(-2px)}
+.cal a:focus-visible,.cta:focus-visible,.player:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+/* small red caps text uses burgundy: cherry measures 4.4:1 on the
+   bright ground, under AA at this size */
+.kicker{font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:12.5px;color:var(--burgundy);margin-bottom:12px;font-weight:500}
+.h2{font-size:clamp(25px,4.4vw,40px);max-width:22ch;text-wrap:balance}
+.lead{color:var(--ink-soft);font-size:clamp(16px,2.2vw,18.5px);max-width:60ch;margin-top:14px}
+.lead b{color:var(--ink);font-weight:600}
+.lead em{font-style:italic;color:var(--ink)}
+
+/* ---------- the action button ----------
+   Repeated four times down the page on purpose. Every one of them
+   does the same thing, because the page has exactly one ask. */
+.cta{display:inline-block;background:var(--cherry);color:#fff;text-decoration:none;
+  font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;
+  font-size:clamp(15.5px,2vw,18px);padding:18px 38px;border-radius:999px;margin-top:var(--s-4);
+  transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease)}
+.cta:hover{background:var(--bordeaux);transform:translateY(-2px);box-shadow:var(--shadow-warm)}
+.cta--gold{background:var(--gold);color:var(--ink)}
+.cta--gold:hover{background:var(--gold-acc)}
+.undercta{font-size:14px;color:var(--ink-soft);margin-top:var(--s-2)}
+
+/* the goal line: the single most important sentence on the page */
+.goal{margin-top:var(--s-5);padding:clamp(18px,2.4vw,26px) clamp(20px,2.6vw,30px);
+  background:var(--paper);border:1.5px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:var(--radius);max-width:56ch}
+.goal p{font-size:clamp(16px,2.1vw,19px);line-height:1.5;color:var(--ink)}
+.goal em{font-style:italic}
+.goal span{display:block;color:var(--ink-soft);font-size:15.5px;margin-bottom:4px}
+
+/* ---------- what begins to happen: five, listed not gridded ----------
+   A list rather than cards. These are stages of the same shift, and
+   a card grid would present them as five separate features. */
+.begins{margin-top:var(--s-5);border-top:1.5px solid var(--line);max-width:74ch}
+.begins li{list-style:none;padding:var(--s-4) 0;border-bottom:1.5px solid var(--line);
+  display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(14px,3vw,40px);align-items:baseline}
+@media(max-width:760px){.begins li{grid-template-columns:1fr;gap:6px}}
+.begins h3{font-size:clamp(17px,2.2vw,22px);line-height:1.14}
+.begins p{color:var(--ink-soft);font-size:15.5px;line-height:1.55}
+
+/* ---------- do this instead: a real sequence, so it carries numbers ---------- */
+.today{background:var(--cream-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.nots{margin-top:var(--s-3);display:grid;gap:6px;max-width:50ch}
+.nots li{list-style:none;color:var(--ink-soft);font-size:clamp(15.5px,2vw,17.5px);line-height:1.5}
+.nots li b{color:var(--ink);font-weight:600}
+.doit{margin-top:var(--s-5);display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2.4vw,24px)}
+@media(max-width:860px){.doit{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.doit{grid-template-columns:1fr}}
+.doit li{list-style:none;background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius);
+  padding:clamp(18px,2.2vw,24px)}
+.doit b{display:block;font-family:var(--display);font-size:clamp(24px,3vw,32px);color:var(--cherry);
+  line-height:1;font-variant-numeric:tabular-nums;margin-bottom:10px}
+.doit span{font-size:15.5px;line-height:1.45;color:var(--ink)}
+.enough{font-family:var(--hand);font-size:clamp(22px,3vw,30px);color:var(--bordeaux);margin-top:var(--s-4);line-height:1.25}
+
+/* ---------- the lessons ---------- */
+.lessons{display:grid;gap:clamp(16px,2.4vw,24px);margin-top:var(--s-4)}
+.lesson{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(18px,3vw,36px);align-items:center;
+  background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius-lg);padding:clamp(16px,2.2vw,24px)}
+@media(max-width:820px){.lesson{grid-template-columns:1fr}}
+.lesson__n{font-family:var(--display);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--burgundy);font-weight:500}
+.lesson h3{font-size:clamp(18px,2.3vw,24px);margin-top:6px}
+.lesson p{color:var(--ink-soft);font-size:15px;margin-top:8px;max-width:42ch}
+.player{position:relative;border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--line);background:#000;aspect-ratio:16/9;width:100%;display:block;cursor:pointer;padding:0}
+.player img{width:100%;height:100%;object-fit:cover;opacity:.86}
+.player__play{position:absolute;inset:0;margin:auto;width:62px;height:62px;border-radius:50%;background:var(--cherry);display:grid;place-items:center;box-shadow:0 12px 34px rgba(0,0,0,.36);transition:transform .25s var(--ease)}
+.player:hover .player__play{transform:scale(1.07)}
+.player__play::after{content:"";border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px}
+.player__len{position:absolute;right:12px;bottom:12px;background:rgba(42,6,13,.82);color:var(--paper);font-family:var(--display);letter-spacing:.06em;font-size:11.5px;padding:6px 11px;border-radius:999px}
+
+/* ---------- songs start looking different ----------
+   The one dark band. It is the conceptual turn of the page, and it
+   gets the weight the argument deserves. */
+.turn{background:var(--wine);color:var(--on-field)}
+.turn h2{color:#fff}
+.turn .kicker{color:var(--gold-acc)}
+.turn .lead{color:var(--on-field-dim)}
+.turn .lead b{color:#fff}
+.shapes{margin:var(--s-4) 0 0;display:flex;flex-wrap:wrap;gap:10px}
+.shapes li{list-style:none;font-family:var(--display);text-transform:uppercase;font-weight:500;
+  font-size:clamp(15px,2vw,19px);letter-spacing:.03em;color:#fff;
+  border:1.5px solid rgba(255,244,241,.3);border-radius:999px;padding:10px 20px}
+
+/* ---------- live masterclass ---------- */
+.live__grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(26px,4vw,60px);align-items:start;margin-top:var(--s-4)}
+@media(max-width:900px){.live__grid{grid-template-columns:1fr}}
+.beats{display:grid;gap:8px;margin-top:var(--s-3)}
+.beats li{list-style:none;font-family:var(--display);text-transform:uppercase;font-weight:600;
+  font-size:clamp(19px,2.6vw,26px);line-height:1.12;color:var(--ink)}
+.beats li em{font-style:normal;color:var(--cherry)}
+.bringcard{background:var(--cream-2);border:1.5px solid var(--line);border-left:3px solid var(--cherry);
+  border-radius:var(--radius);padding:clamp(20px,2.6vw,28px)}
+.bringcard .kicker{margin-bottom:8px}
+.bringcard strong{display:block;font-family:var(--display);text-transform:uppercase;font-weight:600;
+  font-size:clamp(19px,2.4vw,25px);line-height:1.12;color:var(--ink)}
+.bringcard p{color:var(--ink-soft);font-size:15.5px;line-height:1.55;margin-top:12px}
+.whenlines{display:flex;flex-wrap:wrap;gap:8px;margin-top:var(--s-3)}
+.whenlines i{font-style:normal;font-size:14px;color:var(--ink-soft);border:1.5px solid var(--line);
+  border-radius:999px;padding:8px 16px;background:var(--paper)}
+
+/* ---------- keep it fun ---------- */
+.versus{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2.4vw,22px);margin-top:var(--s-4);max-width:60ch}
+@media(max-width:560px){.versus{grid-template-columns:1fr}}
+.versus div{border:1.5px solid var(--line);border-radius:var(--radius);padding:clamp(16px,2.2vw,22px);background:var(--paper)}
+.versus span{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:8px}
+.versus b{font-family:var(--display);text-transform:uppercase;font-size:clamp(18px,2.4vw,24px);line-height:1.1;font-weight:600}
+.versus .no b{color:var(--ink-soft)}
+.versus .yes{border-color:var(--cherry)}
+.versus .yes b{color:var(--cherry)}
+
+/* ---------- help ---------- */
+.help{background:var(--cream-2);border-top:1px solid var(--line)}
+.help p{color:var(--ink-soft);font-size:15.5px;line-height:1.6;max-width:66ch}
+.help p+p{margin-top:var(--s-2)}
+.help b{color:var(--ink);font-weight:600}
+
+.sitefoot{background:var(--cream-2);border-top:1px solid var(--line);padding:var(--s-5) 0 28px;font-size:12.5px;color:var(--ink-soft);line-height:1.65}
+.sitefoot .wrap{max-width:var(--wrap-narrow)}
+.sitefoot p+p{margin-top:10px}
+.sitefoot a{color:var(--ink-soft);display:inline-block;padding:10px 2px}
+.sitefoot strong{color:var(--ink);font-weight:600}
+
+/* motion, matched to the rest of the funnel: reveal is opt-in and
+   IntersectionObserver-driven, never a scroll listener */
+.js-anim .rv{opacity:0;transform:translateY(18px)}
+.rv{transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .js-anim .rv{opacity:1;transform:none}
+  .rv{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3.2l1.9 4.3 4.6.5-3.5 3.1 1 4.6-4-2.4-4 2.4 1-4.6-3.5-3.1 4.6-.5z"/></svg>
+  <span>Ridley Academy</span>
+</header>
+
+<main id="main">
+
+<!-- 1. THE SEAT, RESTATED BEFORE ANYTHING IS DELIVERED -->
+<section class="seat">
+  <div class="wrap">
+    <div class="tick" aria-hidden="true">&#10003;</div>
+    <div style="flex:1;min-width:260px">
+      <h1>It's yours<span data-slot="firstname"></span>. Now go make some music.</h1>
+      <p>Your access is ready, and your seat at the live masterclass with Stephen is still saved.</p>
+      <p>You do not need to finish anything before the masterclass. But if you have a piano nearby, <b>give Stephen the next few minutes.</b> You can start playing today.</p>
+    </div>
+    <div class="slot">
+      <i><b>Masterclass</b> <span data-slot="date">Date announced shortly</span></i>
+      <i><b>Time</b> <span data-slot="time">Details by email</span></i>
+    </div>
+    <div class="cal">
+      <a href="#" data-cal="google">Add to Google Calendar</a>
+      <a href="#" data-cal="ics">Add to Apple / Outlook</a>
+    </div>
+  </div>
+</section>
+
+<!-- 2. YOUR FIRST STEP -->
+<section class="section">
+  <div class="wrap">
+    <p class="kicker">Your first step</p>
+    <h2 class="h2">Don't study piano. Sit down and play it.</h2>
+
+    <p class="lead">You didn't buy this so you could learn four chord names. You bought it because somewhere in your head there is a song you would <b>love</b> to sit down and play. So that is where we're going.</p>
+    <p class="lead">Stephen is going to give your hands a small set of patterns they can actually use, then show you how those patterns begin turning into music you recognise.</p>
+    <p class="lead">No sheet music to decode first. No long theory lesson. No waiting months for something that sounds like a song.</p>
+    <p class="lead"><b>Put your phone or laptop beside the piano and start.</b></p>
+
+    <a class="cta" href="#lessons" data-el="delivery-start-1">Start Playing Now</a>
+    <p class="undercta">First lesson is under 10 minutes.</p>
+
+    <div class="goal rv">
+      <p><span>Your goal isn't to finish the course.</span>It's to have your first <em>wait, I'm actually playing</em> moment.</p>
+    </div>
+
+    <ul class="begins">
+      <li class="rv">
+        <h3>Find your way around the piano</h3>
+        <p>So the keyboard starts feeling less like eighty eight unrelated keys and more like something you understand.</p>
+      </li>
+      <li class="rv" style="--d:.06s">
+        <h3>Hear patterns instead of isolated notes</h3>
+        <p>Stephen will show you some of the musical relationships underneath songs you already know.</p>
+      </li>
+      <li class="rv" style="--d:.12s">
+        <h3>Put your hands into real music</h3>
+        <p>You'll start combining simple movements until what you're playing begins to sound familiar.</p>
+      </li>
+      <li class="rv" style="--d:.18s">
+        <h3>Feel what changes when you stop memorising</h3>
+        <p>Instead of trying to store every note in your head, you'll begin understanding what the music is doing.</p>
+      </li>
+      <li class="rv" style="--d:.24s">
+        <h3>Start building the freedom to play</h3>
+        <p>This is the first step toward sitting down without needing a page to tell you every move.</p>
+      </li>
+    </ul>
+
+    <p class="lead" style="margin-top:var(--s-4)">And yes, four chords are part of how Stephen gets you there. <b>But the chords aren't the destination. The music is.</b></p>
+  </div>
+</section>
+
+<!-- 3. ONE SMALL WIN. A real sequence, which is why it is numbered. -->
+<section class="section today">
+  <div class="wrap">
+    <p class="kicker">Today</p>
+    <h2 class="h2">Start with one small win.</h2>
+
+    <ul class="nots">
+      <li>You do <b>not</b> need a practice schedule.</li>
+      <li>You do <b>not</b> need to set aside an hour.</li>
+      <li>You don't even need to watch everything today.</li>
+    </ul>
+
+    <p class="lead" style="margin-top:var(--s-4)"><b>Do this instead:</b></p>
+
+    <ol class="doit">
+      <li class="rv"><b>01</b><span>Go to your piano.</span></li>
+      <li class="rv" style="--d:.06s"><b>02</b><span>Open the first lesson.</span></li>
+      <li class="rv" style="--d:.12s"><b>03</b><span>Play along with Stephen for ten minutes.</span></li>
+      <li class="rv" style="--d:.18s"><b>04</b><span>When something starts sounding like music, keep going.</span></li>
+    </ol>
+
+    <p class="enough">That's enough for today.</p>
+
+    <a class="cta" href="#lessons" data-el="delivery-start-2">Take Me To My First Lesson</a>
+  </div>
+</section>
+
+<!-- 4. THE LESSONS THEMSELVES -->
+<section class="section" id="lessons" style="padding-bottom:clamp(32px,5vw,56px)">
+  <div class="wrap">
+    <p class="kicker">4 Magic Chords</p>
+    <h2 class="h2">Four short lessons. Play along with each one.</h2>
+    <p class="lead">Take them in order, and play as you watch rather than watching first and playing later. Each one is under ten minutes and works on a keyboard, an upright, or whatever you already own.</p>
+
+    <div class="lessons">
+
+      <article class="lesson rv" id="lesson-1">
+        <button class="player" type="button" data-video="DELIVERY_1_ID" aria-label="Play lesson one">
+          <img src="images/masterclass-poster.jpg" alt="" width="1280" height="720">
+          <span class="player__play" aria-hidden="true"></span>
+          <span class="player__len">Lesson 1</span>
+        </button>
+        <div>
+          <p class="lesson__n">Lesson one</p>
+          <h3>The shape your hands start from</h3>
+          <p>You play in the first two minutes. This is the anchor everything else moves away from and returns to.</p>
+        </div>
+      </article>
+
+      <article class="lesson rv" id="lesson-2" style="--d:.06s">
+        <button class="player" type="button" data-video="DELIVERY_2_ID" aria-label="Play lesson two">
+          <img src="images/perf-stance.jpg" alt="" width="1280" height="720">
+          <span class="player__play" aria-hidden="true"></span>
+          <span class="player__len">Lesson 2</span>
+        </button>
+        <div>
+          <p class="lesson__n">Lesson two</p>
+          <h3>The one that creates the pull</h3>
+          <p>On its own it is unremarkable. Next to the first one it is the reason a song sounds like it is going somewhere.</p>
+        </div>
+      </article>
+
+      <article class="lesson rv" id="lesson-3" style="--d:.12s">
+        <button class="player" type="button" data-video="DELIVERY_3_ID" aria-label="Play lesson three">
+          <img src="images/perf-lights.jpg" alt="" width="1280" height="720">
+          <span class="player__play" aria-hidden="true"></span>
+          <span class="player__len">Lesson 3</span>
+        </button>
+        <div>
+          <p class="lesson__n">Lesson three</p>
+          <h3>The one that carries the feeling</h3>
+          <p>The chord that does the emotional work, and the one most adults were never shown properly.</p>
+        </div>
+      </article>
+
+      <article class="lesson rv" id="lesson-4" style="--d:.18s">
+        <button class="player" type="button" data-video="DELIVERY_4_ID" aria-label="Play lesson four">
+          <img src="images/perf-streetpiano.jpg" alt="" width="1280" height="720">
+          <span class="player__play" aria-hidden="true"></span>
+          <span class="player__len">Lesson 4</span>
+        </button>
+        <div>
+          <p class="lesson__n">Lesson four</p>
+          <h3>The one that takes you home</h3>
+          <p>The resolution. With this in place the four become a loop, which is when a chord exercise turns into an actual song.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- 5. SONGS START LOOKING DIFFERENT -->
+<section class="section turn">
+  <div class="wrap">
+    <p class="kicker">Then something interesting happens</p>
+    <h2 class="h2">Songs start looking different.</h2>
+
+    <p class="lead">At first, a song can feel like hundreds of notes you somehow have to remember. Stephen wants you to begin seeing something else.</p>
+
+    <ul class="shapes">
+      <li>Patterns</li>
+      <li>Shapes</li>
+      <li>Movement</li>
+      <li>Relationships between sounds</li>
+      <li>Things that repeat from song to song</li>
+    </ul>
+
+    <p class="lead" style="margin-top:var(--s-4)">That's why a relatively small amount of musical understanding can suddenly unlock far more than one exercise or one piece.</p>
+    <p class="lead">You aren't trying to memorise four chords so you can say you know four chords. <b>You're beginning to learn the language underneath the music you already love.</b></p>
+    <p class="lead">And at the live masterclass, Stephen takes that idea much further.</p>
+  </div>
+</section>
+
+<!-- 6. THE LIVE MASTERCLASS -->
+<section class="section">
+  <div class="wrap">
+    <p class="kicker">Your live masterclass</p>
+    <h2 class="h2">This is where your first win becomes something bigger.</h2>
+
+    <div class="live__grid">
+      <div>
+        <p class="lead" style="margin-top:0">When you join Stephen live, don't come expecting another ninety minute lecture. <b>Have your piano or keyboard within reach.</b></p>
+
+        <ul class="beats">
+          <li>Stephen will <em>play</em>.</li>
+          <li>You'll <em>play</em>.</li>
+        </ul>
+
+        <p class="lead">He'll show you how songs are constructed, how to recognise the patterns underneath them, and how to start approaching music differently from the way most adults were originally taught.</p>
+        <p class="lead">And because you've already spent a little time at the piano beforehand, some of what he shows you may suddenly feel familiar.</p>
+        <p class="lead"><b>That's the advantage of starting now.</b> Not that you've mastered anything. That when Stephen shows you what comes next, your hands already have somewhere to put it.</p>
+      </div>
+
+      <div class="bringcard rv">
+        <p class="kicker">Bring one thing with you</p>
+        <strong>The song you'd love to be able to play.</strong>
+        <p>Stephen will take songs from people in the live room and show how he begins making sense of them at the piano.</p>
+
+        <div class="cal" style="margin-top:var(--s-3)">
+          <a href="#" data-cal="google">Add the masterclass to my calendar</a>
+        </div>
+
+        <div class="whenlines">
+          <i data-slot="date">Date announced shortly</i>
+          <i data-slot="time">Details by email</i>
+          <i>About 90 minutes</i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. KEEP IT FUN -->
+<section class="section--tight">
+  <div class="wrap">
+    <p class="kicker">Between now and then</p>
+    <h2 class="h2">Keep it fun.</h2>
+
+    <p class="lead">There is no test waiting for you. Nobody is checking whether you completed every lesson. You don't need to arrive having perfected anything. Just spend a few minutes making music.</p>
+    <p class="lead">If you find yourself wanting to come back to the piano tomorrow, even better. <b>That is the habit Stephen cares about most.</b></p>
+
+    <div class="versus">
+      <div class="no"><span>Not</span><b>I should practise.</b></div>
+      <div class="yes"><span>But</span><b>I want to play.</b></div>
+    </div>
+
+    <a class="cta" href="#lessons" data-el="delivery-start-3">Start Playing</a>
+  </div>
+</section>
+
+<!-- 8. HELP -->
+<section class="section--tight help">
+  <div class="wrap wrap--narrow">
+    <p class="kicker">Need help?</p>
+    <p>If a lesson will not play or you cannot access your purchase, <b>reply to your receipt email</b> and our team will help.</p>
+    <p>Your purchase is also covered by our <b>30 day money back guarantee</b>. If it does not do what we said it would do, email us and we will refund it.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap">
+    <p><strong>About results.</strong> This course teaches the Ridley Academy method. Individual progress depends on starting point, participation, practice and other factors. We do not guarantee any particular standard or result.</p>
+    <p><a href="terms.html?el=delivery-foot">Terms of Service</a> &nbsp;&middot;&nbsp; <a href="privacy.html?el=delivery-foot">Privacy Policy</a> &nbsp;&middot;&nbsp; &copy; Ridley Academy</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   Delivery page wiring.
+
+   1. Personalise from ridley_lead_v1, written upstream by
+      register.html and re-written by apply.html.
+   2. Restate the masterclass date and rebuild the calendar links
+      from event.js, so a buyer who lands here days later still
+      sees the seat rather than only the course.
+   3. Point every "start playing" CTA at the configured course if
+      there is one, otherwise at the lessons on this page.
+   4. Lazy-swap video facades on click. Nothing third-party loads
+      until asked.
+
+   Fail-safe throughout: no date hides the calendar buttons rather
+   than shipping dead links, and an unset video id leaves the poster
+   in place and no-ops on click.
+   ============================================================ */
+(function(){
+  var E = window.RIDLEY_EVENT || {};
+
+  /* ---------- personalise ---------- */
+  var lead = null;
+  try { lead = JSON.parse(localStorage.getItem('ridley_lead_v1') || 'null'); } catch(_){}
+  function setSlot(name, value){
+    document.querySelectorAll('[data-slot="'+name+'"]').forEach(function(el){ el.textContent = value; });
+  }
+  if (lead && lead.name) setSlot('firstname', ', ' + lead.name);
+
+  /* ---------- the CTAs ----------
+     They scroll to the lessons on this page unless the course has
+     been moved to its own platform, in which case all of them
+     follow it. Never left pointing at nothing. */
+  if (E.courseUrl) {
+    document.querySelectorAll('.cta').forEach(function(a){
+      a.href = E.courseUrl;
+      a.setAttribute('rel','noopener');
+    });
+  }
+
+  /* ---------- video ids from the shared config ---------- */
+  ((E.videos && E.videos.delivery) || []).forEach(function(id, i){
+    if (!id) return;
+    var b = document.querySelector('[data-video="DELIVERY_' + (i+1) + '_ID"]');
+    if (b) b.setAttribute('data-video', id);
+  });
+
+  /* ---------- the seat: date, time, calendar ---------- */
+  var start = (typeof E.start === 'function') ? E.start() : null;
+  if (start) {
+    E.paintDate();
+    var end = E.end();
+
+    function z(d){ return d.toISOString().replace(/[-:]|\.\d{3}/g,''); }
+    var title   = E.title   || 'Ridley Academy Live Masterclass with Stephen Ridley';
+    var details = E.details || '';
+    var join    = E.joinUrl || '';
+
+    var g = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+          + '&text='    + encodeURIComponent(title)
+          + '&dates='   + z(start) + '/' + z(end)
+          + '&details=' + encodeURIComponent(details + (join ? '\n\nJoin: ' + join : ''))
+          + (join ? '&location=' + encodeURIComponent(join) : '');
+    document.querySelectorAll('[data-cal="google"]').forEach(function(el){ el.href = g; });
+
+    var ics = [
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Ridley Academy//Masterclass//EN',
+      'BEGIN:VEVENT',
+      'UID:' + z(start) + '@ridleyacademy',
+      'DTSTAMP:' + z(new Date()),
+      'DTSTART:' + z(start),
+      'DTEND:'   + z(end),
+      'SUMMARY:' + title,
+      'DESCRIPTION:' + details.replace(/\n/g,'\\n') + (join ? '\\n\\nJoin: ' + join : ''),
+      join ? 'LOCATION:' + join : '',
+      'BEGIN:VALARM','TRIGGER:-PT15M','ACTION:DISPLAY','DESCRIPTION:Masterclass starts in 15 minutes','END:VALARM',
+      'END:VEVENT','END:VCALENDAR'
+    ].filter(Boolean).join('\r\n');
+
+    document.querySelectorAll('[data-cal="ics"]').forEach(function(el){
+      el.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+      el.setAttribute('download','ridley-masterclass.ics');
+    });
+  } else {
+    /* no event set: hide the calendar buttons rather than ship dead links */
+    document.querySelectorAll('.cal').forEach(function(el){ el.style.display='none'; });
+  }
+
+  /* ---------- lazy video facades ---------- */
+  document.querySelectorAll('[data-video]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var id = btn.getAttribute('data-video');
+      if (!id || /_ID$/.test(id)) return;   /* placeholder, do nothing */
+
+      var frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
+      frame.title = btn.getAttribute('aria-label') || 'Lesson';
+      frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture';
+      frame.allowFullscreen = true;
+      frame.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0';
+
+      btn.style.position = 'relative';
+      btn.innerHTML = '';
+      btn.appendChild(frame);
+
+      try {
+        window.dataLayer = window.dataLayer || [];
+        dataLayer.push({event:'rdly_delivery_lesson_play', video_id:id});
+      } catch(_){}
+    });
+  });
+
+  /* ---------- which CTA actually gets used ---------- */
+  document.querySelectorAll('.cta').forEach(function(a){
+    a.addEventListener('click', function(){
+      try {
+        window.dataLayer = window.dataLayer || [];
+        dataLayer.push({event:'rdly_delivery_start', cta: a.getAttribute('data-el') || ''});
+      } catch(_){}
+    });
+  });
+
+  /* ---------- reveal ---------- */
+  var rv = document.querySelectorAll('.rv');
+  if (!('IntersectionObserver' in window)) {
+    rv.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {rootMargin:'0px 0px -12% 0px'});
+    rv.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---------- arrival ---------- */
+  try {
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({event:'rdly_delivery_view'});
+  } catch(_){}
+})();
+</script>
+
+</body>
+</html>
