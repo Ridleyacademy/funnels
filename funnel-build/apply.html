@@ -220,6 +220,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="card form-card" aria-live="polite">
       <div class="progress" id="progress" role="progressbar" aria-label="Application progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
 
+      <!-- CONTACT. Moved to the front 12 Aug 2026, from step 12 of 13.
+           Behind it, 189 people a week started this form and 35 reached the old
+           position, so 154 a week left no way to reach them and no event for the
+           bidder. Asking here banks the lead first and asks the questions second,
+           which is what the vsl-b door already does at 9.5% of landing page views.
+           The questions and the routing below are untouched. -->
+      <div class="form-step" data-q="12">
+        <p class="q">First, where should we send your call details?</p>
+        <p class="q-sub">Then a few quick questions, and the calendar opens.</p>
+        <div class="contact-fields">
+          <div>
+            <label for="f-name">Full name</label>
+            <input class="field" type="text" id="f-name" autocomplete="name" autocapitalize="words" aria-describedby="name-err">
+            <p class="fielderr" id="name-err" role="alert" hidden></p>
+          </div>
+          <div>
+            <label for="f-email">Email</label>
+            <input class="field" type="email" id="f-email" autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="email-err">
+            <p class="fielderr" id="email-err" role="alert" hidden></p>
+          </div>
+          <div>
+            <label for="f-phone">Mobile phone</label>
+            <!-- The country is explicit: the pill is guessed from their timezone
+                 (then locale) and is always one tap from being changed, and the
+                 input takes the number the way someone in that country would
+                 actually write it. ra-phone.js checks the pair against that
+                 country's numbering plan, so a wrong area code is refused here
+                 instead of on the call list. -->
+            <div class="phonerow">
+              <button type="button" class="ccpill" id="ccFlag" aria-haspopup="dialog" aria-expanded="false" aria-label="Country code, tap to change"><img id="ccFlagImg" src="https://flagcdn.com/w40/us.png" alt="" width="22" height="16" decoding="async"><span id="ccFlagTxt">+1</span><i aria-hidden="true">▾</i></button>
+              <input class="field" type="tel" id="f-phone" inputmode="tel" autocomplete="tel-national" aria-describedby="phone-err">
+            </div>
+            <p class="fielderr" id="phone-err" role="alert" hidden></p>
+          </div>
+          <p class="consent">We'll text your Zoom link and appointment reminders to this number. Message and data rates may apply. Reply STOP to opt out, HELP for help.</p>
+        </div>
+        <div class="form-nav"><button class="btn btn--block" id="contact-next">Continue</button></div>
+      </div>
+
       <!-- Q1: opener (yes/no). No = hard DQ -->
       <div class="form-step" data-q="1">
         <p class="q">Do you want to be able to sit down and play real music?</p>
@@ -341,40 +380,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <button class="opt" data-val="10/10"><b>10/10.</b> Done waiting. This has been on my list for years and I'm ready now.</button>
         </div>
         <div class="form-nav"><button class="backlink">Back</button></div>
-      </div>
-
-      <!-- Q12: contact details -->
-      <div class="form-step" data-q="12">
-        <p class="q">Almost done. Where should we send your call details?</p>
-        <p class="q-sub">One more question after this, then the calendar opens.</p>
-        <div class="contact-fields">
-          <div>
-            <label for="f-name">Full name</label>
-            <input class="field" type="text" id="f-name" autocomplete="name" autocapitalize="words" aria-describedby="name-err">
-            <p class="fielderr" id="name-err" role="alert" hidden></p>
-          </div>
-          <div>
-            <label for="f-email">Email</label>
-            <input class="field" type="email" id="f-email" autocomplete="email" inputmode="email" autocapitalize="off" autocorrect="off" spellcheck="false" aria-describedby="email-err">
-            <p class="fielderr" id="email-err" role="alert" hidden></p>
-          </div>
-          <div>
-            <label for="f-phone">Mobile phone</label>
-            <!-- The country is explicit: the pill is guessed from their timezone
-                 (then locale) and is always one tap from being changed, and the
-                 input takes the number the way someone in that country would
-                 actually write it. ra-phone.js checks the pair against that
-                 country's numbering plan, so a wrong area code is refused here
-                 instead of on the call list. -->
-            <div class="phonerow">
-              <button type="button" class="ccpill" id="ccFlag" aria-haspopup="dialog" aria-expanded="false" aria-label="Country code, tap to change"><img id="ccFlagImg" src="https://flagcdn.com/w40/us.png" alt="" width="22" height="16" decoding="async"><span id="ccFlagTxt">+1</span><i aria-hidden="true">▾</i></button>
-              <input class="field" type="tel" id="f-phone" inputmode="tel" autocomplete="tel-national" aria-describedby="phone-err">
-            </div>
-            <p class="fielderr" id="phone-err" role="alert" hidden></p>
-          </div>
-          <p class="consent">We'll text your Zoom link and appointment reminders to this number. Message and data rates may apply. Reply STOP to opt out, HELP for help.</p>
-        </div>
-        <div class="form-nav"><button class="btn btn--block" id="contact-next">Continue</button><button class="backlink">Back</button></div>
       </div>
 
       <!-- Q13: final gate -->
@@ -666,11 +671,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     focusHeading(budgetGate);
     dl('rdly_apply_budget_gate',{commitment:answers.q11,budget:answers.q10});
   }
+  /* True once the contact step has fired CompleteRegistration. Declared here,
+     above its only other reader, rather than leaning on var hoisting from the
+     contact-step block 350 lines below. */
+  var contactCaptured=false;
+
   /* Same endpoint and payload contract as the completed application (see finish()),
      with source "application-dq" so this cohort is separable in AXL and AC, and
      route "dq" because that is the value the optin worker already tags on
-     ("VSL quiz disqualified" in AXL, tag 641 in AC). CompleteRegistration rather
-     than Lead: an email is not an application, and the campaigns bid on Lead. */
+     ("VSL quiz disqualified" in AXL, tag 641 in AC).
+
+     The AXL write always runs: this payload carries the answers and the dq_trigger,
+     which the contact-step write does not, so it is what tags the cohort.
+
+     The PIXEL event is conditional. Since 12 Aug contact is the first step, so all
+     but a hard bounce already fired CompleteRegistration there; firing it again
+     would count one person as two registrations and inflate the number the ad sets
+     bid on. It still fires for the one case that skips the front step: someone who
+     lands mid-form from a resumed session with no stored contact. */
   function dqCapture(name,email){
     try{
       if(!window.RDLY) return;
@@ -681,7 +699,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         payload[k]=Object.prototype.toString.call(v)==='[object Array]'?v.join(', '):v;
       }
       window.RDLY.capture(payload);
-      window.RDLY.track('CompleteRegistration','rdly_apply_dq_captured',{dq_trigger:dqTrigger});
+      window.RDLY.track(contactCaptured?null:'CompleteRegistration','rdly_apply_dq_captured',{dq_trigger:dqTrigger});
     }catch(e){}
   }
 
@@ -1143,6 +1161,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     /* Persist now, so a refresh or a bounce to the booking page keeps it. */
     try{ if(window.RDLY) window.RDLY.remember({name:answers.name,email:answers.email,phone:answers.phone,phone_country:answers.phone_country}); }catch(e){}
 
+    /* Bank the lead HERE, not at the end. This is the change the whole reorder
+       exists for: 154 people a week used to reach this point and leave without
+       one, because it sat at step 12 of 13.
+
+       Two writes per applicant, and they do different jobs. This one carries no
+       q-answers, so optin.js's `if (readable.length)` guard skips every quiz tag
+       and the contact lands clean; AC still gets tag 634, which is what puts an
+       abandoner into Front Gate Nurture. finish() writes again with the full
+       answer set and the route, and that write is what tags the quiz. The two
+       are not deduped against each other because capture() keys its dedupe on
+       source, and these two sources differ on purpose.
+
+       CompleteRegistration fires here and NOWHERE else on this page. It is the
+       same event the vsl-b door fires on its opt-in, so both arms mean one thing
+       by it, and it is the event the funnels ad sets should bid on: this step
+       runs about 189 times a week against the 35 that finish, which is the
+       difference between clearing Meta's 50/week learning threshold and never
+       reaching it. */
+    try{
+      if(window.RDLY){
+        window.RDLY.capture({
+          source:'application-start',
+          name:answers.name, email:answers.email,
+          phone:answers.phone, phone_country:answers.phone_country,
+          consent:false
+        });
+        window.RDLY.track('CompleteRegistration','rdly_apply_contact',{});
+        contactCaptured=true;
+      }
+    }catch(e){}
+
     var contactIdx=steps.findIndex(function(s){return s.getAttribute('data-q')==='12';});
     show(contactIdx+1);
   });
@@ -1217,8 +1266,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            into learning. Switch RA_FUNNELS to COMPLETE_REGISTRATION in the same
            sitting, which holds the count near 35 and matches the door. Moving the
            contact step to Q1 is what eventually takes it to ~189/wk. */
-        window.RDLY.track('CompleteRegistration','rdly_apply_captured',{route:payload.route});
-        if(!softDQ) window.RDLY.track('Lead',null,{route:payload.route});
+        /* CompleteRegistration already fired at the contact step, which is now the
+           front of the form. Firing it again here would double every registration
+           the ad sets optimise against. Only the quality signal belongs at this
+           point, and only on the qualified route. */
+        window.RDLY.track(softDQ?null:'Lead','rdly_apply_captured',{route:payload.route});
       }
     }catch(e){}
 
