@@ -240,9 +240,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var s = Q[i];
     prog(i);
     track('rdly_apply_step', { step: i+1, key: s.post });
+    /* The button they clicked said BOOK, so the page keeps saying it back
+       (Chris, 14 Aug): every count line carries the booking framing, and the
+       first screen says why the questions exist at all. */
     card.innerHTML =
-      '<p class="count">Question ' + (i+1) + ' of ' + Q.length + '</p>' +
+      '<p class="count">' + (i===0 ? "You're booking your free session" : 'Booking your session') +
+        ' &middot; Question ' + (i+1) + ' of ' + Q.length + '</p>' +
       '<h1 class="q">' + s.q + '</h1>' +
+      (i===0 ? '<p class="hint">Nine quick answers so the call starts from where you are, not from zero. About a minute.</p>' : '') +
       '<div class="opts">' + s.o.map(function(o,n){
         return '<button type="button" class="opt" data-n="'+n+'"><i></i><span>'+o+'</span></button>';
       }).join('') + '</div>' +
