@@ -309,11 +309,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      answers to, so we skip rather than create a ghost contact. */
   function ship(route){
     if (!lead.email) return;
+    /* ANSWERS GO UNDER quiz.*, NOT TOP-LEVEL. /api/optin reads lead.quiz[key]
+       (the shape the retired apply.html posted); flat keys are silently skipped
+       and no Quiz_* field ever reaches AXL. Found the hard way on the 14 Aug
+       smoke test: contact created, answers gone. */
     var p = {
       name: lead.name || '', email: lead.email,
-      source: 'quiz', route: route, consent: true
+      source: 'quiz', route: route, consent: true, quiz: {}
     };
-    for (var k in a) p[k] = a[k];
+    for (var k in a) p.quiz[k] = a[k];
     if (lead.utm_source) p.utm_source = lead.utm_source;
     try {
       fetch('/api/optin', {
