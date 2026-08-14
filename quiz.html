@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>A Few Quick Questions | Ridley Academy</title>
+<meta name="description" content="Nine quick questions so the call actually fits where you are.">
+<meta name="theme-color" content="#FDFAF5">
+
+<!-- ============================================================
+     RIDLEY ACADEMY : SIMPLE FUNNEL, STEP 3 (the quiz)
+
+     Where the Vidalytics player CTA lands (set the CTA to /quiz in the
+     Vidalytics dashboard; nothing in this repo controls that URL).
+
+     NINE QUESTIONS, then a route, then GO. Approved from the 14 Aug
+     mockup with three decisions locked in:
+       - NO NAVIGATION. No header, wordmark, footer or links out. The
+         only controls are answers and a text Back. Every exit is a
+         lost applicant.
+       - NO CONTACT SCREEN. The front door already holds name and
+         email (ridley_lead_v1); Calendly's own booking form collects
+         the phone. The quiz never re-asks for anything we hold.
+       - NO VERDICT SCREENS. Qualified and soft-DQ go straight to the
+         calendar; hard DQ gets one soft handoff line, then the $27
+         tripwire. The first cut told DQ'd people a call would waste
+         their time: nobody gets told that (Chris, 14 Aug). The
+         reframe is that full coursework may not fit TODAY.
+
+     Question wording is the production qualifier's (funnel-build/
+     apply.html), minus the old Q2 ("move forward?"), cut 14 Aug as
+     redundant against Q1.
+
+     ROUTING (same rules as the retired apply.html):
+       hard DQ    Q1 = No                  -> tripwire
+       budget gate  commit >= 9/10 AND budget = under $1,000
+                    "could make it work"   -> qualified (gate cleared)
+                    "not right now"        -> soft DQ calendar
+                    "out of reach"         -> tripwire
+       soft DQ    budget under $1,000 (uncleared) OR attend = No
+                                           -> Calendly (dq route)
+       qualified  everyone else            -> Calendly
+
+     Both calendar routes use the same event today (shared.js keeps
+     CAL.dq === CAL.qualified); the split survives in the payload so
+     the DQ calendar can diverge later without touching this page.
+
+     ANSWERS REACH AXL. /api/optin already forwards q1/q3..q7/q10/
+     qbudget/q11/q13 as Quiz_* fields on the contact — that mapping
+     predates this page and is why the closer can read the lead
+     before dialling. This page posts those exact keys, keepalive,
+     fire-and-forget, right before the redirect.
+
+     EVENT LADDER (unchanged from the documented one):
+       rdly_apply_start / _step / _complete{route} / _dq /
+       _budget_gate / _budget_answer on dataLayer, and Meta Lead
+       fires ONLY on the qualified route. CompleteRegistration
+       stays the door's, Schedule stays thank-you.html's.
+     ============================================================ -->
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TLVK9SK8');</script>
+<!-- End Google Tag Manager -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2032449947451129');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
+/></noscript>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-631436705"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'AW-631436705', { 'allow_enhanced_conversions': true });
+</script>
+<script src="ra-ads.js" defer></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --cream:#FDFAF5; --cream-2:#F4EFE6; --paper:#FFFFFF;
+  --cherry:#E81420; --burgundy:#B00C19; --bordeaux:#6E0717; --wine:#2B0B13;
+  --ink:#2A060D; --ink-soft:#7a3a40;
+  --gold:#FFB42B;
+  --line:rgba(42,6,13,.14);
+  --display:'Oswald',Impact,sans-serif;
+  --body:'Switzer',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --gutter:clamp(20px,5vw,56px);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--body);color:var(--ink);line-height:1.5;
+  background:
+    radial-gradient(70% 45% at 50% 0%,rgba(232,20,32,.07),transparent 60%),
+    linear-gradient(172deg,var(--paper) 0%,var(--cream) 60%,var(--cream-2) 100%);
+  min-height:100svh;-webkit-font-smoothing:antialiased;
+}
+svg{display:block}
+
+/* progress: a hairline, not a nav. Nothing on it can be clicked. */
+.bar{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(42,6,13,.08);z-index:5}
+.bar__fill{height:100%;width:0;background:var(--cherry);transition:width .45s var(--ease)}
+
+.stage{
+  min-height:100svh;display:flex;align-items:center;justify-content:center;
+  padding:clamp(40px,7vh,72px) var(--gutter);
+}
+.card{width:100%;max-width:620px}
+
+.count{
+  font-family:var(--display);text-transform:uppercase;letter-spacing:.16em;
+  font-size:11.5px;color:var(--ink-soft);margin:0 0 14px;
+}
+.q{
+  font-family:var(--display);font-weight:600;text-transform:uppercase;
+  font-size:clamp(26px,4.4vw,42px);line-height:1.05;letter-spacing:.004em;
+  margin:0 0 6px;color:var(--ink);text-wrap:balance;
+}
+.q em{font-style:normal;color:var(--cherry)}
+.hint{margin:0 0 24px;font-size:15.5px;color:var(--ink-soft);max-width:46ch}
+
+.opts{display:grid;gap:10px}
+.opt{
+  display:flex;align-items:center;gap:14px;width:100%;text-align:left;
+  font:inherit;font-size:16.5px;color:var(--ink);cursor:pointer;
+  padding:17px 20px;border-radius:14px;
+  background:var(--paper);border:1.5px solid var(--line);
+  transition:border-color .18s var(--ease),transform .18s var(--ease),box-shadow .18s var(--ease);
+}
+.opt:hover{border-color:var(--cherry);transform:translateX(3px);box-shadow:0 10px 24px -14px rgba(42,6,13,.3)}
+.opt:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.opt.on{border-color:var(--cherry);background:#FFF6F5}
+.opt i{
+  flex:0 0 auto;width:20px;height:20px;border-radius:50%;
+  border:1.5px solid var(--line);position:relative;transition:border-color .18s
+}
+.opt.on i{border-color:var(--cherry)}
+.opt.on i::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--cherry)}
+
+.back{
+  display:inline-block;margin:18px 0 0;background:none;border:0;padding:8px 2px;
+  font:inherit;font-size:13.5px;color:var(--ink-soft);cursor:pointer;text-decoration:underline;
+  text-underline-offset:3px;
+}
+.back:hover{color:var(--ink)}
+
+.mirror{
+  margin:0 0 20px;padding:16px 18px;border-radius:14px;
+  background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--gold);
+  font-size:15px;color:var(--ink);
+}
+.mirror span{display:block;color:var(--ink-soft);font-size:13px;margin-bottom:3px}
+.out .q{margin-bottom:14px}
+.out p{font-size:16.5px;color:var(--ink-soft);max-width:48ch;margin:0 0 16px}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TLVK9SK8"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="bar"><div class="bar__fill" id="barFill"></div></div>
+
+<main class="stage">
+  <div class="card" id="card"></div>
+</main>
+
+<script>
+(function(){
+  'use strict';
+
+  /* the lead from the front door; every field optional, nothing gates on it */
+  var lead = {};
+  try { lead = JSON.parse(localStorage.getItem('ridley_lead_v1') || '{}') || {}; } catch(_){}
+
+  var CAL = 'https://calendly.com/d/dv25-nhh-w9v/free-piano-breakthrough-session';
+  var TRIPWIRE = '/tripwire.html';
+
+  function track(ev, extra){
+    try {
+      window.dataLayer = window.dataLayer || [];
+      var p = { event: ev }; for (var k in (extra||{})) p[k] = extra[k];
+      window.dataLayer.push(p);
+    } catch(_){}
+  }
+
+  /* Questions. `post` is the /api/optin key the answer ships under; those keys
+     are the contract with the Pages Function's QUIZ table, which forwards them
+     to AXL as Quiz_* fields. Do not rename them here without renaming there. */
+  var Q = [
+    { post:'q1',  q:'Do you want to be able to sit down and <em>play real music</em>?',
+      o:["Yes. That's exactly what I want.","No, that's not really my goal."] },
+    { post:'q3',  q:'Which age group describes you?',
+      o:['Under 35','35 to 44','45 to 54','55 to 64','65 or older'] },
+    { post:'q4',  q:'What would you most like to be able to do?',
+      o:['Play the songs I actually love','Sit down and play by ear','Feel confident playing for people','Finally follow through this time'] },
+    { post:'q5',  q:"What's been hardest so far?",
+      o:['Stick with practice for more than a few weeks','Get past the same beginner plateau','Make sheet music click','Find a way of learning that fits my life'] },
+    { post:'q6',  q:"What's the worry at the back of your mind?",
+      o:["That I'm too old to start","That I'm just not musical","That I'll quit again","That I'll waste money again"] },
+    { post:'q7',  q:'What have you tried before?',
+      o:['Apps (Simply Piano, Yousician, Flowkey...)','Lessons as a kid','Lessons as an adult','YouTube tutorials','Method books on my own','Nothing yet, this is my start'] },
+    { post:'q10', q:"You're closer than you think. What could you invest to get there?",
+      o:["Under $1,000, I'm just getting started","$1,000 - $3,000, I'm ready to commit","$3,000 - $6,000, I'm serious about this","$6,000 - $10,000, I want the fastest path","$10,000+, whatever it takes"] },
+    { post:'q11', q:'Right now, how committed are you to learning for real?',
+      o:['5/10.','7/10.','9/10.','10/10.'] },
+    { post:'q13', q:'Once you pick your time, <em>will you be there</em>?',
+      o:["Yes, I'll be there.","No, I can't promise that right now."] }
+  ];
+
+  var a = {}, i = 0, cleared = false, forceDq = false, done = false;
+  var card = document.getElementById('card'), fill = document.getElementById('barFill');
+
+  function prog(n){ fill.style.width = Math.round(n/(Q.length+1)*100) + '%'; }
+
+  function render(){
+    if (i >= Q.length) return finish();
+    var s = Q[i];
+    prog(i);
+    track('rdly_apply_step', { step: i+1, key: s.post });
+    card.innerHTML =
+      '<p class="count">Question ' + (i+1) + ' of ' + Q.length + '</p>' +
+      '<h1 class="q">' + s.q + '</h1>' +
+      '<div class="opts">' + s.o.map(function(o,n){
+        return '<button type="button" class="opt" data-n="'+n+'"><i></i><span>'+o+'</span></button>';
+      }).join('') + '</div>' +
+      (i>0 ? '<button type="button" class="back">Back</button>' : '');
+    card.querySelectorAll('.opt').forEach(function(b){
+      b.onclick = function(){
+        card.querySelectorAll('.opt').forEach(function(x){x.classList.remove('on')});
+        b.classList.add('on');
+        a[s.post] = s.o[b.dataset.n];
+        setTimeout(next, 200);
+      };
+    });
+    var bk = card.querySelector('.back'); if (bk) bk.onclick = function(){ i--; render(); };
+    try { window.scrollTo(0,0); } catch(_){}
+  }
+
+  function next(){
+    if (a.q1 && a.q1.indexOf('No') === 0){
+      track('rdly_apply_dq', { dq_type:'hard', dq_trigger:'q1' });
+      return landing();
+    }
+    if (Q[i].post === 'q11' && !cleared &&
+        /^(9|10)\//.test(a.q11 || '') && /^Under \$1,000/.test(a.q10 || '')) {
+      return gate();
+    }
+    i++; render();
+  }
+
+  /* the budget gate: high commitment, lowest bracket. Mirrors both answers,
+     names the anchor PRODUCT.md allows, asks once. */
+  function gate(){
+    prog(i);
+    track('rdly_apply_budget_gate', {});
+    card.innerHTML =
+      '<p class="count">One thing worth naming</p>' +
+      '<h1 class="q">You said <em>' + (a.q11||'').replace('.','') + '</em> committed, and under $1,000.</h1>' +
+      '<div class="mirror"><span>Where the program actually sits</span>' +
+        'Two years of weekly private lessons runs $5,200 to $10,400. This is the cheaper route, not the expensive one.</div>' +
+      '<p class="hint">Which is closer to the truth for you?</p>' +
+      '<div class="opts">' +
+        '<button type="button" class="opt" data-r="ok"><i></i><span>If the plan was right, I could make that work.</span></button>' +
+        '<button type="button" class="opt" data-r="later"><i></i><span>Not right now, but I still want the call.</span></button>' +
+        '<button type="button" class="opt" data-r="no"><i></i><span>No, that\'s out of reach for me.</span></button>' +
+      '</div>';
+    card.querySelectorAll('.opt').forEach(function(b){
+      b.onclick = function(){
+        a.qbudget = b.querySelector('span').textContent;
+        track('rdly_apply_budget_answer', { answer: b.dataset.r });
+        if (b.dataset.r === 'ok'){ cleared = true; i++; return render(); }
+        if (b.dataset.r === 'later'){ forceDq = true; i++; return render(); }
+        track('rdly_apply_dq', { dq_type:'hard', dq_trigger:'budget' });
+        landing();
+      };
+    });
+  }
+
+  /* one POST for every route, right before leaving. keepalive so the request
+     survives the navigation. No email in storage means nothing to attach the
+     answers to, so we skip rather than create a ghost contact. */
+  function ship(route){
+    if (!lead.email) return;
+    var p = {
+      name: lead.name || '', email: lead.email,
+      source: 'quiz', route: route, consent: true
+    };
+    for (var k in a) p[k] = a[k];
+    if (lead.utm_source) p.utm_source = lead.utm_source;
+    try {
+      fetch('/api/optin', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(p), keepalive: true
+      }).catch(function(){});
+    } catch(_){}
+  }
+
+  function finish(){
+    if (done) return; done = true;
+    prog(Q.length + 1);
+    var soft = forceDq ||
+               (!cleared && /^Under \$1,000/.test(a.q10 || '')) ||
+               /^No/.test(a.q13 || '');
+    var route = soft ? 'dq' : 'qualified';
+    track('rdly_apply_complete', { route: route });
+    /* Lead is reserved for a finished, qualified application: the door already
+       fired CompleteRegistration, Schedule belongs to thank-you.html. */
+    if (!soft) { try { if (window.fbq) fbq('track','Lead',{content_name:'Quiz Qualified'}); } catch(_){} }
+    ship(route);
+    var url = CAL + '?hide_gdpr_banner=1';
+    if (lead.name)  url += '&name='  + encodeURIComponent(lead.name);
+    if (lead.email) url += '&email=' + encodeURIComponent(lead.email);
+    card.innerHTML =
+      '<div class="out">' +
+        '<h1 class="q">Opening your <em>calendar</em></h1>' +
+        '<p>Pick a time. Thirty minutes, a conversation, not a checkout.</p>' +
+      '</div>';
+    setTimeout(function(){ window.location.href = url; }, 700);
+  }
+
+  /* hard DQ: one soft line, then the smaller first step. Never a verdict. */
+  function landing(){
+    if (done) return; done = true;
+    prog(Q.length + 1);
+    track('rdly_apply_complete', { route: 'tripwire' });
+    ship('tripwire');
+    card.innerHTML =
+      '<div class="out">' +
+        '<h1 class="q">One step <em>at a time</em></h1>' +
+        '<p>Maybe full-on coursework is not the right fit just yet, and that is completely fine. There is a smaller way in, and it starts with the songs, not the theory.</p>' +
+      '</div>';
+    setTimeout(function(){ window.location.href = TRIPWIRE; }, 1400);
+  }
+
+  track('rdly_apply_start', { page:'quiz' });
+  render();
+})();
+</script>
+
+</body>
+</html>
