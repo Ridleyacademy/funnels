@@ -294,7 +294,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       '</div>';
     card.querySelectorAll('.opt').forEach(function(b){
       b.onclick = function(){
-        a.qbudget = b.querySelector('span').textContent;
+        a.qbudget = b.dataset.r;          /* code: can | later | no */
+        a.qbudgetText = b.querySelector('span').textContent;
         track('rdly_apply_budget_answer', { answer: b.dataset.r });
         if (b.dataset.r === 'ok'){ cleared = true; i++; return render(); }
         if (b.dataset.r === 'later'){ forceDq = true; i++; return render(); }
@@ -309,15 +310,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      answers to, so we skip rather than create a ghost contact. */
   function ship(route){
     if (!lead.email) return;
-    /* ANSWERS GO UNDER quiz.*, NOT TOP-LEVEL. /api/optin reads lead.quiz[key]
-       (the shape the retired apply.html posted); flat keys are silently skipped
-       and no Quiz_* field ever reaches AXL. Found the hard way on the 14 Aug
-       smoke test: contact created, answers gone. */
+    /* ANSWERS GO TOP-LEVEL, alongside email and source. The handler does
+       `quiz: d` — it assigns the WHOLE POST body as lead.quiz — so lead.quiz.q1
+       resolves only when q1 is a top-level key. Nesting them under a `quiz`
+       object produces lead.quiz.quiz.q1 and every answer is silently dropped:
+       the contact is still created, tags still apply, and Quiz_Answers comes
+       back holding nothing but "Route: qualified". Verified in the AXL UI on
+       14 Aug, after I briefly "fixed" this the wrong way round. */
     var p = {
       name: lead.name || '', email: lead.email,
-      source: 'quiz', route: route, consent: true, quiz: {}
+      source: 'quiz', route: route, consent: true
     };
-    for (var k in a) p.quiz[k] = a[k];
+    for (var k in a) p[k] = a[k];
+    /* the budget gate's answer travels as its own code for cohortTags() */
+    if (a.qbudget) p.qbudget = a.qbudget;
     if (lead.utm_source) p.utm_source = lead.utm_source;
     try {
       fetch('/api/optin', {
