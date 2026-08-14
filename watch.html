@@ -290,22 +290,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    ============================================================ */
 (function(){
   /* ============================================================
-     IN-APP BROWSER FALLBACK FOR THE PLAYER'S CTA.
+     THE PLAYER'S CTA: prefill it, and make it open exactly once.
 
-     Vidalytics renders its CTA as <a target="_blank">. That asks the browser
-     for a NEW WINDOW, and the in-app browsers inside Instagram, Facebook and
-     TikTok routinely refuse or silently swallow that request. The button then
-     does nothing at all, with no error and nothing in the console. This funnel
-     is paid social traffic, so the in-app browser is the NORMAL case here, not
-     the edge case: on the phone it is the majority of visitors.
+     Vidalytics renders its CTA as <a target="_blank"> pointing at a fixed URL
+     set in their dashboard. Two problems with leaving it alone: it cannot know
+     who the visitor is, and a request for a NEW WINDOW is unreliable inside the
+     Instagram and Facebook in-app browsers this funnel's traffic arrives in.
 
-     So: try the new window first, keep desktop behaviour intact, and if the
-     open is refused, navigate this tab instead. Getting to the calendar always
-     beats keeping the video open.
+     This handler rewrites the href to carry the lead and drops the target, then
+     gets out of the way. It opens nothing itself. An earlier version did open
+     it, and shipped a double open: it called window.open and fell back to a
+     same-tab navigation whenever the open "looked blocked", but that check is
+     impossible, because window.open with 'noopener' returns null even on
+     success. The fallback fired every single time.
 
-     Delegated on document so it covers the CTA no matter when the automation
-     injects it, which is on a timer partway through the video. Nothing here
-     runs unless the click actually landed on a Vidalytics CTA. */
+     Delegated on document in CAPTURE phase so the href is rewritten before any
+     Vidalytics handler reads it, and so it covers the CTA no matter when the
+     automation injects it, which is on a timer partway through the video.
+     Nothing here runs unless the click landed on a Vidalytics CTA. */
   document.addEventListener('click', function(e){
     var a = e.target && e.target.closest && e.target.closest('a[id^="vid_cta-"]');
     if (!a) return;
@@ -340,17 +342,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
     } catch(_){}
 
-    e.preventDefault();
-    var w = null;
-    if (a.target === '_blank') {
-      try { w = window.open(href, '_blank', 'noopener'); } catch(_){ w = null; }
-    }
-    if (!w || w.closed || typeof w.closed === 'undefined') window.location.href = href;
+    /* WE DO NOT OPEN ANYTHING. The href is rewritten and the anchor's own
+       default does the single navigation.
+
+       The previous version called preventDefault and then window.open, falling
+       back to a same-tab navigation when the open looked blocked. That test can
+       never work: window.open(url, name, 'noopener') returns NULL EVEN ON
+       SUCCESS, because the caller is not allowed a reference to the new window.
+       So the fallback fired every time and the visitor got the new tab AND this
+       tab navigating: the double open Chris reported.
+
+       Dropping target means one navigation in the current tab, which is also
+       the most reliable outcome inside the Instagram and Facebook in-app
+       browsers this funnel's traffic arrives in. Those webviews are unreliable
+       with new windows and that was the original reason for the handler. They
+       are not unreliable with a plain same-tab link. Leaving the video behind
+       is the right trade at this point: they have watched it, and the only
+       thing left to do is book. */
+    a.setAttribute('href', href);
+    a.removeAttribute('target');
     try {
       window.dataLayer = window.dataLayer || [];
-      dataLayer.push({event:'rdly_book_click', el:'vsl-player-cta', fallback: !w});
+      dataLayer.push({event:'rdly_book_click', el:'vsl-player-cta'});
     } catch(_){}
-  });
+  }, true);   /* capture: href is rewritten before any other handler reads it */
 
   try {
     window.dataLayer = window.dataLayer || [];
