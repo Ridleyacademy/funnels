@@ -76,18 +76,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 -->
 <a class="skiplink" href="#main">Skip to content</a>
 
-<div class="topbar">Step 2 of 2: pick your time below.</div>
+<!-- "Step 2 of 2" removed 13 Aug with the qualifier. There is no step 1 any
+     more: the path is capture, watch, book, and this page is reached straight
+     from the video. A step counter that counts a step nobody took reads as a
+     page that has lost its place. -->
+<div class="topbar">Pick your time below.</div>
 <div class="sitehead"><a class="logotype" href="index.html">Ridley <b>Academy</b></a></div>
 <main id="main">
 
 <section class="book-hero">
   <div class="wrap-narrow">
-    <span class="eyebrow rv">Step 2 of 2</span>
-    <h1 class="h-lg rv" style="--d:.06s">Congratulations. Final step: lock in your <span class="hl">Breakthrough Session</span></h1>
-    <p class="sub rv" style="margin:12px auto 0;max-width:640px;--d:.08s">Your application is in. Pick a time below for your free 30-minute call. It's a conversation, not a checkout, and you never have to play a note.</p>
-    <!-- [CAPACITY-PLACEHOLDER] Chris to confirm the real weekly session capacity before this
-         line ships. Keep it honest: state the limit only if it exists, no counters, no timers. -->
-    <p class="sub rv" style="margin:8px auto 0;font-size:15px;--d:.14s">We hold a limited number of Breakthrough Sessions each week, so grab a time that works while the calendar is open.</p>
+    <!-- Three things went on 13 Aug when the qualifier came out of the path:
+
+         1. The "Step 2 of 2" eyebrow. There is no step 1 now.
+         2. "Your application is in." There is no application. Telling someone
+            their application is in when they only watched a video is the kind
+            of line that makes a page feel like it was written for someone else.
+         3. "We hold a limited number of Breakthrough Sessions each week."
+            That shipped carrying its own [CAPACITY-PLACEHOLDER] note saying to
+            confirm the real capacity first. Nobody did, so it was an unverified
+            scarcity claim on a live page, which PRODUCT.md bans outright.
+
+         THE DURATION IS DELIBERATELY NOT STATED. This said "free 30-minute
+         call" while the Calendly event underneath renders as 1 hr, so the page
+         and the calendar contradicted each other on the same screen. The widget
+         states the real length a few pixels below, so the copy does not need to
+         and cannot go stale. Put a number back only once the event is set to
+         the length the offer actually is. -->
+    <h1 class="h-lg rv" style="--d:.06s">Last step: lock in your <span class="hl">Breakthrough Session</span></h1>
+    <p class="sub rv" style="margin:12px auto 0;max-width:640px;--d:.08s">Pick a time below for your free call. It's a conversation, not a checkout, and you never have to play a note.</p>
   </div>
 </section>
 
