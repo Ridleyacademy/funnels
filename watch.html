@@ -58,9 +58,24 @@
      the loader runs against a container that is not there, leaving a
      blank box and no console error.
 
-     THE CTA is one booked call on the canonical link the rest of the
-     funnel uses (dv25-nhh-w9v). Set NEXT to '' and the button is
-     removed rather than rendered dead.
+     THE CTA lives entirely inside the player and goes straight to Calendly.
+     booking.html was deleted 13 Aug on Chris's call, so the path is now
+     capture, watch, Calendly. Two consequences that are NOT visible in this
+     file and will not announce themselves:
+
+       1. NOTHING FIRES META Schedule ANY MORE. The listener lived in
+          shared.js, which booking.html loaded; it caught Calendly's
+          event_scheduled postMessage from the embed and sent the visitor to
+          thank-you.html, which is the page that fires Schedule. Sending them
+          to calendly.com directly means no embed, no postMessage, no listener
+          and no Schedule. The fix is not code: set the Calendly event to
+          redirect to thank-you.html after booking, and Schedule fires there
+          exactly as before. Until that is set, booked calls are invisible to
+          Meta and booked.html is never reached.
+       2. Calendly cannot know who this is, because the CTA href is fixed in
+          the Vidalytics dashboard. The click handler below appends name and
+          email from ridley_lead_v1 so the visitor is not asked to type what
+          they already gave us on the capture page.
      ============================================================ -->
 
 <!-- TRACKING, identical to index.html and to the door this arm replaces. Base
@@ -293,12 +308,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      runs unless the click actually landed on a Vidalytics CTA. */
   document.addEventListener('click', function(e){
     var a = e.target && e.target.closest && e.target.closest('a[id^="vid_cta-"]');
-    if (!a || a.target !== '_blank') return;
+    if (!a) return;
     var href = a.getAttribute('href');
     if (!href) return;
+
+    /* PREFILL, because there is no booking page left to do it.
+       booking.html used to mount Calendly through shared.js, which read
+       ridley_lead_v1 and passed name and email in. The player's CTA links
+       straight to Calendly now and its href is fixed in the Vidalytics
+       dashboard, so it cannot carry anything about this visitor. We hold the
+       lead from the capture page, so we append it here rather than making
+       someone who just gave us their details type them again.
+
+       Only ever added to a calendly.com URL. If the CTA is ever pointed
+       somewhere else this leaves it untouched rather than leaking a name and
+       an email address onto a third-party link. */
+    /* Host is parsed, never pattern-matched against the whole URL. The first
+       version tested /(^|\.)calendly\.com\//, which cannot match a full URL:
+       the domain there is preceded by "//", not by start-of-string or a dot,
+       so the prefill silently never applied. Parsing also means a lookalike
+       host like calendly.com.evil.tld can never be treated as Calendly. */
+    try {
+      var host = new URL(href, location.href).hostname.toLowerCase();
+      var isCalendly = host === 'calendly.com' || host.slice(-13) === '.calendly.com';
+      if (isCalendly && !/[?&]email=/.test(href)) {
+        var lead = JSON.parse(localStorage.getItem('ridley_lead_v1') || '{}') || {};
+        var add = [];
+        if (lead.name)  add.push('name='  + encodeURIComponent(lead.name));
+        if (lead.email) add.push('email=' + encodeURIComponent(lead.email));
+        if (add.length) href += (href.indexOf('?') > -1 ? '&' : '?') + add.join('&');
+      }
+    } catch(_){}
+
     e.preventDefault();
-    var w;
-    try { w = window.open(href, '_blank', 'noopener'); } catch(_){ w = null; }
+    var w = null;
+    if (a.target === '_blank') {
+      try { w = window.open(href, '_blank', 'noopener'); } catch(_){ w = null; }
+    }
     if (!w || w.closed || typeof w.closed === 'undefined') window.location.href = href;
     try {
       window.dataLayer = window.dataLayer || [];
