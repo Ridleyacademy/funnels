@@ -31,6 +31,38 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
      so each booking counts exactly once.
      Optimize ad campaigns against the "Schedule" standard event. -->
 <script>try{fbq('track','Schedule',{content_name:'Free piano consultation'});}catch(e){}</script>
+
+<!-- ============================================================
+     GOOGLE ADS BOOKED-CALL CONVERSION, added 13 Aug.
+
+     This page carried the Meta pixel and nothing else, which was survivable
+     only while booking.html existed: ra-ads.js fires callBooked off Calendly's
+     `event_scheduled` postMessage, and a postMessage only arrives from an
+     INLINE embed on the same page. booking.html was that page. It is gone, the
+     player links straight to calendly.com, and so no postMessage is ever
+     received by anything we control. Google's booked-call conversion went dark
+     with it, silently, exactly like Meta's Schedule.
+
+     So the conversion is sent on page load here instead of by postMessage.
+     This page is reached only by Calendly's own after-booking redirect, so a
+     load means a booking happened: one load, one conversion.
+
+     ra-ads.js is deliberately NOT loaded here. It would listen for a
+     postMessage that cannot arrive, and its enhanced-conversion identify()
+     path expects a lead in storage that a redirect from calendly.com will not
+     always carry. The label is the same one ra-ads.js uses.
+     ============================================================ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-631436705"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'AW-631436705', { 'allow_enhanced_conversions': true });
+  try {
+    gtag('event', 'conversion', { 'send_to': 'AW-631436705/s5BfCOqusdIcEKHri60C' });
+    dataLayer.push({ event: 'rdly_booking_confirmed', lead_source: 'vsl-b-simple' });
+  } catch(e){}
+</script>
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <!-- every video on this page is a chromeless YouTube embed: open those
      connections before the parser reaches them, and fetch the welcome video's

@@ -454,7 +454,16 @@
        the pre-call video, and the eight answer videos. It is absolute because
        it lives outside /funnel-build/, and it keeps the query string so the
        attribution that rode in on the ad click survives the hop. */
-    setTimeout(function(){ location.href='/optin/thank-you.html'+location.search; },400);
+    /* FIXED 13 Aug. This was '/optin/thank-you.html', which does not exist on
+       this arm: there is no optin/ directory here, the page is thank-you.html
+       at the root. Cloudflare Pages served its fallback for the unknown path,
+       so it returned 200 with index.html rather than a 404 and nobody saw it.
+       Every booking made through booking.html therefore landed back on the
+       opt-in page, never reached booked.html, and never fired Meta Schedule,
+       which shared.js's own note above calls the event the campaigns should
+       bid on. The absolute /optin/ path is a copy-across from the funnels arm,
+       where it is correct. Keep location.search so attribution survives. */
+    setTimeout(function(){ location.href='thank-you.html'+location.search; },400);
   });
 
   function init(){
