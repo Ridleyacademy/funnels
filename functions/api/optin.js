@@ -99,6 +99,42 @@ const COHORT_TAGS = {
   budgetCleared: 'VSL Application - Budget Cleared',
 };
 
+// Which funnel produced this lead, as a tag NAME.
+//
+// This used to live ONLY in the AXL scenario "Outside Registration", which
+// branched on substrings of the registration `comment`. That chain tested five
+// literals — vsl-b-door, application-vslb, application, optin, quiz — so any arm
+// whose source was not one of them fell through and got no source tag at all.
+// It broke silently the moment this funnel shipped: `vsl-b-simple` matches none
+// of the five, and `custom-time` never matched either, so those leads landed in
+// AXL indistinguishable from each other.
+//
+// Doing it here instead means a new arm is tagged by the same commit that
+// creates it, rather than by remembering to hand-edit a scenario graph. The
+// scenario's own chain is left alone: it re-adds the same tag for the arms it
+// already knew about, and adding a tag twice is idempotent.
+//
+// Ordered, first match wins, because the strings nest: "application-vslb" also
+// contains "application", and "vsl-b-simple" also starts with "vsl-b".
+const SOURCE_TAGS = [
+  [/^vsl-b-simple/, 'VSL Source - VSL-B Simple'],
+  [/^vsl-b-door/, 'VSL Source - VSL-B Door'],
+  [/^application-vslb/, 'VSL Source - VSL-B Application'],
+  [/^application/, 'VSL Source - Application'],
+  [/^custom-time/, 'VSL Source - Custom Time'],
+  [/optin/, 'VSL Source - Funnels Opt-in'],
+  [/quiz/, 'VSL Source - Quiz Funnel'],
+];
+
+function sourceTag(lead) {
+  const src = String(lead.source || '').trim().toLowerCase();
+  if (!src) return null;
+  for (const [pattern, name] of SOURCE_TAGS) {
+    if (pattern.test(src)) return name;
+  }
+  return null;
+}
+
 function cohortTags(lead) {
   const out = [];
   // The soft landing fires from Q1/Q2 and from the budget gate. Only the first is
@@ -183,14 +219,24 @@ async function axl(env, lead) {
   // without "VSL booked call" is the abandon list — the whole reason to capture
   // before Calendly. Tagged on the call itself rather than via the scenario's
   // comment-substring conditions, which our traffic doesn't cleanly fit.
+  contactData.tags = [];
+  // Source first, and unconditionally: a two-field opt-in answers no quiz, so
+  // gating the whole tag block on `readable.length` (as it used to) meant a plain
+  // capture reached AXL with no source tag whatsoever.
+  const src = sourceTag(lead);
+  if (src) contactData.tags.push(src);
   if (readable.length) {
-    contactData.tags = ['VSL quiz completed'];
+    contactData.tags.push('VSL quiz completed');
     if (lead.route === 'dq') contactData.tags.push('VSL quiz disqualified');
     // Cohort tags, added 2026-08-06 with the apply.html soft landing and budget gate.
     // Names mirror the AC tags below one for one, so a segment built on either side
     // means the same thing. AXL creates an unknown tag name on the fly.
     for (const name of cohortTags(lead)) contactData.tags.push(name);
   }
+  // An empty array would be sent as `tags: []`, which is not the same thing as
+  // "this lead has no tag opinion" — drop the key so the scenario's own tagging
+  // is the only writer when we genuinely have nothing to say.
+  if (!contactData.tags.length) delete contactData.tags;
 
   const res = await fetch(url, {
     method: 'POST',
