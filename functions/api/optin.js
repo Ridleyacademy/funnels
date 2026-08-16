@@ -298,6 +298,21 @@ async function ac(env, lead) {
   const contactId = ((await sync.json().catch(() => ({}))).contact || {}).id;
   if (!contactId) return 'ac:no_contact_id';
 
+  // List subscription, and it is NOT optional. AC will not deliver an automation
+  // email to a contact who is subscribed to no list: every opt-in this worker
+  // created before 2026-08-16 sat with contactLists=[] and automation 601 sent
+  // zero emails ever because each send attempt found no eligible recipient and
+  // demoted the campaign back to Draft. Found in the 8/16 audit; the 494-contact
+  // backlog was list-subscribed by hand the same day. List 1 is "RA Prospects
+  // Non Buyers", the account's standing prospects list; status 1 = subscribed.
+  // Re-subscribing an existing member is a no-op, so repeat opt-ins are safe.
+  const listSub = await fetch(root + '/api/3/contactLists', {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ contactList: { list: 1, contact: contactId, status: 1 } }),
+    signal: AbortSignal.timeout(10000),
+  });
+
   // Tag ids, not names: AC's contactTags endpoint takes an id. These are the
   // live ids in creatorsecretsads, checked 2026-08-06. `VSL Opt-in` is what
   // automation 599 triggers on; the quiz tags mirror the AXL ones so the same
@@ -333,7 +348,7 @@ async function ac(env, lead) {
     if (TAGS[name]) wanted.push(TAGS[name]);
   }
 
-  const results = [];
+  const results = ['list1:' + (listSub.ok ? 'ok' : listSub.status)];
   for (const tagId of wanted) {
     const r = await fetch(root + '/api/3/contactTags', {
       method: 'POST',
