@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>A Few Quick Questions | Ridley Academy</title>
-<meta name="description" content="Nine quick questions so the call actually fits where you are.">
+<meta name="description" content="Six quick questions so the call actually fits where you are.">
 <meta name="theme-color" content="#FDFAF5">
 
 <!-- ============================================================
@@ -14,7 +14,7 @@
      Where the Vidalytics player CTA lands (set the CTA to /quiz in the
      Vidalytics dashboard; nothing in this repo controls that URL).
 
-     NINE QUESTIONS, then a route, then GO. Approved from the 14 Aug
+     SIX QUESTIONS, then a route, then GO. Approved from the 14 Aug
      mockup with three decisions locked in:
        - NO NAVIGATION. No header, wordmark, footer or links out. The
          only controls are answers and a text Back. Every exit is a
@@ -208,29 +208,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   /* Questions. `post` is the /api/optin key the answer ships under; those keys
      are the contract with the Pages Function's QUIZ table, which forwards them
-     to AXL as Quiz_* fields. Do not rename them here without renaming there. */
+     to AXL as Quiz_* fields. Do not rename them here without renaming there.
+
+     RECUT 2026-08-18 (Chris): NINE questions became SIX, and money moved from
+     seventh to fifth so the first four are all about the piano.
+       - q1 was a yes/no gate ("do you want to play real music?"). It is now the
+         desire question, absorbing the old q4 ("what would you most like to be
+         able to do"). Every answer moves forward: by this point they have opted
+         in at the door and watched the video, so the No was near-always a
+         misclick and the Yes was never in doubt.
+       - q5 becomes "what's been holding you back", absorbing the old q6 (the
+         worry at the back of your mind). One obstacle question, not two.
+       - q3 (age group) CUT. It changed no route and the closer can ask.
+       - q4 and q6 CUT into q1 and q5 above.
+     Consequence: with no "No" on q1 the hard DQ is unreachable, so the $27
+     tripwire is now entered only from the budget gate's "out of reach".
+
+     `v` is optional. When present it is what gets POSTED and what the routing
+     regexes match; `o` is only what the visitor reads. That split exists so q11
+     could be reworded without changing the 9/10 and 10/10 values that
+     /^(9|10)\// and the AXL Quiz_ fields depend on. Never edit `v`. */
   var Q = [
-    { post:'q1',  q:'Do you want to be able to sit down and <em>play real music</em>?',
-      o:["Yes. That's exactly what I want.","No, that's not really my goal."] },
-    { post:'q3',  q:'Which age group describes you?',
-      o:['Under 35','35 to 44','45 to 54','55 to 64','65 or older'] },
-    { post:'q4',  q:'What would you most like to be able to do?',
-      o:['Play the songs I actually love','Sit down and play by ear','Feel confident playing for people','Finally follow through this time'] },
-    { post:'q5',  q:"What's been hardest so far?",
-      o:['Stick with practice for more than a few weeks','Get past the same beginner plateau','Make sheet music click','Find a way of learning that fits my life'] },
-    { post:'q6',  q:"What's the worry at the back of your mind?",
-      o:["That I'm too old to start","That I'm just not musical","That I'll quit again","That I'll waste money again"] },
+    { post:'q1',  q:'What have you always wanted to do at a piano and <em>never could</em>?',
+      o:['Play by ear, without sheet music','Get through a whole song without stopping','Improvise and have it actually sound good','Play for someone singing'] },
+    { post:'q5',  q:"What's been <em>holding you back</em>?",
+      o:['Sheet music never clicked for me','I took lessons and it killed the joy','I start, then life gets in the way, then I stop',"I've taught myself bits and hit a wall","I've never been sure I'm musical enough"] },
     { post:'q7',  q:'What have you tried before?',
       o:['Apps (Simply Piano, Yousician, Flowkey...)','Lessons as a kid','Lessons as an adult','YouTube tutorials','Method books on my own','Nothing yet, this is my start'] },
+    { post:'q11', q:'How soon do you want that to be <em>real</em>?',
+      o:["Someday. I'm still looking around.",'This year, if someone showed me the actual path.',"I've decided. I want to start now.","Yesterday. I've put this off for years."],
+      v:['5/10.','7/10.','9/10.','10/10.'] },
     { post:'q10', q:"You're closer than you think. What could you invest to get there?",
-      o:["Under $1,000, I'm just getting started","$1,000 - $3,000, I'm ready to commit","$3,000 - $6,000, I'm serious about this","$6,000 - $10,000, I want the fastest path","$10,000+, whatever it takes"] },
-    { post:'q11', q:'Right now, how committed are you to learning for real?',
-      o:['5/10.','7/10.','9/10.','10/10.'] },
+      o:["Under $1,000, I'm just getting started","$1,000 - $3,000, I'm ready to commit","$3,000 - $6,000, I'm serious about this","$6,000+, I want the fastest path"] },
     { post:'q13', q:'Once you pick your time, <em>will you be there</em>?',
       o:["Yes, I'll be there.","No, I can't promise that right now."] }
   ];
 
   var a = {}, i = 0, cleared = false, forceDq = false, done = false;
+  /* What the visitor actually read, keyed by post. Deliberately a separate object:
+     `a` is spread into the /api/optin payload, so display text must not live in it. */
+  var labels = {};
   var card = document.getElementById('card'), fill = document.getElementById('barFill');
 
   function prog(n){ fill.style.width = Math.round(n/(Q.length+1)*100) + '%'; }
@@ -256,7 +273,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       b.onclick = function(){
         card.querySelectorAll('.opt').forEach(function(x){x.classList.remove('on')});
         b.classList.add('on');
-        a[s.post] = s.o[b.dataset.n];
+        a[s.post] = s.v ? s.v[b.dataset.n] : s.o[b.dataset.n];
+        labels[s.post] = s.o[b.dataset.n];
         setTimeout(next, 200);
       };
     });
@@ -265,11 +283,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   function next(){
+    /* Dormant since the 8/18 recut: q1 no longer offers a "No". Left in place so
+       re-adding one restores the hard DQ without touching this function. */
     if (a.q1 && a.q1.indexOf('No') === 0){
       track('rdly_apply_dq', { dq_type:'hard', dq_trigger:'q1' });
       return landing();
     }
-    if (Q[i].post === 'q11' && !cleared &&
+    /* Fires from q10, not q11: money moved after urgency in the recut, so q10 is
+       now the second of the pair to be answered. */
+    if (Q[i].post === 'q10' && !cleared &&
         /^(9|10)\//.test(a.q11 || '') && /^Under \$1,000/.test(a.q10 || '')) {
       return gate();
     }
@@ -283,7 +305,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     track('rdly_apply_budget_gate', {});
     card.innerHTML =
       '<p class="count">One thing worth naming</p>' +
-      '<h1 class="q">You said <em>' + (a.q11||'').replace('.','') + '</em> committed, and under $1,000.</h1>' +
+      '<h1 class="q">You said <em>' + (labels.q11 || a.q11 || '').replace(/\.$/,'') + '</em>, and under $1,000.</h1>' +
       '<div class="mirror"><span>Where the program actually sits</span>' +
         'Two years of weekly private lessons runs $5,200 to $10,400. This is the cheaper route, not the expensive one.</div>' +
       '<p class="hint">Which is closer to the truth for you?</p>' +
