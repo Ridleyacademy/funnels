@@ -264,7 +264,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       '<p class="count">' + (i===0 ? "You're booking your free session" : 'Booking your session') +
         ' &middot; Question ' + (i+1) + ' of ' + Q.length + '</p>' +
       '<h1 class="q">' + s.q + '</h1>' +
-      (i===0 ? '<p class="hint">Nine quick answers so the call starts from where you are, not from zero. About a minute.</p>' : '') +
+      (i===0 ? '<p class="hint">Six quick answers so the call starts from where you are, not from zero. Under a minute.</p>' : '') +
       '<div class="opts">' + s.o.map(function(o,n){
         return '<button type="button" class="opt" data-n="'+n+'"><i></i><span>'+o+'</span></button>';
       }).join('') + '</div>' +
@@ -316,7 +316,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       '</div>';
     card.querySelectorAll('.opt').forEach(function(b){
       b.onclick = function(){
-        a.qbudget = b.dataset.r;          /* code: can | later | no */
+        a.qbudget = b.dataset.r;          /* code: ok | later | no. The retired apply.html
+                                             wrote "can" for this first option; what is
+                                             posted from here is "ok". */
         a.qbudgetText = b.querySelector('span').textContent;
         track('rdly_apply_budget_answer', { answer: b.dataset.r });
         if (b.dataset.r === 'ok'){ cleared = true; i++; return render(); }
