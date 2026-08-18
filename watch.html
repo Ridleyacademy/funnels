@@ -58,10 +58,22 @@
      the loader runs against a container that is not there, leaving a
      blank box and no console error.
 
-     THE CTA lives entirely inside the player and goes straight to Calendly.
-     booking.html was deleted 13 Aug on Chris's call, so the path is now
-     capture, watch, Calendly. Two consequences that are NOT visible in this
-     file and will not announce themselves:
+     THE CTA lives entirely inside the player and goes to /quiz. Corrected
+     2026-08-18: this block used to say "straight to Calendly", which was true
+     for one day in August and then stopped being true when quiz.html took over
+     as step 3. That stale sentence cost a session's work, because it reads like
+     documentation and is actually a claim about a setting in someone else's
+     dashboard. The path is capture, watch, QUIZ, Calendly.
+
+     The CTA target is NOT in this repo and nothing here controls it. To read
+     what it actually points at, load this page and inspect:
+       _vidalytics.embeds['vidalytics_embed_7pHY_IXbYK7t5bna']
+         .options.ui.callToActions.<id>.link.href
+     On 2026-08-18 that was https://vsl-b.ridleyacademy.team/quiz. Check it
+     before believing any sentence in this file about where the CTA goes.
+
+     One consequence that is NOT visible in this file and will not announce
+     itself:
 
        1. NOTHING FIRES META Schedule ANY MORE. The listener lived in
           shared.js, which booking.html loaded; it caught Calendly's
@@ -72,10 +84,8 @@
           redirect to thank-you.html after booking, and Schedule fires there
           exactly as before. Until that is set, booked calls are invisible to
           Meta and booked.html is never reached.
-       2. Calendly cannot know who this is, because the CTA href is fixed in
-          the Vidalytics dashboard. The click handler below appends name and
-          email from ridley_lead_v1 so the visitor is not asked to type what
-          they already gave us on the capture page.
+       (Prefilling Calendly is no longer this page's problem: quiz.html appends
+       name and email from ridley_lead_v1 when it builds the calendar URL.)
      ============================================================ -->
 
 <!-- TRACKING, identical to index.html and to the door this arm replaces. Base
@@ -314,13 +324,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var href = a.getAttribute('href');
     if (!href) return;
 
-    /* PREFILL, because there is no booking page left to do it.
-       booking.html used to mount Calendly through shared.js, which read
-       ridley_lead_v1 and passed name and email in. The player's CTA links
-       straight to Calendly now and its href is fixed in the Vidalytics
-       dashboard, so it cannot carry anything about this visitor. We hold the
-       lead from the capture page, so we append it here rather than making
-       someone who just gave us their details type them again.
+    /* PREFILL. DORMANT as of 2026-08-18: the player's CTA points at /quiz, not
+       Calendly, so isCalendly below is false and nothing is appended. quiz.html
+       does the prefill now, when it builds the calendar URL at the end.
+
+       Deliberately kept rather than deleted. It is the correct behaviour for the
+       day someone repoints the CTA at Calendly in the Vidalytics dashboard, and
+       it costs one parsed URL per click to leave in.
 
        Only ever added to a calendly.com URL. If the CTA is ever pointed
        somewhere else this leaves it untouched rather than leaking a name and
