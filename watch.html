@@ -341,8 +341,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        so the prefill silently never applied. Parsing also means a lookalike
        host like calendly.com.evil.tld can never be treated as Calendly. */
     try {
-      var host = new URL(href, location.href).hostname.toLowerCase();
+      var u = new URL(href, location.href);
+      var host = u.hostname.toLowerCase();
       var isCalendly = host === 'calendly.com' || host.slice(-13) === '.calendly.com';
+
+      /* CARRY THE AD PARAMETERS ACROSS THE HOP. Added 2026-08-18.
+         The CTA href is a bare .../quiz with no query string, so everything the ad
+         put on the URL died here. That mattered most for a RETURNING visitor: the
+         door's re-entry path forwards location.search to this page but does not
+         re-run its submit handler, so ridley_lead_v1 still holds the utm_source
+         from their FIRST visit. The quiz reads the stored lead, so the campaign
+         that just paid for the click got no credit and the original one was
+         credited twice.
+
+         An allowlist, not the whole query string: this forwards named advertising
+         parameters only, so nothing unexpected on this URL is ever propagated.
+         The host test accepts our own origin plus ridleyacademy.team and
+         pages.dev, because the dashboard href is absolute and does not always
+         match the host the visitor happens to be on (custom domain vs preview).
+         A strict same-origin test skipped the rewrite silently in exactly that
+         case, which is the one hardest to notice.
+         Existing values on the CTA win, so a parameter set deliberately in the
+         Vidalytics dashboard is never overwritten. */
+      var ours = u.origin === location.origin ||
+                 /(^|\.)ridleyacademy\.team$/.test(host) ||
+                 /(^|\.)pages\.dev$/.test(host);
+      if (ours && /\/quiz(\.html)?$/.test(u.pathname)) {
+        var here = new URLSearchParams(location.search);
+        ['utm_source','utm_medium','utm_campaign','utm_content','utm_term',
+         'fbclid','gclid','el'].forEach(function(k){
+          var v = here.get(k);
+          if (v && !u.searchParams.get(k)) u.searchParams.set(k, v);
+        });
+        href = u.pathname + u.search;
+      }
       if (isCalendly && !/[?&]email=/.test(href)) {
         var lead = JSON.parse(localStorage.getItem('ridley_lead_v1') || '{}') || {};
         var add = [];

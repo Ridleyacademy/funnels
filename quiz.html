@@ -346,7 +346,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     for (var k in a) p[k] = a[k];
     /* the budget gate's answer travels as its own code for cohortTags() */
     if (a.qbudget) p.qbudget = a.qbudget;
-    if (lead.utm_source) p.utm_source = lead.utm_source;
+    /* URL FIRST, stored lead second. Added 2026-08-18 with the watch.html change
+       that carries ad parameters across the hop. The stored lead can be STALE: the
+       door only rewrites ridley_lead_v1 when its form is submitted, so a returning
+       visitor who clicks a new ad still has the previous visit's utm_source sitting
+       in localStorage. Whatever is on this URL came from the click that is being
+       paid for right now, so it wins. The stored value remains the fallback for
+       anyone who reached the quiz without parameters. */
+    var urlSource = '';
+    try { urlSource = new URLSearchParams(location.search).get('utm_source') || ''; } catch(_){}
+    var src = urlSource || lead.utm_source;
+    if (src) p.utm_source = src;
     try {
       fetch('/api/optin', {
         method:'POST', headers:{'Content-Type':'application/json'},
