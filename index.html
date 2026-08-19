@@ -135,6 +135,59 @@ img{max-width:100%;display:block}
 ::selection{background:var(--gold);color:var(--ink)}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
+/* ============ ONE-SCREEN FIT ============
+   Measured 19 Aug: the CTA fell under the fold on 7 of 13 real screen sizes,
+   worst at 1366x625 (163px under) and 360x560 (126px under). Cause was that
+   every vertical value here scaled with WIDTH or was fixed px, so a 1366x625
+   laptop was handed the same rhythm as a 1366x1000 one.
+
+   These add a height term. The pattern is always
+
+       min( <what it was> , max( <floor> , <N>svh ) )
+
+   On a tall screen the svh term is the larger of the max and the larger of the
+   min, so the declaration collapses back to exactly the old value and the page
+   renders unchanged. Only short screens compress, and the floor stops them
+   compressing into mush. Phones and laptops get their own numbers because a
+   phone is short-and-narrow while a laptop is short-and-wide.
+
+   svh, NOT vh or dvh: svh is the small viewport, fixed at the value it has
+   with the mobile toolbar SHOWING. dvh would reflow the whole stack as the
+   toolbar collapses mid-scroll, and vh assumes the toolbar is gone, which is
+   the assumption that put the button under the chrome in the first place.
+
+   Verified 19 Aug across 25 viewports, 280x560 through 2560x700, every one of
+   them with the button clear of the fold. Re-measure before changing a number
+   here: the interactions between these are not obvious by reading. */
+:root{
+  --fit-pad:    min(clamp(32px,5vw,56px), max(12px, 4.6svh));
+  --fit-h1:     min(clamp(30px,3.9vw,52px), max(20px, 4.5svh));
+  --fit-sub:    min(clamp(16px,1.9vw,18.5px), max(13px, 2.4svh));
+  --fit-sub-lh: 1.5;
+  --fit-gap-lg: min(24px, max(8px,  3.2svh));
+  --fit-gap-md: min(16px, max(7px,  2.1svh));
+  --fit-form:   min(clamp(24px,3vw,36px), max(9px,  3.2svh));
+  --fit-btn-y:  min(20px, max(11px, 2.7svh));
+  --fit-btn-fs: min(19px, max(15px, 2.6svh));
+  --fit-fld-y:  min(16px, max(9px,  2.2svh));
+  --fit-consent:min(13.5px, max(11.5px, 1.9svh));
+}
+@media(min-width:900px){
+  :root{
+    --fit-pad:    min(clamp(32px,5vw,56px), max(18px, 6.8svh));
+    --fit-h1:     min(clamp(30px,3.9vw,52px), max(28px, 5.9svh));
+    --fit-sub:    min(clamp(16px,1.9vw,18.5px), max(15px, 2.26svh));
+    --fit-sub-lh: 1.5;
+    --fit-gap-lg: min(24px, max(12px, 2.9svh));
+    --fit-gap-md: min(16px, max(8px,  1.95svh));
+    --fit-form:   min(clamp(24px,3vw,36px), max(14px, 4.4svh));
+    --fit-btn-y:  min(20px, max(13px, 2.44svh));
+    --fit-btn-fs: min(19px, max(16px, 2.3svh));
+    --fit-fld-y:  min(16px, max(11px, 1.95svh));
+    --fit-consent:min(13.5px, max(12px, 1.65svh));
+  }
+}
+
 /* ============ THE FIELD ============
    min-height:100svh, not 100vh: on iOS the toolbar eats vh and the CTA
    lands under the chrome, which is the single most expensive layout bug
@@ -146,8 +199,8 @@ img{max-width:100%;display:block}
 .hero{
   position:relative;overflow:hidden;
   min-height:100svh;display:flex;align-items:stretch;
-  --hero-pad-t:clamp(32px,5vw,56px);
-  --hero-pad-b:clamp(40px,5vw,56px);
+  --hero-pad-t:var(--fit-pad);
+  --hero-pad-b:var(--fit-pad);
   /* warm white, with the brand red held to a wash behind the cutout so the
      ground has a direction to it rather than reading as a blank page */
   background:
@@ -228,24 +281,70 @@ img{max-width:100%;display:block}
   /* Sized for the 12 Aug headline at 84 characters. The ramp stays shallow
      because the copy column narrows faster than the viewport does, so a steeper
      one overflows the line count on small laptops before the ceiling bites. */
-  font-size:clamp(30px,3.9vw,52px);line-height:1.03;letter-spacing:.004em;
+  font-size:var(--fit-h1);line-height:1.03;letter-spacing:.004em;
   margin:0;color:var(--on-field);text-wrap:balance;max-width:19ch;
 }
 .h1 em{font-style:normal;color:var(--cherry)}
 .sub{
-  margin:var(--s-4) 0 0;max-width:46ch;
-  font-size:clamp(16px,1.9vw,18.5px);color:var(--on-field-dim);
+  margin:var(--fit-gap-lg) 0 0;max-width:46ch;
+  font-size:var(--fit-sub);line-height:var(--fit-sub-lh);color:var(--on-field-dim);
 }
 .sub b{color:var(--on-field);font-weight:600}
 
+/* THE MEASURE, ON SHORT SCREENS. 19ch is a typographic nicety and it is not
+   free: it wraps the 84-character headline to five lines and leaves the rest of
+   the column empty. A line is the most expensive thing on a screen with no
+   height to spare, so below 620px the measure opens up and the headline buys
+   those lines back as width.
+
+   Two tiers, because short-and-narrow and short-and-wide are different
+   problems. A 320x460 phone has only its column to give; a phone on its side
+   has most of a laptop's width going unused.
+
+   max-height, not svh, is deliberate here: getting it wrong only changes how
+   the copy wraps, never whether the button clears the fold, which is carried by
+   the svh sizing above. Desktops sit above 620px and never see either rule. */
+@media (max-height:620px){
+  .h1{max-width:30ch}
+  .sub{max-width:52ch}
+}
+@media (max-height:620px) and (min-width:600px){
+  .h1{max-width:44ch}
+  .sub{max-width:76ch}
+}
+
+/* THE TIGHT CORNER. Two viewports clear the fold by only a pixel or two on the
+   numbers above: a Galaxy Fold's 280px cover screen, and a 320x460 iPhone 5.
+   Both are rare and neither is going to get more common, but "clears by 1px"
+   is not a fit, it is a coincidence waiting for a font to load differently.
+
+   Scoped so no current phone can reach it: every handset in the matrix is at
+   least 360 wide, and only a phone lying on its side is under 470 tall. */
+@media (max-width:345px), (max-height:470px){
+  :root{
+    --fit-pad:    min(clamp(32px,5vw,56px), max(8px,  3.4svh));
+    --fit-h1:     min(26px, max(17px, 3.9svh));
+    --fit-sub:    min(15px, max(12px, 2.1svh));
+    --fit-sub-lh: 1.42;
+    --fit-gap-lg: min(24px, max(6px,  2.4svh));
+    --fit-gap-md: min(16px, max(6px,  1.7svh));
+    --fit-form:   min(clamp(24px,3vw,36px), max(7px, 2.4svh));
+    --fit-btn-y:  min(20px, max(9px,  2.2svh));
+    --fit-btn-fs: min(19px, max(14px, 2.2svh));
+    --fit-fld-y:  min(16px, max(8px,  1.8svh));
+    --fit-consent:min(13.5px, max(11px, 1.6svh));
+  }
+}
+
+
 /* ---- the form ---- */
-.form{margin-top:clamp(24px,3vw,36px);max-width:560px}
-.form__row{display:grid;gap:var(--s-3);grid-template-columns:1fr}
+.form{margin-top:var(--fit-form);max-width:560px}
+.form__row{display:grid;gap:var(--fit-gap-md);grid-template-columns:1fr}
 @media(min-width:560px){ .form__row{grid-template-columns:1fr 1fr} }
 
 .field{
   width:100%;font:inherit;font-size:16px;         /* 16px or iOS zooms on focus */
-  padding:16px 18px;border-radius:var(--radius);
+  padding:var(--fit-fld-y) 18px;border-radius:var(--radius);
   border:1.5px solid var(--on-field-line);
   background:var(--paper);color:var(--on-field);
   transition:border-color .2s var(--ease),box-shadow .2s var(--ease);
@@ -257,7 +356,7 @@ img{max-width:100%;display:block}
 
 .consent{
   display:flex;gap:12px;align-items:flex-start;cursor:pointer;
-  margin:var(--s-3) 0 0;font-size:13.5px;line-height:1.5;color:var(--on-field-dim);
+  margin:var(--fit-gap-md) 0 0;font-size:var(--fit-consent);line-height:1.45;color:var(--on-field-dim);
 }
 .consent input{
   flex:0 0 auto;width:20px;height:20px;margin:1px 0 0;accent-color:var(--cherry);cursor:pointer;
@@ -268,11 +367,11 @@ img{max-width:100%;display:block}
    button loses its edge. Cherry is the locked brand button and white on it
    clears 4.6:1. */
 .btn{
-  display:block;width:100%;margin:var(--s-4) 0 0;border:0;cursor:pointer;
-  padding:20px 32px;border-radius:999px;
+  display:block;width:100%;margin:var(--fit-gap-lg) 0 0;border:0;cursor:pointer;
+  padding:var(--fit-btn-y) 32px;border-radius:999px;
   background:var(--cherry);color:#fff;
   font-family:var(--display);text-transform:uppercase;font-weight:600;
-  font-size:19px;letter-spacing:.06em;
+  font-size:var(--fit-btn-fs);letter-spacing:.06em;
   box-shadow:0 14px 30px -12px rgba(232,20,32,.55);
   transition:background .22s var(--ease),transform .22s var(--ease),box-shadow .22s var(--ease);
 }
@@ -283,7 +382,7 @@ img{max-width:100%;display:block}
 
 .err{margin:var(--s-3) 0 0;font-size:14px;color:var(--burgundy);font-weight:600;display:none}
 .err.on{display:block}
-.note{margin:var(--s-3) 0 0;font-size:12.5px;color:var(--ink-soft);text-align:center}
+.note{margin:var(--fit-gap-md) 0 0;font-size:12.5px;color:var(--ink-soft);text-align:center}
 
 /* ============ THE CUTOUT ============
    He points to the viewer's left, into the form. That is the only reason he
