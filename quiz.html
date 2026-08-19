@@ -189,7 +189,26 @@ svg{display:block}
   background:var(--paper);border:1.5px solid var(--line);
   box-shadow:0 18px 46px -30px rgba(42,6,13,.42);
 }
-.cal iframe{display:block;width:100%;height:clamp(760px,86svh,1040px);border:0}
+.cal{position:relative}
+.cal iframe{display:block;width:100%;height:clamp(760px,86svh,1040px);border:0;position:relative;z-index:1}
+/* Calendly is a heavy SPA: measured live, the frame's own load event fires
+   seconds before anything paints, and until then it is an opaque white box at
+   the exact moment of highest intent. So this sits ON TOP of the frame, not
+   behind it, and only lifts when Calendly says it is actually showing the
+   booking page. */
+.cal__wait{
+  position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;
+  color:var(--ink-soft);font-size:15px;background:var(--paper);
+  transition:opacity .3s var(--ease);
+}
+.cal__wait.gone{opacity:0;pointer-events:none}
+.cal__wait i{
+  width:26px;height:26px;border-radius:50%;border:2.5px solid var(--line);
+  border-top-color:var(--cherry);animation:calspin .8s linear infinite;
+}
+@keyframes calspin{to{transform:rotate(360deg)}}
+.cal__wait a{color:var(--cherry);text-underline-offset:3px}
 .cal__fallback{
   margin:14px 0 0;font-size:13.5px;color:var(--ink-soft);text-align:center;
 }
@@ -434,10 +453,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         '<h1 class="q">Pick your <em>time</em></h1>' +
         '<p>Thirty minutes, a conversation, not a checkout.</p>' +
       '</div>' +
-      '<div class="cal"><iframe title="Book your Breakthrough Session" ' +
-        'src="' + CAL + q + '" frameborder="0"></iframe></div>' +
+      '<div class="cal">' +
+        '<div class="cal__wait" id="calWait"><i></i><span>Loading your calendar&hellip;</span>' +
+          '<span>Taking too long? <a href="custom-time.html">Request a time instead</a>.</span>' +
+        '</div>' +
+        '<iframe title="Book your Breakthrough Session" ' +
+          'src="' + CAL + q + '" frameborder="0"></iframe>' +
+      '</div>' +
       '<p class="cal__fallback">Calendar not loading? ' +
         '<a href="' + CAL + q + '" target="_blank" rel="noopener">Open it in a new tab</a>.</p>';
+    /* Lift the cover when Calendly is genuinely showing the booking page.
+       Its own iframe load event is useless for this: it fires on document
+       load, well before the app paints. calendly.event_type_viewed is the
+       first message it sends once the page is up. The timeout is a safety
+       net so a message that never arrives cannot leave a visitor stuck
+       behind a spinner with a working calendar underneath it. */
+    var wait = card.querySelector('#calWait');
+    if (wait) {
+      var lift = function(){ wait.classList.add('gone'); };
+      window.addEventListener('message', function(e){
+        if (e && typeof e.origin === 'string' && e.origin.indexOf('calendly.com') !== -1 &&
+            e.data && typeof e.data === 'object' &&
+            String(e.data.event || '').indexOf('calendly.') === 0) lift();
+      }, false);
+      setTimeout(lift, 12000);
+    }
     track('rdly_calendar_mounted', { route: forceDq ? 'dq' : 'qualified' });
   }
 
