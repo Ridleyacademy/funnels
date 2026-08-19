@@ -19,12 +19,12 @@
        3. A cutout of the face of the brand, at scale, pointing into
           the form.
        4. One CTA that is the only saturated object on screen.
-       5. A marquee of one proof line, then a dark footer. Nothing else.
+       5. A dark footer. Nothing else.
 
      What changed for us
        - Ground is warm white, not their saturated colour field, on
          Chris's call 12 Aug. The brand shows up as a wash behind the
-         cutout, the cherry CTA and the marquee band instead.
+         cutout and the cherry CTA instead.
        - CTA is --cherry, the locked brand button. On white, gold
          measures about 1.5:1 and the button loses its edge, so the
          complementary trick the reference plays with orange on blue
@@ -281,10 +281,6 @@ img{max-width:100%;display:block}
 .btn:disabled{opacity:.72;cursor:default;transform:none}
 .btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 
-/* returning-visitor shortcut, hidden until the handler reveals it */
-.again{margin:var(--s-3) 0 0;font-size:13.5px;color:var(--ink-soft);text-align:center}
-.again a{color:var(--cherry);font-weight:600;text-underline-offset:3px;display:inline-block;padding:6px 4px}
-
 .err{margin:var(--s-3) 0 0;font-size:14px;color:var(--burgundy);font-weight:600;display:none}
 .err.on{display:block}
 .note{margin:var(--s-3) 0 0;font-size:12.5px;color:var(--ink-soft);text-align:center}
@@ -323,8 +319,8 @@ img{max-width:100%;display:block}
    bottom of the screen at scale, and the section edge crops him mid-body. The
    fixed height plus overflow is what does the cropping, so the visible window
    is always head-through-hands regardless of how tall the source image is.
-   The negative margin eats the hero's bottom padding so the marquee is the
-   crop line rather than a gap opening under him. */
+   The negative margin eats the hero's bottom padding so the footer edge is
+   the crop line rather than a gap opening under him. */
 .figure{
   position:relative;display:flex;justify-content:center;
   width:min(92%,360px);
@@ -397,23 +393,6 @@ img{max-width:100%;display:block}
     filter:drop-shadow(0 30px 44px rgba(42,6,13,.28));
   }
 }
-
-/* ============ MARQUEE ============
-   One line, one number, repeated. It is proof, not a headline, so it
-   never competes with the h1. Stops dead for reduced-motion. */
-.marquee{
-  position:relative;overflow:hidden;background:var(--cherry);
-  padding:16px 0;border-top:1px solid rgba(0,0,0,.14);
-}
-.marquee__track{display:flex;width:max-content;animation:slide 42s linear infinite}
-.marquee__item{
-  display:inline-flex;align-items:center;gap:26px;padding-right:26px;white-space:nowrap;
-  font-family:var(--display);text-transform:uppercase;letter-spacing:.07em;
-  font-size:clamp(13px,1.5vw,16px);font-weight:500;color:#fff;
-}
-.marquee__dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.6);flex:none}
-@keyframes slide{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
-@media(prefers-reduced-motion:reduce){ .marquee__track{animation:none} }
 
 /* ============ FOOTER ============ */
 .foot{background:var(--wine);padding:var(--s-6) var(--gutter);text-align:center}
@@ -545,14 +524,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="submit" class="btn" id="optinBtn">Watch Now</button>
         <p class="err" id="optinErr" role="alert"></p>
         <p class="note">Free. It plays on the very next screen.</p>
-        <!-- revealed only to someone who has already given us their details -->
-        <p class="again" id="optinAgain" hidden>Already registered? <a href="watch.html">Watch it again</a></p>
       </form>
     </div>
 
     <!-- ART DIRECTED, not one image scaled down. On desktop he points into
          the form, which is the whole reason he is here. Stacked on a phone
-         that same arm points at empty space beside the marquee, so phones get
+         that same arm points at empty space, so phones get
          a head-and-shoulders crop with the arm cut out. The media queries also
          mean a phone downloads only the 127KB portrait, never the 187KB
          full figure. -->
@@ -593,18 +570,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   </div>
 </main>
-
-<section class="marquee" aria-label="Social proof">
-  <!-- Duplicated once, exactly. The -50% keyframe assumes two identical
-       halves; adding or removing an item without matching the other half
-       makes the loop visibly jump. -->
-  <div class="marquee__track">
-    <span class="marquee__item">40,000+ adults in 60+ countries have played their first song with Stephen<span class="marquee__dot" aria-hidden="true"></span></span>
-    <span class="marquee__item">40,000+ adults in 60+ countries have played their first song with Stephen<span class="marquee__dot" aria-hidden="true"></span></span>
-    <span class="marquee__item" aria-hidden="true">40,000+ adults in 60+ countries have played their first song with Stephen<span class="marquee__dot"></span></span>
-    <span class="marquee__item" aria-hidden="true">40,000+ adults in 60+ countries have played their first song with Stephen<span class="marquee__dot"></span></span>
-  </div>
-</section>
 
 <footer class="foot">
   <!-- the wordmark lives here now, and it carries the mark itself rather than
@@ -666,38 +631,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var EMAIL = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
   var NEXT  = 'watch.html';
   var LABEL = btn.textContent;   /* captured before "Saving" overwrites it */
-
-  /* ============================================================
-     RETURNING VISITOR BYPASS, ported from the door this replaces.
-     Someone who already gave us their details is sent straight to the video
-     instead of being asked twice. Without this they re-submit, re-fire
-     CompleteRegistration and inflate the lead count with people we already had.
-
-     ?v=plain is the door's QA and rollback switch, kept for the same reason:
-     it is the only way to reach the video without going through capture, which
-     is how you check the video in isolation.
-
-     Both fail OPEN. Any storage error and the visitor simply sees the form,
-     which is the working page, never a lock-out or a redirect loop.
-     ============================================================ */
-  try {
-    if (new URLSearchParams(location.search).get('v') !== 'plain') {
-      var prior = JSON.parse(localStorage.getItem('ridley_lead_v1') || 'null');
-      if (prior && prior.email) {
-        /* A SHORTCUT, NOT A REDIRECT, and the distinction matters. Sending them
-           straight to the video traps the back button: leave the video, land
-           here, get bounced back, forever, with no way to reach this page. The
-           door solved it the same way, with a "watch again" affordance.
-           Re-entry never re-fires capture, so the lead count stays honest. */
-        document.documentElement.classList.add('is-opted');
-        var again = document.getElementById('optinAgain');
-        if (again) {
-          again.hidden = false;
-          again.querySelector('a').href = NEXT + location.search;
-        }
-      }
-    }
-  } catch(_){}
 
   function fail(msg, el){
     err.textContent = msg; err.classList.add('on');
