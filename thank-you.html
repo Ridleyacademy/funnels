@@ -30,7 +30,16 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
      conversion. The booking handler in main.js deliberately does NOT fire it,
      so each booking counts exactly once.
      Optimize ad campaigns against the "Schedule" standard event. -->
-<script>try{fbq('track','Schedule',{content_name:'Free piano consultation'});}catch(e){}</script>
+<!-- ?booked=1 means quiz.html already fired both conversions from the parent
+     window off Calendly's event_scheduled message, and then sent the visitor
+     here. Standing down on that flag is what keeps one booking counting once
+     now that the calendar is embedded in the quiz rather than linked out. -->
+<script>
+  window.RA_BOOKED_UPSTREAM = /[?&]booked=1\b/.test(location.search);
+  if (!window.RA_BOOKED_UPSTREAM) {
+    try{fbq('track','Schedule',{content_name:'Free piano consultation'});}catch(e){}
+  }
+</script>
 
 <!-- ============================================================
      GOOGLE ADS BOOKED-CALL CONVERSION, added 13 Aug.
@@ -47,6 +56,11 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
      This page is reached only by Calendly's own after-booking redirect, so a
      load means a booking happened: one load, one conversion.
 
+     UPDATED 19 Aug: quiz.html now embeds the calendar inline, so the
+     postMessage DOES arrive again, on the quiz page. It fires both
+     conversions there and forwards here with ?booked=1; on that flag this
+     page fires neither, so the two routes in cannot double count.
+
      ra-ads.js is deliberately NOT loaded here. It would listen for a
      postMessage that cannot arrive, and its enhanced-conversion identify()
      path expects a lead in storage that a redirect from calendly.com will not
@@ -59,8 +73,10 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
   gtag('js', new Date());
   gtag('config', 'AW-631436705', { 'allow_enhanced_conversions': true });
   try {
-    gtag('event', 'conversion', { 'send_to': 'AW-631436705/s5BfCOqusdIcEKHri60C' });
-    dataLayer.push({ event: 'rdly_booking_confirmed', lead_source: 'vsl-b-simple' });
+    if (!window.RA_BOOKED_UPSTREAM) {
+      gtag('event', 'conversion', { 'send_to': 'AW-631436705/s5BfCOqusdIcEKHri60C' });
+      dataLayer.push({ event: 'rdly_booking_confirmed', lead_source: 'vsl-b-simple' });
+    }
   } catch(e){}
 </script>
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>

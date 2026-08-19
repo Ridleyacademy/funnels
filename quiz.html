@@ -56,7 +56,10 @@
        rdly_apply_start / _step / _complete{route} / _dq /
        _budget_gate / _budget_answer on dataLayer, and Meta Lead
        fires ONLY on the qualified route. CompleteRegistration
-       stays the door's, Schedule stays thank-you.html's.
+       stays the door's. Schedule moved HERE on 19 Aug when the
+       calendar became an inline embed: Calendly's postMessage
+       only reaches the page that embeds it, so this is now the
+       only page that can know a booking happened.
      ============================================================ -->
 
 <!-- Google Tag Manager -->
@@ -173,6 +176,25 @@ svg{display:block}
 .mirror span{display:block;color:var(--ink-soft);font-size:13px;margin-bottom:3px}
 .out .q{margin-bottom:14px}
 .out p{font-size:16.5px;color:var(--ink-soft);max-width:48ch;margin:0 0 16px}
+
+/* ---- the calendar, embedded ------------------------------------------
+   The quiz used to hand the visitor to calendly.com. It now mounts the
+   calendar here instead, which is what restores the booking signal: a
+   Calendly postMessage only reaches a page that embeds it inline, and
+   ra-ads.js has been listening for that message the whole time with
+   nothing to hear. */
+.card--cal{max-width:940px}
+.cal{
+  margin:18px 0 0;border-radius:16px;overflow:hidden;
+  background:var(--paper);border:1.5px solid var(--line);
+  box-shadow:0 18px 46px -30px rgba(42,6,13,.42);
+}
+.cal iframe{display:block;width:100%;height:clamp(760px,86svh,1040px);border:0}
+.cal__fallback{
+  margin:14px 0 0;font-size:13.5px;color:var(--ink-soft);text-align:center;
+}
+.cal__fallback a{color:var(--cherry);text-underline-offset:3px}
+@media (max-width:640px){ .cal iframe{height:clamp(820px,90svh,1180px)} }
 </style>
 </head>
 <body>
@@ -376,19 +398,74 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var route = soft ? 'dq' : 'qualified';
     track('rdly_apply_complete', { route: route });
     /* Lead is reserved for a finished, qualified application: the door already
-       fired CompleteRegistration, Schedule belongs to thank-you.html. */
+       fired CompleteRegistration. Schedule fires further down, off Calendly's
+       event_scheduled message, not here. */
     if (!soft) { try { if (window.fbq) fbq('track','Lead',{content_name:'Quiz Qualified'}); } catch(_){} }
     ship(route);
-    var url = CAL + '?hide_gdpr_banner=1';
-    if (lead.name)  url += '&name='  + encodeURIComponent(lead.name);
-    if (lead.email) url += '&email=' + encodeURIComponent(lead.email);
+    mountCalendar();
+  }
+
+  /* Mount the calendar in the page rather than sending the visitor to
+     calendly.com.
+
+     This is the fix for a booking signal that has been dark for weeks.
+     Calendly emits `calendly.event_scheduled` as a postMessage to its PARENT
+     window, so it only ever arrives on a page that embeds the calendar
+     inline. booking.html used to be that page; when it was retired and the
+     funnel started linking straight out to calendly.com, both the Meta
+     Schedule event and the Google booked-call conversion went dark with it,
+     silently. ra-ads.js still carries the listener (see its onMessage), so
+     embedding here is all it takes to give it something to hear.
+
+     embed_domain and embed_type are not decoration: Calendly only posts back
+     to the parent when it knows it is running embedded. Without them the
+     iframe renders and the message never arrives. */
+  function mountCalendar(){
+    var q = '?hide_gdpr_banner=1&embed_type=Inline&embed_domain=' +
+            encodeURIComponent(location.hostname);
+    if (lead.name)  q += '&name='  + encodeURIComponent(lead.name);
+    if (lead.email) q += '&email=' + encodeURIComponent(lead.email);
+    /* carries the ad click id onto the booking record for offline upload */
+    try { if (window.RAAds && RAAds.calendlyParams) q += RAAds.calendlyParams(); } catch(_){}
+
+    card.className = 'card card--cal';
     card.innerHTML =
       '<div class="out">' +
-        '<h1 class="q">Opening your <em>calendar</em></h1>' +
-        '<p>Pick a time. Thirty minutes, a conversation, not a checkout.</p>' +
-      '</div>';
-    setTimeout(function(){ window.location.href = url; }, 700);
+        '<h1 class="q">Pick your <em>time</em></h1>' +
+        '<p>Thirty minutes, a conversation, not a checkout.</p>' +
+      '</div>' +
+      '<div class="cal"><iframe title="Book your Breakthrough Session" ' +
+        'src="' + CAL + q + '" frameborder="0"></iframe></div>' +
+      '<p class="cal__fallback">Calendar not loading? ' +
+        '<a href="' + CAL + q + '" target="_blank" rel="noopener">Open it in a new tab</a>.</p>';
+    track('rdly_calendar_mounted', { route: forceDq ? 'dq' : 'qualified' });
   }
+
+  /* The booking itself. Fires Meta's Schedule from the parent window and then
+     moves the parent to the confirmation page.
+
+     Two things this deliberately does NOT rely on:
+       - Calendly's own after-booking redirect. When the calendar is embedded
+         that redirect navigates the IFRAME, so the confirmation page loads
+         inside the frame and the top window never moves. Driving the parent
+         from the message makes the outcome the same either way.
+       - thank-you.html firing the conversion. It fires Schedule and the
+         Google booked-call on load, which is right when Calendly redirected
+         to it directly. Reaching it from here would double count, so the
+         parent hands over `?booked=1` and thank-you.html stands down.
+     Google's side needs nothing here: ra-ads.js fires callBooked off the same
+     message and carries its own guard. */
+  var scheduled = false;
+  window.addEventListener('message', function(e){
+    if (!e || typeof e.origin !== 'string' || e.origin.indexOf('calendly.com') === -1) return;
+    if (!e.data || typeof e.data !== 'object') return;
+    if (e.data.event !== 'calendly.event_scheduled') return;
+    if (scheduled) return;
+    scheduled = true;
+    try { if (window.fbq) fbq('track','Schedule',{content_name:'Free piano consultation'}); } catch(_){}
+    track('rdly_booking_confirmed', { source:'quiz_embed' });
+    setTimeout(function(){ window.location.href = '/thank-you.html?booked=1'; }, 600);
+  }, false);
 
   /* hard DQ: one soft line, then the smaller first step. Never a verdict. */
   function landing(){
