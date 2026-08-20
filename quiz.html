@@ -285,7 +285,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       o:["Yes, I'll be there.","No, I can't promise that right now."] }
   ];
 
-  var a = {}, i = 0, cleared = false, forceDq = false, done = false;
+  var a = {}, i = 0, cleared = false, forceDq = false, done = false, dqTrigger = '';
   /* What the visitor actually read, keyed by post. Deliberately a separate object:
      `a` is spread into the /api/optin payload, so display text must not live in it. */
   var labels = {};
@@ -328,7 +328,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        re-adding one restores the hard DQ without touching this function. */
     if (a.q1 && a.q1.indexOf('No') === 0){
       track('rdly_apply_dq', { dq_type:'hard', dq_trigger:'q1' });
-      return landing();
+      return landing('q1');
     }
     /* Fires from q10, not q11: money moved after urgency in the recut, so q10 is
        now the second of the pair to be answered. */
@@ -365,7 +365,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         if (b.dataset.r === 'ok'){ cleared = true; i++; return render(); }
         if (b.dataset.r === 'later'){ forceDq = true; i++; return render(); }
         track('rdly_apply_dq', { dq_type:'hard', dq_trigger:'budget' });
-        landing();
+        landing('budget');
       };
     });
   }
@@ -389,6 +389,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     for (var k in a) p[k] = a[k];
     /* the budget gate's answer travels as its own code for cohortTags() */
     if (a.qbudget) p.qbudget = a.qbudget;
+    /* and so does the reason a hard DQ fired, under the key the worker reads */
+    if (dqTrigger) p.dq_trigger = dqTrigger;
     /* URL FIRST, stored lead second. Added 2026-08-18 with the watch.html change
        that carries ad parameters across the hop. The stored lead can be STALE: the
        door only rewrites ridley_lead_v1 when its form is submitted, so a returning
@@ -409,7 +411,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   function finish(){
-    if (done) return; done = true;
+    if (done) return;
+    /* COMMITMENT FLOOR, Chris 19 Aug. 5/10 or below is someone still looking
+       around, and until now they reached the calendar: the budget gate is the
+       only other hard exit and it opens at 9-10/10, so the least committed
+       applicants were the ones nothing ever stopped. A 5/10 with no money behind
+       it booked a Breakthrough Session on 19 Aug; that is what this closes.
+       Read off q11's stored value ("5/10." / "7/10." / "9/10." / "10/10."), the
+       only numeric scale in the quiz, so re-wording an option cannot break it.
+       An unanswered q11 parses to NaN and does NOT dq. Runs before `done` is set,
+       because landing() owns that latch and would return early otherwise. */
+    if (parseInt(a.q11, 10) <= 5) {
+      track('rdly_apply_dq', { dq_type:'hard', dq_trigger:'commitment' });
+      return landing('commitment');
+    }
+    done = true;
     prog(Q.length + 1);
     var soft = forceDq ||
                (!cleared && /^Under \$1,000/.test(a.q10 || '')) ||
@@ -421,7 +437,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        event_scheduled message, not here. */
     if (!soft) { try { if (window.fbq) fbq('track','Lead',{content_name:'Quiz Qualified'}); } catch(_){} }
     ship(route);
-    mountCalendar();
+    mountCalendar(route);
   }
 
   /* Mount the calendar in the page rather than sending the visitor to
@@ -439,7 +455,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      embed_domain and embed_type are not decoration: Calendly only posts back
      to the parent when it knows it is running embedded. Without them the
      iframe renders and the message never arrives. */
-  function mountCalendar(){
+  /* `route` is finish()'s computed one. It used to be re-derived here as
+     `forceDq ? 'dq' : 'qualified'`, but forceDq is set only by the budget gate's
+     "not right now", so every soft DQ that came from the budget bracket or from
+     "I can't promise" reported itself as qualified on this one event. */
+  function mountCalendar(route){
     var q = '?hide_gdpr_banner=1&embed_type=Inline&embed_domain=' +
             encodeURIComponent(location.hostname);
     if (lead.name)  q += '&name='  + encodeURIComponent(lead.name);
@@ -478,7 +498,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }, false);
       setTimeout(lift, 12000);
     }
-    track('rdly_calendar_mounted', { route: forceDq ? 'dq' : 'qualified' });
+    track('rdly_calendar_mounted', { route: route });
   }
 
   /* The booking itself. Fires Meta's Schedule from the parent window and then
@@ -507,9 +527,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     setTimeout(function(){ window.location.href = '/thank-you.html?booked=1'; }, 600);
   }, false);
 
-  /* hard DQ: one soft line, then the smaller first step. Never a verdict. */
-  function landing(){
+  /* hard DQ: one soft line, then the smaller first step. Never a verdict.
+     `trigger` names the answer that stopped them and is posted as dq_trigger.
+     The worker already reads that key (it was apply.html's) and routes on it:
+     anything other than 'budget' earns the Not Ready cohort tag. This page never
+     sent it, so every hard DQ from here landed in AXL with no cohort at all. */
+  function landing(trigger){
     if (done) return; done = true;
+    dqTrigger = trigger || '';
     prog(Q.length + 1);
     track('rdly_apply_complete', { route: 'tripwire' });
     ship('tripwire');

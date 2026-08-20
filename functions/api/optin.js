@@ -87,7 +87,13 @@ function envVar(env, name) {
 // the applicant was shown is $3,000 (PROGRAM_FLOOR in apply.html), so "reach the floor"
 // here means that number and nothing else.
 const QBUDGET_LABELS = {
+  // Two codes, one meaning. apply.html wrote 'can'; quiz.html writes 'ok' and says
+  // so in its own comment. Only 'can' was ever mapped, so the quiz's cleared-budget
+  // applicants reached the closer with a bare "ok" on the card and, worse, missed
+  // the Budget Cleared tag entirely (see cohortTags). Both codes are kept: the
+  // funnels arm still posts 'can'.
   can: 'Could reach $3,000 after all',
+  ok: 'Could reach $3,000 after all',
   later: 'Not right now, still wanted the call',
   no: 'Out of reach today',
 };
@@ -98,6 +104,21 @@ const COHORT_TAGS = {
   budgetDeferred: 'VSL Application - Budget Deferred',
   budgetCleared: 'VSL Application - Budget Cleared',
 };
+
+// Not getting a calendar today, whichever exit sent them there. 'dq' is the soft
+// landing (still books, tagged so the closer can tier the call); 'tripwire' is the
+// hard exit, taken by the budget gate's "out of reach" and, from 19 Aug, by the
+// commitment floor at 5/10.
+//
+// Both need the same tag. 641 is a suppression signal as much as a label: it lifts
+// them out of the Front Gate Nurture (599), which exists to push a booking, and it
+// is the trigger for the $27 downsell (600). Before this, 'tripwire' fell to the
+// else-branch and took quizDone instead, so the people we had just steered AWAY
+// from a call were the ones still being emailed to book one, and none of them ever
+// reached the downsell they had just been sent to the page for.
+function isDqRoute(route) {
+  return route === 'dq' || route === 'tripwire';
+}
 
 // Which funnel produced this lead, as a tag NAME.
 //
@@ -145,12 +166,22 @@ function cohortTags(lead) {
   // field; an exact match on the funnels string would silently drop the Not Ready
   // tag for every vsl-b applicant who said No on Q1 or Q2. Any future arm that
   // follows the same "application[-arm]-dq" shape is covered without a code change.
-  if (/^application(-[a-z0-9]+)?-dq$/.test(lead.source || '') && lead.dqTrigger !== 'budget') {
+  // Two ways to know a readiness exit, because the two arms say it differently:
+  //   - dq_trigger, which quiz.html posts from 19 Aug ('commitment', or 'q1' if the
+  //     hard DQ there is ever restored). This is the reliable one.
+  //   - the legacy "application[-arm]-dq" source shape, still posted by the funnels
+  //     arm. quiz.html posts source 'quiz', so the pattern alone never matched it and
+  //     no hard DQ from this funnel has ever carried a cohort tag.
+  // The budget gate is excluded from both: its applicants are a money story and take
+  // the Budget_* tags below instead.
+  if (lead.dqTrigger !== 'budget' &&
+      (lead.dqTrigger || /^application(-[a-z0-9]+)?-dq$/.test(lead.source || ''))) {
     out.push(COHORT_TAGS.notReady);
   }
   if (lead.qbudget === 'no') out.push(COHORT_TAGS.budgetBelow);
   else if (lead.qbudget === 'later') out.push(COHORT_TAGS.budgetDeferred);
-  else if (lead.qbudget === 'can') out.push(COHORT_TAGS.budgetCleared);
+  // 'ok' is quiz.html's code for what apply.html called 'can'. See QBUDGET_LABELS.
+  else if (lead.qbudget === 'can' || lead.qbudget === 'ok') out.push(COHORT_TAGS.budgetCleared);
   return out;
 }
 
@@ -227,7 +258,7 @@ async function axl(env, lead) {
   if (src) contactData.tags.push(src);
   if (readable.length) {
     contactData.tags.push('VSL quiz completed');
-    if (lead.route === 'dq') contactData.tags.push('VSL quiz disqualified');
+    if (isDqRoute(lead.route)) contactData.tags.push('VSL quiz disqualified');
     // Cohort tags, added 2026-08-06 with the apply.html soft landing and budget gate.
     // Names mirror the AC tags below one for one, so a segment built on either side
     // means the same thing. AXL creates an unknown tag name on the fly.
@@ -339,10 +370,8 @@ async function ac(env, lead) {
   // ("vsl-b-door") is deliberately not included: it is the same arm but not an
   // application, and conflating the two would break any count of applications.
   if (/^application-vslb(-dq)?$/.test(lead.source || '')) wanted.push(TAGS.vslbApplication);
-  // 641 is a suppression signal as well as a label: it takes them out of the Front Gate
-  // Nurture (599), which exists to push a booking. Someone who just declined a call
-  // should not receive it, so every dq route keeps this tag.
-  if (lead.route === 'dq') wanted.push(TAGS.quizDq);
+  // Both dq routes take 641; see isDqRoute for what that tag actually does.
+  if (isDqRoute(lead.route)) wanted.push(TAGS.quizDq);
   else if (lead.quizAnswered) wanted.push(TAGS.quizDone);
   for (const name of cohortTags(lead)) {
     if (TAGS[name]) wanted.push(TAGS[name]);
