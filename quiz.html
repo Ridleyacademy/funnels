@@ -247,17 +247,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   var CAL = 'https://calendly.com/d/dv25-nhh-w9v/free-piano-breakthrough-session';
   var TRIPWIRE = '/tripwire.html';
-  /* THE PRE-FRAME SPLIT (21 Aug 2026, EXECUTION-LIST item 6). DARK BY DEFAULT.
-     ?pf=1 on this page's URL shows the $5,997 pre-frame screen before question
-     one; without it the page behaves exactly as before. A split, not a global
-     change, because revealing the number up front reverses the standing
-     "money stays soft" brief and has to be read against the current flow, one
-     change at a time, after items 4 and 5 have settled. Turn it on by adding
-     pf=1 to the Vidalytics CTA URL (or to an ad's final URL; watch.html
-     forwards pf across the hop). Every application posts which variant it saw
-     (preframe field -> Quiz_Preframe), so the two arms separate in AXL. */
-  var PREFRAME_ON = false;
-  try { PREFRAME_ON = new URLSearchParams(location.search).get('pf') === '1'; } catch(_){}
+  /* No price pre-frame here. Item 6 of EXECUTION-LIST-20260821 was dropped on
+     Stephen's call, 21 Aug: money stays soft until the sales call. */
 
   function track(ev, extra){
     try {
@@ -465,8 +456,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         for (var ak in af) p[ak] = af[ak];
       }
     } catch(_){}
-    /* which quiz variant they saw; '' when the pre-frame split is dark */
-    if (PREFRAME_ON) p.preframe = 'shown';
     try {
       fetch('/api/optin', {
         method:'POST', headers:{'Content-Type':'application/json'},
@@ -631,36 +620,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     setTimeout(function(){ window.location.href = TRIPWIRE; }, 1400);
   }
 
-  /* The pre-frame screen. Names the investment and what the program is BEFORE
-     the questions, so nobody completes an application without knowing what
-     they are applying to. Copy is the premium positioning from EXECUTION-LIST
-     item 6, stated as what it is and what it is not. One button forward; the
-     Back control is the browser's. */
-  function preframe(){
-    prog(0);
-    track('rdly_preframe_view', {});
-    card.innerHTML =
-      '<p class="count">Before the questions</p>' +
-      '<h1 class="q">Know what you are <em>stepping into</em></h1>' +
-      '<div class="mirror"><span>The Ridley Method mentorship</span>' +
-        'A premium learning experience, built around direct guidance and implementation: ' +
-        'world-class coaches, an active community, and Stephen personally involved in your playing. ' +
-        'The full investment is <strong>$5,997</strong>, and most students pay it on a plan.</div>' +
-      '<p class="hint">It is not another piano app. Not a cheap video course. Not a library of ' +
-        'lessons you are left to navigate alone. If that is the level you have been looking for, ' +
-        'the six questions ahead take under a minute.</p>' +
-      '<div class="opts">' +
-        '<button type="button" class="opt" data-go="1"><i></i><span>I understand. Let\'s begin.</span></button>' +
-      '</div>';
-    card.querySelector('.opt').onclick = function(){
-      track('rdly_preframe_continue', {});
-      render();
-    };
-    try { window.scrollTo(0,0); } catch(_){}
-  }
-
-  track('rdly_apply_start', { page:'quiz', variant: PREFRAME_ON ? 'preframe' : 'control' });
-  if (PREFRAME_ON) preframe(); else render();
+  track('rdly_apply_start', { page:'quiz' });
+  render();
 })();
 </script>
 

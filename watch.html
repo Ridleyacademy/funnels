@@ -383,12 +383,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                  /(^|\.)pages\.dev$/.test(host);
       if (ours && /\/quiz(\.html)?$/.test(u.pathname)) {
         var here = new URLSearchParams(location.search);
-        /* Widened 21 Aug 2026 to the full ra-attrib.js set, plus `pf`, the
-           pre-frame split flag, so the variant can be switched on at the ad
-           or link level and survive this hop. */
+        /* Widened 21 Aug 2026 to the full ra-attrib.js set. */
         ['utm_source','utm_medium','utm_campaign','utm_content','utm_term',
          'utm_id','fbclid','gclid','gbraid','wbraid','placement',
-         'site_source_name','campaign_id','adset_id','ad_id','pf','el'
+         'site_source_name','campaign_id','adset_id','ad_id','el'
         ].forEach(function(k){
           var v = here.get(k);
           if (v && !u.searchParams.get(k)) u.searchParams.set(k, v);
@@ -440,16 +438,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
      APPLY_CTA_REVEAL_SECONDS is the single number that decides when the apply
      CTA becomes visible, and it is the only thing to edit when the video
-     changes. It is set for the 7:30 RECUT (VSL-ANALYSIS-20260818.md): first
-     CTA at 4:02 = 242s, immediately after the qualifier that follows the
-     coaches-and-community block. THE CTA MOVE AND THE RECUT SHIP TOGETHER.
-     If this page ever deploys while the 15:30 master is still live, use 531
-     (8:51, the end of the premium block) instead; on the current master 242
-     lands mid-demo, before the pitch, which is the exact defect being fixed.
+     changes. HELD AT 90 (the current 1:30 reveal) while the 15:30 master is
+     live: THE CTA MOVE AND THE RECUT SHIP TOGETHER, and the recut is not
+     commissioned yet. When the 7:30 recut (VSL-ANALYSIS-20260818.md) goes
+     live, set 242 (4:02, immediately after the qualifier that follows the
+     coaches-and-community block) and PITCH_STARTS_SECONDS to 200.
 
      PITCH_STARTS_SECONDS marks where the premium block begins, and exists so
-     "pitch reached" can be a reported (and later bid-on) event. Recut: 3:20 =
-     200s. Current 15:30 master: 464s.
+     "pitch reached" can be a reported (and later bid-on) event. Current 15:30
+     master: 464s. Recut: 200s.
 
      HOW THE GATE WORKS. Vidalytics injects its CTA on the dashboard timer
      (90s today); the CSS above keeps every vid_cta anchor hidden until the
@@ -463,8 +460,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      CTA is the only conversion path on this page; hiding it forever must be
      impossible.
      ======================================================================= */
-  var APPLY_CTA_REVEAL_SECONDS = 242;
-  var PITCH_STARTS_SECONDS = 200;
+  var APPLY_CTA_REVEAL_SECONDS = 90;
+  var PITCH_STARTS_SECONDS = 464;
 
   function track(ev, extra){
     try {

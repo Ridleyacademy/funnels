@@ -53,10 +53,6 @@ const QUIZ = [
   ['qbudget', 'Budget gate',    'Quiz_Budget_Gate'],
   ['q11', 'Committed',        'Quiz_Commitment'],
   ['q13', 'Will show up',     'Quiz_Will_Attend'],
-  // Which quiz variant they saw (EXECUTION-LIST item 6): 'shown' when the
-  // $5,997 pre-frame ran before question one, absent on the control flow.
-  // Quiz_-prefixed deliberately, so it passes the proxy that is deployed today.
-  ['preframe', 'Pre-frame',   'Quiz_Preframe'],
 ];
 
 // Attribution, payload key -> AXL field (21 Aug 2026, EXECUTION-LIST item 2).
