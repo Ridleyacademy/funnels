@@ -53,7 +53,92 @@ const QUIZ = [
   ['qbudget', 'Budget gate',    'Quiz_Budget_Gate'],
   ['q11', 'Committed',        'Quiz_Commitment'],
   ['q13', 'Will show up',     'Quiz_Will_Attend'],
+  // Which quiz variant they saw (EXECUTION-LIST item 6): 'shown' when the
+  // $5,997 pre-frame ran before question one, absent on the control flow.
+  // Quiz_-prefixed deliberately, so it passes the proxy that is deployed today.
+  ['preframe', 'Pre-frame',   'Quiz_Preframe'],
 ];
+
+// Attribution, payload key -> AXL field (21 Aug 2026, EXECUTION-LIST item 2).
+// ra-attrib.js posts last touch under the plain names and first touch under
+// ft_*; this maps both onto the contact so an application (and later a
+// booking and an order) can finally be split by campaign, ad set, ad,
+// creative, placement and device. Until today 2 of 85 applications carried
+// any of this.
+//
+// TWO DEPLOY GATES, stated plainly:
+//   1. The accel-proxy worker forwards only whitelisted names; Attribution_*
+//      needs the one-line pattern added in accel-proxy/src/worker.js and that
+//      worker re-pasted into the Cloudflare dashboard.
+//   2. Each field must exist on the AXL contact before it sticks. Creating
+//      them in the AXL UI is the whole job, same as the Quiz_ fields.
+// Until both land, the compact summary appended to `comment` below carries
+// the same story through the already-whitelisted channel, so nothing waits.
+const ATTRIB = [
+  ['utm_source',       'Attribution_Source'],
+  ['utm_medium',       'Attribution_Medium'],
+  ['utm_campaign',     'Attribution_Campaign'],
+  ['utm_term',         'Attribution_Adset'],
+  ['utm_content',      'Attribution_Ad'],
+  ['utm_id',           'Attribution_Utm_Id'],
+  ['campaign_id',      'Attribution_Campaign_Id'],
+  ['adset_id',         'Attribution_Adset_Id'],
+  ['ad_id',            'Attribution_Ad_Id'],
+  ['placement',        'Attribution_Placement'],
+  ['site_source_name', 'Attribution_Site_Source'],
+  ['fbclid',           'Attribution_FBCLID'],
+  ['gclid',            'Attribution_GCLID'],
+  ['gbraid',           'Attribution_GBRAID'],
+  ['wbraid',           'Attribution_WBRAID'],
+  ['device',           'Attribution_Device'],
+  ['lt_ts',            'Attribution_Last_Touch_At'],
+  ['ft_utm_source',    'Attribution_First_Source'],
+  ['ft_utm_medium',    'Attribution_First_Medium'],
+  ['ft_utm_campaign',  'Attribution_First_Campaign'],
+  ['ft_utm_term',      'Attribution_First_Adset'],
+  ['ft_utm_content',   'Attribution_First_Ad'],
+  ['ft_fbclid',        'Attribution_First_FBCLID'],
+  ['ft_gclid',         'Attribution_First_GCLID'],
+  ['ft_landing',       'Attribution_First_Landing'],
+  ['ft_referrer',      'Attribution_First_Referrer'],
+  ['ft_ts',            'Attribution_First_Touch_At'],
+];
+
+// The compact interim line for `comment`, built from the same payload. Short
+// labels because comment is capped at 500 by the proxy and the scenario still
+// substring-matches the head of the string; everything here APPENDS after the
+// existing "utm_source | source" join and never reorders it.
+function attribSummary(q) {
+  const bits = [];
+  if (q.utm_campaign) bits.push('c:' + q.utm_campaign);
+  if (q.utm_term) bits.push('as:' + q.utm_term);
+  if (q.utm_content) bits.push('ad:' + q.utm_content);
+  if (q.placement) bits.push('pl:' + q.placement);
+  if (q.device) bits.push('dev:' + q.device);
+  if (q.ft_utm_source && q.ft_utm_source !== q.utm_source) bits.push('ft:' + q.ft_utm_source);
+  if (q.ft_utm_campaign && q.ft_utm_campaign !== q.utm_campaign) bits.push('ftc:' + q.ft_utm_campaign);
+  return bits.join(' | ').slice(0, 360);
+}
+
+// The rewritten money question's three answers, matched on their stable
+// prefixes, each with its own tag so reporting can split "ready and able"
+// from "payment plan" without parsing sentences (EXECUTION-LIST item 5: both
+// Yes answers are financially capable, REPORTED AS SEPARATE LINES; every
+// high-ticket order to date was paid on a plan, so payment plan is what a
+// real buyer looks like, not a lesser tier).
+const INVEST_TAGS = [
+  [/^Yes, I am ready and able/, 'VSL Invest - Ready Full'],
+  [/^Yes, with a payment plan/, 'VSL Invest - Payment Plan'],
+  [/^No, that investment/,      'VSL Invest - Not Possible'],
+];
+
+function investTag(lead) {
+  const answer = String((lead.quiz && lead.quiz.q10) || '');
+  for (const [pattern, name] of INVEST_TAGS) {
+    if (pattern.test(answer)) return name;
+  }
+  return null;
+}
 
 // Registers the lead in AXL via the accel-proxy worker. Server-to-server, so the
 // proxy key never reaches the browser and the worker's lack of CORS headers is
@@ -174,7 +259,12 @@ function cohortTags(lead) {
   //     no hard DQ from this funnel has ever carried a cohort tag.
   // The budget gate is excluded from both: its applicants are a money story and take
   // the Budget_* tags below instead.
-  if (lead.dqTrigger !== 'budget' &&
+  // 'invest' joined 'budget' in the exclusion on 21 Aug 2026: it is the
+  // rewritten money question's "No, that investment is not currently
+  // possible", a money story that takes its own VSL Invest tag (see
+  // INVEST_TAGS), not a readiness one. Without this line every financial DQ
+  // would be mis-shelved as Not Ready.
+  if (lead.dqTrigger !== 'budget' && lead.dqTrigger !== 'invest' &&
       (lead.dqTrigger || /^application(-[a-z0-9]+)?-dq$/.test(lead.source || ''))) {
     out.push(COHORT_TAGS.notReady);
   }
@@ -215,9 +305,22 @@ async function axl(env, lead) {
   // funnel-build posts both: utm_source (traffic) and source (which form fired,
   // "optin" vs "application"). Keeping both is what lets a lead be traced to the
   // page that produced it, so they are joined rather than one winning.
-  const attribution =
+  let attribution =
     lead.comment || [lead.utm_source, lead.source].filter(Boolean).join(' | ');
-  if (attribution) contactData.comment = attribution;
+  // The compact summary rides in comment too, appended after the head the
+  // scenario substring-matches on. This is the channel that works with the
+  // proxy deployed TODAY; the Attribution_* fields below are the durable one.
+  const summary = attribSummary(lead.quiz || {});
+  if (summary) attribution = [attribution, summary].filter(Boolean).join(' | ');
+  if (attribution) contactData.comment = attribution.slice(0, 490);
+
+  // The full attribution set as named fields. Same contract as the Quiz_
+  // fields: only ones that exist in AXL stick, and the proxy must whitelist
+  // the Attribution_ prefix before any of them travel (see the ATTRIB note).
+  for (const [key, field] of ATTRIB) {
+    const v = lead.quiz && lead.quiz[key];
+    if (v !== undefined && v !== null && v !== '') contactData[field] = String(v).slice(0, 300);
+  }
 
   // Pass-through fields the worker whitelists; only sent when the page supplies them.
   for (const k of ['timezoneId', 'Last_Webinar_Registered', 'webinarjam_url']) {
@@ -263,6 +366,10 @@ async function axl(env, lead) {
     // Names mirror the AC tags below one for one, so a segment built on either side
     // means the same thing. AXL creates an unknown tag name on the fly.
     for (const name of cohortTags(lead)) contactData.tags.push(name);
+    // The money answer's own tag (21 Aug 2026). Splits "ready and able" from
+    // "payment plan" from "not possible" in one filter, whatever the route did.
+    const invest = investTag(lead);
+    if (invest) contactData.tags.push(invest);
   }
   // An empty array would be sent as `tags: []`, which is not the same thing as
   // "this lead has no tag opinion" — drop the key so the scenario's own tagging

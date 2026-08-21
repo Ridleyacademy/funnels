@@ -121,6 +121,9 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
   gtag('config', 'AW-631436705', { 'allow_enhanced_conversions': true });
 </script>
 <script src="ra-ads.js" defer></script>
+<!-- First/last-touch persistence; re-reads the click captured on the door and
+     records a fresh one when an ad lands someone here directly. -->
+<script src="ra-attrib.js" defer></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -258,6 +261,18 @@ img,svg{display:block;max-width:100%}
    three things on this page and nothing else. Terms and Privacy still live on
    index.html, which is where data is actually collected and therefore where
    ad-platform policy looks for them. Do not reintroduce a footer here. */
+
+/* ---- THE CTA GATE (21 Aug 2026, EXECUTION-LIST item 4) --------------------
+   The Vidalytics dashboard shows the in-player CTA from 90 seconds, which is
+   6 minutes 14 seconds BEFORE the video says what the program is (premium
+   block at 7:44 of the 15:30 master). Measured result: 283 of 333 CTA views
+   clicked, almost all before the pitch, which is the machine that makes
+   unqualified applications. The dashboard timing is not in this repo, so the
+   page holds its own gate: every Vidalytics CTA anchor stays hidden until the
+   script below has seen the video reach APPLY_CTA_REVEAL_SECONDS, then the
+   html element gets .ra-cta-open and the CTA appears. Display, with
+   !important, beats any inline style the player sets. */
+html:not(.ra-cta-open) a[id^="vid_cta-"]{display:none !important}
 </style>
 </head>
 <body>
@@ -368,8 +383,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                  /(^|\.)pages\.dev$/.test(host);
       if (ours && /\/quiz(\.html)?$/.test(u.pathname)) {
         var here = new URLSearchParams(location.search);
+        /* Widened 21 Aug 2026 to the full ra-attrib.js set, plus `pf`, the
+           pre-frame split flag, so the variant can be switched on at the ad
+           or link level and survive this hop. */
         ['utm_source','utm_medium','utm_campaign','utm_content','utm_term',
-         'fbclid','gclid','el'].forEach(function(k){
+         'utm_id','fbclid','gclid','gbraid','wbraid','placement',
+         'site_source_name','campaign_id','adset_id','ad_id','pf','el'
+        ].forEach(function(k){
           var v = here.get(k);
           if (v && !u.searchParams.get(k)) u.searchParams.set(k, v);
         });
@@ -414,6 +434,96 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     dataLayer.push({event:'rdly_watch_view', lead_source:'simple-optin'});
   } catch(_){}
   try { if (window.fbq) fbq('track','ViewContent',{content_name:'Simple Funnel VSL'}); } catch(_){}
+
+  /* ==========================================================================
+     CTA TIMING + WATCH DEPTH (21 Aug 2026, EXECUTION-LIST item 4 / item 2).
+
+     APPLY_CTA_REVEAL_SECONDS is the single number that decides when the apply
+     CTA becomes visible, and it is the only thing to edit when the video
+     changes. It is set for the 7:30 RECUT (VSL-ANALYSIS-20260818.md): first
+     CTA at 4:02 = 242s, immediately after the qualifier that follows the
+     coaches-and-community block. THE CTA MOVE AND THE RECUT SHIP TOGETHER.
+     If this page ever deploys while the 15:30 master is still live, use 531
+     (8:51, the end of the premium block) instead; on the current master 242
+     lands mid-demo, before the pitch, which is the exact defect being fixed.
+
+     PITCH_STARTS_SECONDS marks where the premium block begins, and exists so
+     "pitch reached" can be a reported (and later bid-on) event. Recut: 3:20 =
+     200s. Current 15:30 master: 464s.
+
+     HOW THE GATE WORKS. Vidalytics injects its CTA on the dashboard timer
+     (90s today); the CSS above keeps every vid_cta anchor hidden until the
+     html element carries .ra-cta-open, which is added when the video's own
+     currentTime crosses the reveal mark. Vidalytics renders a real HTML5
+     <video> inside the embed div, so currentTime is read straight off it:
+     pausing, scrubbing and rewatching are all handled by the element itself.
+
+     FAILSAFE: if no video element can be found (a future player build could
+     render differently), the gate opens on a wall-clock timer instead. The
+     CTA is the only conversion path on this page; hiding it forever must be
+     impossible.
+     ======================================================================= */
+  var APPLY_CTA_REVEAL_SECONDS = 242;
+  var PITCH_STARTS_SECONDS = 200;
+
+  function track(ev, extra){
+    try {
+      window.dataLayer = window.dataLayer || [];
+      var p = { event: ev }; for (var k in (extra||{})) p[k] = extra[k];
+      window.dataLayer.push(p);
+    } catch(_){}
+  }
+
+  var ctaOpen = false;
+  function openCta(how){
+    if (ctaOpen) return;
+    ctaOpen = true;
+    document.documentElement.classList.add('ra-cta-open');
+    track('rdly_cta_revealed', { at_seconds: APPLY_CTA_REVEAL_SECONDS, via: how });
+  }
+
+  var pitchReached = false, started = false, fired = {};
+  function onTime(video){
+    var t = video.currentTime || 0;
+    if (!started && t > 0.5) {
+      started = true;
+      track('rdly_vsl_start', {});
+      try { if (window.fbq) fbq('trackCustom','VSLStarted'); } catch(_){}
+    }
+    /* quartiles off the element's own duration, each fired once */
+    var d = video.duration;
+    if (d && isFinite(d) && d > 0) {
+      [25,50,75].forEach(function(pc){
+        if (!fired[pc] && t >= d * pc / 100) {
+          fired[pc] = true;
+          track('rdly_vsl_progress', { percent: pc });
+          try { if (window.fbq) fbq('trackCustom','VSLProgress',{percent: pc}); } catch(_){}
+        }
+      });
+    }
+    if (!pitchReached && t >= PITCH_STARTS_SECONDS) {
+      pitchReached = true;
+      track('rdly_pitch_reached', { at_seconds: PITCH_STARTS_SECONDS });
+      try { if (window.fbq) fbq('trackCustom','PitchReached'); } catch(_){}
+    }
+    if (t >= APPLY_CTA_REVEAL_SECONDS) openCta('video_time');
+  }
+
+  /* The player builds its DOM asynchronously, so poll for the video element
+     rather than assuming when it exists. Two minutes of looking is generous;
+     after that the wall-clock failsafe owns the gate. */
+  var looked = 0;
+  var finder = setInterval(function(){
+    var video = document.querySelector('#vidalytics_embed_7pHY_IXbYK7t5bna video');
+    if (video) {
+      clearInterval(finder);
+      video.addEventListener('timeupdate', function(){ onTime(video); });
+    } else if (++looked > 240) {
+      clearInterval(finder);
+      setTimeout(function(){ openCta('wallclock_no_video'); },
+                 APPLY_CTA_REVEAL_SECONDS * 1000);
+    }
+  }, 500);
 })();
 </script>
 

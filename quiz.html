@@ -32,15 +32,21 @@
      apply.html), minus the old Q2 ("move forward?"), cut 14 Aug as
      redundant against Q1.
 
-     ROUTING (same rules as the retired apply.html):
-       hard DQ    Q1 = No                  -> tripwire
-       budget gate  commit >= 9/10 AND budget = under $1,000
-                    "could make it work"   -> qualified (gate cleared)
-                    "not right now"        -> soft DQ calendar
-                    "out of reach"         -> tripwire
-       soft DQ    budget under $1,000 (uncleared) OR attend = No
-                                           -> Calendly (dq route)
-       qualified  everyone else            -> Calendly
+     ROUTING (REWRITTEN 21 Aug 2026, EXECUTION-LIST item 5. The old money
+     ladder topped out at $6,000+ and its bottom option was a self-description,
+     so 76% of everyone picked "Under $1,000" regardless of capacity; the
+     budget gate then existed to argue with that answer. The new question asks
+     the real number directly, so the gate is retired along with the ladder):
+       hard DQ    Q1 = No (dormant, no No offered)   -> tripwire
+       invest DQ  money = "No, that investment is
+                  not currently possible"            -> tripwire
+       commitment q11 <= 5/10                        -> tripwire
+       soft DQ    attend = No                        -> Calendly (dq route)
+       qualified  both Yes money answers             -> Calendly
+     BOTH Yes answers qualify. Payment plan is NOT a lesser tier: every
+     high-ticket order in the CRM was paid on a plan, first payment $200-$700.
+     The two answers are tagged separately server-side so reporting can split
+     them (see INVEST_TAGS in functions/api/optin.js).
 
      Both calendar routes use the same event today (shared.js keeps
      CAL.dq === CAL.qualified); the split survives in the payload so
@@ -92,6 +98,9 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
   gtag('config', 'AW-631436705', { 'allow_enhanced_conversions': true });
 </script>
 <script src="ra-ads.js" defer></script>
+<!-- First/last-touch persistence: read here so the application and the booking
+     carry the same click the door captured. -->
+<script src="ra-attrib.js" defer></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -238,6 +247,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   var CAL = 'https://calendly.com/d/dv25-nhh-w9v/free-piano-breakthrough-session';
   var TRIPWIRE = '/tripwire.html';
+  /* THE PRE-FRAME SPLIT (21 Aug 2026, EXECUTION-LIST item 6). DARK BY DEFAULT.
+     ?pf=1 on this page's URL shows the $5,997 pre-frame screen before question
+     one; without it the page behaves exactly as before. A split, not a global
+     change, because revealing the number up front reverses the standing
+     "money stays soft" brief and has to be read against the current flow, one
+     change at a time, after items 4 and 5 have settled. Turn it on by adding
+     pf=1 to the Vidalytics CTA URL (or to an ad's final URL; watch.html
+     forwards pf across the hop). Every application posts which variant it saw
+     (preframe field -> Quiz_Preframe), so the two arms separate in AXL. */
+  var PREFRAME_ON = false;
+  try { PREFRAME_ON = new URLSearchParams(location.search).get('pf') === '1'; } catch(_){}
 
   function track(ev, extra){
     try {
@@ -279,13 +299,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     { post:'q11', q:'How soon do you want that to be <em>real</em>?',
       o:["Someday. I'm still looking around.",'This year, if someone showed me the actual path.',"I've decided. I want to start now.","Yesterday. I've put this off for years."],
       v:['5/10.','7/10.','9/10.','10/10.'] },
-    { post:'q10', q:"You're closer than you think. What could you invest to get there?",
-      o:["Under $1,000, I'm just getting started","$1,000 - $3,000, I'm ready to commit","$3,000 - $6,000, I'm serious about this","$6,000+, I want the fastest path"] },
+    /* MONEY, REWRITTEN 21 Aug 2026 (EXECUTION-LIST item 5). The old ladder
+       ("Under $1,000, I'm just getting started" ... "$6,000+") anchored on
+       course prices and its bottom option was a self-description, which is why
+       76% of all-time applicants picked it and why intent never moved the
+       answer. This asks the actual number, conditionally ("if the right fit"),
+       with the payment plan as a first-class yes. Routing matches on the Yes/
+       No prefixes below; the full sentence is what posts to Quiz_Investment. */
+    { post:'q10', q:'If you believe the program is the right fit, are you currently in a position to invest <em>$5,997</em> in your piano education?',
+      o:["Yes, I am ready and able to invest","Yes, with a payment plan","No, that investment is not currently possible"] },
     { post:'q13', q:'Once you pick your time, <em>will you be there</em>?',
       o:["Yes, I'll be there.","No, I can't promise that right now."] }
   ];
 
   var a = {}, i = 0, cleared = false, forceDq = false, done = false, dqTrigger = '';
+  /* STARTED vs COMPLETED, 21 Aug 2026 (EXECUTION-LIST item 4). rdly_apply_start
+     fires on page LOAD, which counts arrivals, not applications: someone who
+     lands and leaves looks identical to someone who answers five questions and
+     abandons the sixth. rdly_application_started fires once, on the first
+     answer actually clicked, and rdly_application_completed on the final
+     submit, so the gap between the two is finally measurable. */
+  var interacted = false;
+  function markStarted(){
+    if (interacted) return;
+    interacted = true;
+    track('rdly_application_started', {});
+    try { if (window.fbq) fbq('trackCustom','ApplicationStarted'); } catch(_){}
+  }
   /* What the visitor actually read, keyed by post. Deliberately a separate object:
      `a` is spread into the /api/optin payload, so display text must not live in it. */
   var labels = {};
@@ -312,6 +352,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       (i>0 ? '<button type="button" class="back">Back</button>' : '');
     card.querySelectorAll('.opt').forEach(function(b){
       b.onclick = function(){
+        markStarted();
         card.querySelectorAll('.opt').forEach(function(x){x.classList.remove('on')});
         b.classList.add('on');
         a[s.post] = s.v ? s.v[b.dataset.n] : s.o[b.dataset.n];
@@ -330,11 +371,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       track('rdly_apply_dq', { dq_type:'hard', dq_trigger:'q1' });
       return landing('q1');
     }
-    /* Fires from q10, not q11: money moved after urgency in the recut, so q10 is
-       now the second of the pair to be answered. */
-    if (Q[i].post === 'q10' && !cleared &&
-        /^(9|10)\//.test(a.q11 || '') && /^Under \$1,000/.test(a.q10 || '')) {
-      return gate();
+    /* INVEST DQ, 21 Aug 2026. "No, that investment is not currently possible"
+       is the only disqualifying money answer, and it disqualifies on its own:
+       no gate, no argument, straight to the soft landing and the $27 first
+       step. The route it ships is 'tripwire', which isDqRoute() in the worker
+       already treats as a DQ, so tag 641 fires, nurture 599 lets go and the
+       downsell (600) picks them up. dq_trigger 'invest' is excluded from the
+       Not Ready cohort in the worker: this is a money story, not a readiness
+       one, and it earns its own tag there instead.
+       The budget gate below this function is DORMANT from today: it existed to
+       challenge the old ladder's "Under $1,000", which no longer exists. Kept
+       so restoring a challenge screen is a one-line trigger, same as q1. */
+    if (Q[i].post === 'q10' && /^No/.test(a.q10 || '')) {
+      track('rdly_apply_dq', { dq_type:'hard', dq_trigger:'invest' });
+      return landing('invest');
     }
     i++; render();
   }
@@ -402,6 +452,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     try { urlSource = new URLSearchParams(location.search).get('utm_source') || ''; } catch(_){}
     var src = urlSource || lead.utm_source;
     if (src) p.utm_source = src;
+    /* THE FULL SET, 21 Aug 2026: campaign, ad set, ad, creative ids, placement,
+       click ids, device, and first touch under ft_*. ra-attrib.js already
+       implements the URL-first rule described above (a fresh click with params
+       overwrites last touch; internal hops never blank it), so its values are
+       applied AFTER the single-key fallback and win where both exist. This is
+       the write that puts attribution ON THE APPLICATION, which is the join
+       that 83 of 85 applications were missing. */
+    try {
+      if (window.RAAttrib) {
+        var af = RAAttrib.optinFields();
+        for (var ak in af) p[ak] = af[ak];
+      }
+    } catch(_){}
+    /* which quiz variant they saw; '' when the pre-frame split is dark */
+    if (PREFRAME_ON) p.preframe = 'shown';
     try {
       fetch('/api/optin', {
         method:'POST', headers:{'Content-Type':'application/json'},
@@ -427,11 +492,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
     done = true;
     prog(Q.length + 1);
-    var soft = forceDq ||
-               (!cleared && /^Under \$1,000/.test(a.q10 || '')) ||
-               /^No/.test(a.q13 || '');
+    /* The old "Under $1,000 uncleared" soft-DQ went with the ladder on 21 Aug:
+       a disqualifying money answer now exits in next() before reaching here.
+       What remains soft is the budget gate's "not right now" (dormant path)
+       and someone who will not promise to show up. */
+    var soft = forceDq || /^No/.test(a.q13 || '');
     var route = soft ? 'dq' : 'qualified';
     track('rdly_apply_complete', { route: route });
+    /* APPLICATION COMPLETED, as its own event and distinct from STARTED (see
+       the first-interaction hook near render()). Fires on every completed
+       path, qualified or soft, so completion can be counted without mixing
+       in routing. 21 Aug 2026, EXECUTION-LIST item 4. */
+    track('rdly_application_completed', { route: route });
+    try { if (window.fbq) fbq('trackCustom','ApplicationCompleted',{route: route}); } catch(_){}
+    /* FINANCIALLY QUALIFIED is its own signal: either Yes on the money
+       question, however the rest routed. This is the event the Meta account
+       is eventually meant to learn on (EXECUTION-LIST items 2 and 10). */
+    if (/^Yes/.test(a.q10 || '')) {
+      var plan = /payment plan/.test(a.q10) ? 'payment_plan' : 'full';
+      track('rdly_financially_qualified', { how: plan });
+      try { if (window.fbq) fbq('trackCustom','FinanciallyQualified',{how: plan}); } catch(_){}
+    }
     /* Lead is reserved for a finished, qualified application: the door already
        fired CompleteRegistration. Schedule fires further down, off Calendly's
        event_scheduled message, not here. */
@@ -466,6 +547,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if (lead.email) q += '&email=' + encodeURIComponent(lead.email);
     /* carries the ad click id onto the booking record for offline upload */
     try { if (window.RAAds && RAAds.calendlyParams) q += RAAds.calendlyParams(); } catch(_){}
+    /* and the utm set (last touch), so the BOOKING carries the same campaign /
+       ad set / ad the application does. Calendly stores these five on the
+       invitee record; before 21 Aug 2026 bookings carried nothing. */
+    try { if (window.RAAttrib && RAAttrib.calendlyParams) q += RAAttrib.calendlyParams(); } catch(_){}
 
     card.className = 'card card--cal';
     card.innerHTML =
@@ -546,8 +631,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     setTimeout(function(){ window.location.href = TRIPWIRE; }, 1400);
   }
 
-  track('rdly_apply_start', { page:'quiz' });
-  render();
+  /* The pre-frame screen. Names the investment and what the program is BEFORE
+     the questions, so nobody completes an application without knowing what
+     they are applying to. Copy is the premium positioning from EXECUTION-LIST
+     item 6, stated as what it is and what it is not. One button forward; the
+     Back control is the browser's. */
+  function preframe(){
+    prog(0);
+    track('rdly_preframe_view', {});
+    card.innerHTML =
+      '<p class="count">Before the questions</p>' +
+      '<h1 class="q">Know what you are <em>stepping into</em></h1>' +
+      '<div class="mirror"><span>The Ridley Method mentorship</span>' +
+        'A premium learning experience, built around direct guidance and implementation: ' +
+        'world-class coaches, an active community, and Stephen personally involved in your playing. ' +
+        'The full investment is <strong>$5,997</strong>, and most students pay it on a plan.</div>' +
+      '<p class="hint">It is not another piano app. Not a cheap video course. Not a library of ' +
+        'lessons you are left to navigate alone. If that is the level you have been looking for, ' +
+        'the six questions ahead take under a minute.</p>' +
+      '<div class="opts">' +
+        '<button type="button" class="opt" data-go="1"><i></i><span>I understand. Let\'s begin.</span></button>' +
+      '</div>';
+    card.querySelector('.opt').onclick = function(){
+      track('rdly_preframe_continue', {});
+      render();
+    };
+    try { window.scrollTo(0,0); } catch(_){}
+  }
+
+  track('rdly_apply_start', { page:'quiz', variant: PREFRAME_ON ? 'preframe' : 'control' });
+  if (PREFRAME_ON) preframe(); else render();
 })();
 </script>
 

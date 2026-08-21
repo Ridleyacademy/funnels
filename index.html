@@ -92,6 +92,9 @@ src="https://www.facebook.com/tr?id=2032449947451129&ev=PageView&noscript=1"
   gtag('config', 'AW-631436705', { 'allow_enhanced_conversions': true });
 </script>
 <script src="ra-ads.js" defer></script>
+<!-- First/last-touch capture. This is the LANDING page, so this include is the
+     one that actually records the paid click; watch and quiz mostly re-read it. -->
+<script src="ra-attrib.js" defer></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -811,6 +814,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var payload = {};
     for (var k2 in lead) payload[k2] = lead[k2];
     if (attr.utm_source) payload.utm_source = attr.utm_source;
+    /* THE FULL ATTRIBUTION SET, not just utm_source. Added 21 Aug 2026: only
+       2 of 85 applications carried any source in AXL, and this line is where
+       most of the loss happened. ra-attrib.js supplies last touch under the
+       plain names, first touch under ft_*, plus device / landing / referrer;
+       the Pages Function maps them onto Attribution_* fields on the contact.
+       RAAttrib's values win over the bare utm_source above because they
+       distinguish a fresh paid click from a stale stored one. */
+    try {
+      if (window.RAAttrib) {
+        var af = RAAttrib.optinFields();
+        for (var k3 in af) payload[k3] = af[k3];
+      }
+    } catch(_){}
 
     try {
       fetch('/api/optin', {
@@ -837,7 +853,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       dataLayer.push({event:'rdly_optin', lead_source:'vsl-b-simple'});
     } catch(_){}
 
-    setTimeout(function(){ window.location.href = NEXT; }, 220);
+    /* The query string RIDES ALONG to the watch page. Before 21 Aug this
+       redirect dropped it, so watch.html's CTA passthrough (which forwards ad
+       parameters onto /quiz) never had anything to forward on a first visit.
+       ra-attrib.js makes the journey survive without URL params, but keeping
+       them on the URL costs nothing and keeps every page self-evident. */
+    setTimeout(function(){ window.location.href = NEXT + location.search; }, 220);
   });
 
   ['f-name','f-email','f-consent'].forEach(function(id){
